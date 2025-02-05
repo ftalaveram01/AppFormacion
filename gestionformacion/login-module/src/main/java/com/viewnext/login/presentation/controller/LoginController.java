@@ -1,4 +1,4 @@
-package com.viewnext.login.controller;
+package com.viewnext.login.presentation.controller;
 
 import java.util.Optional;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.viewnext.login.model.Usuario;
-import com.viewnext.login.services.LoginServices;
+import com.viewnext.login.business.model.Usuario;
+import com.viewnext.login.business.services.LoginServices;
 
 
 @RestController

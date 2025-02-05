@@ -1,10 +1,10 @@
-package com.viewnext.login.services.impl;
+package com.viewnext.login.business.services.impl;
 
 import java.util.Optional;
 
-import com.viewnext.login.model.Usuario;
-import com.viewnext.login.repository.LoginRepository;
-import com.viewnext.login.services.LoginServices;
+import com.viewnext.login.business.model.Usuario;
+import com.viewnext.login.business.services.LoginServices;
+import com.viewnext.login.integration.repository.LoginRepository;
 
 public class LoginServicesImpl implements LoginServices{
 

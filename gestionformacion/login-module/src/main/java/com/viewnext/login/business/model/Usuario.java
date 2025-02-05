@@ -1,4 +1,4 @@
-package com.viewnext.login.model;
+package com.viewnext.login.business.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

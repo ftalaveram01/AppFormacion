@@ -1,8 +1,8 @@
-package com.viewnext.login.repository;
+package com.viewnext.login.integration.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.viewnext.login.model.Usuario;
+import com.viewnext.login.business.model.Usuario;
 
 public interface LoginRepository extends JpaRepository<Usuario, Long>{
 	
