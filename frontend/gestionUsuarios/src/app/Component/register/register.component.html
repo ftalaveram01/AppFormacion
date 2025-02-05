@@ -1,0 +1,24 @@
+<body>
+    <div class="container">
+    
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <label>
+                Email:
+                <input type="email" formControlName="email" required>
+            </label>
+            <label>
+                Password:
+                <input type="password" formControlName="password" required>
+            </label>
+            <label>
+                Confirm Password:
+                <input type="password" formControlName="confirmPassword" required>
+            </label>
+            <p *ngIf="succes">Registration successful</p>
+            <button type="submit">Register</button>
+            <a href="http://localhost:4200/login">¿Ya tienes cuenta? Login</a>
+        </form>
+    </div>
+    
+    
+</body>
