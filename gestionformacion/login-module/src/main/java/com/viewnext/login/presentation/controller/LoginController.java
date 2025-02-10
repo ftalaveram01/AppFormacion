@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.viewnext.login.business.model.Usuario;
 import com.viewnext.login.business.services.LoginServices;
 
-
+/**
+ * Controlador REST para gestionar el login de los usuarios
+ */
 @RestController
 @RequestMapping("/autentificacion")
 public class LoginController {
@@ -22,6 +24,15 @@ public class LoginController {
 		this.loginServices = loginServices;
 	}
 
+	/**
+	 * 
+     * Este metodo permite a un usuario iniciar sesion por su email y contraseña
+     * Si son incorrectos, lanza una exception
+     *
+     * @param email
+     * @param password
+     * @return una ResponseEntity que contiene la información del usuario si el inicio de sesión es exitoso
+     */
 	@GetMapping("/login")
 	public ResponseEntity<?> login(@RequestParam(required = true) String email, @RequestParam(required = true) String password){
 		

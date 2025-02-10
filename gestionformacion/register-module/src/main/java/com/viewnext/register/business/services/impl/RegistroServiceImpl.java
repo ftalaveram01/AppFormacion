@@ -6,6 +6,9 @@ import com.viewnext.register.business.model.Usuario;
 import com.viewnext.register.business.services.RegistroService;
 import com.viewnext.register.integration.repository.UsuarioRepository;
 
+/**
+ * Implementa los servicios a traves del repository
+ */
 @Service
 public class RegistroServiceImpl implements RegistroService{
 	
@@ -15,6 +18,14 @@ public class RegistroServiceImpl implements RegistroService{
 		this.usuarioRepository = usuarioRepository;
 	}
 
+	/**
+	 * Metodo para registrar al usuario a traves de su email y password
+	 * 
+	 * Si no existe un usuario con ese email registrado
+	 * Crea un nuevo usuario, lo guarda en el repositorio y devuelve el id del usuario guardado
+	 * 
+	 * Si existe, devuelve una excepcion
+	 */
 	@Override
 	public Long register(String email, String password) {
 		
