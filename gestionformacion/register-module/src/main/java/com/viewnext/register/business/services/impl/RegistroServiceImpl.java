@@ -1,10 +1,12 @@
 package com.viewnext.register.business.services.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.viewnext.register.business.model.Usuario;
 import com.viewnext.register.business.services.RegistroService;
 import com.viewnext.register.integration.repository.UsuarioRepository;
 
-
+@Service
 public class RegistroServiceImpl implements RegistroService{
 	
 	private UsuarioRepository usuarioRepository;
