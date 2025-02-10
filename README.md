@@ -1,11 +1,11 @@
 # AppFormacion
-# Descarga
+# 1. Descarga
 Para descargar el proyecto simplemente hay que pulsar en el botón **Code** de color verde en la página del repositorio https://github.com/ftalaveram01/AppFormacion y ahí se abrirán varias opciones, le damos a la de **Download ZIP**
 
 Una vez descargado, descomprima el archivo donde lo prefiera.
-Al descomprimirlo deberá aparecer una carpeta AppFormacion, la cual contendrá una carpeta llamada "script_bbdd", otra llamada "gestionformacion", y otra "frontend".
+Al descomprimirlo deberá aparecer una carpeta AppFormacion, la cual contendrá una carpeta llamada **script_bbdd**, otra llamada **gestionformacion**, y otra **frontend**.
 
-## Base de datos
+## 2. Base de datos
 ### Instalación
 Para la base de datos utilizamos MySQL.
 Primero nos dirigimos a la página de descargas https://dev.mysql.com/downloads/installer/ seleccionamos la última versión y aparecerán dos botones de descarga, le damos a descargar el archivo más grande de unos 300-400MB (redirigirá a una página pidiendo crear una cuenta, pero le damos a **No thanks, just start my download.**) 
@@ -17,3 +17,16 @@ Ahora tienes que elegir el método de autenticación que deseas usar. El método
 ### Creación
 Inicializamos MySQL Workbench, pulsamos en **Local instance** e introducimos la contraseña que asignamos a root en la instalación.
 Arriba a la izquierda pulsamos en **File>Open SQL Script**, navegamos a la ruta donde tenemos el proyecto descargado y en la carpeta **script_bbdd** pulsamos en el script **gestionformacion**. Se abrirá en el Workbench el script, y justo encima del script aparecerán unos iconos, dos serán un icono de trueno, pulsamos el trueno que no tiene nada más, que debería ser el de la izquierda, si dejamos el cursor sobre el botón debe aparecer un mensaje tal que **Execute the selected portion of the script or everything, if there is no selection** pulsamos sobre el botón y a la izquierda aparecerá la pestaña **SCHEMAS** y un poco a la derecha un botón pequeño para refrescar, pulsamos sobre el botón y en la pestaña debe aparecer nuestra base de datos **gestionformacion**.
+
+## 3. Backend
+### Instalación
+Nos dirigimos a https://www.eclipse.org/downloads/packages/installer a la derecha debe aparecer una columna **Download**, pulsamos en **Windows>x86_64** y nos llevará a otra pestaña donde aparecerá un botón de **Download**
+Una vez descargado lo ejecutamos, seleccionamos la opción **Eclipse IDE for Java Developers** y pulsamos en **Install**, una vez instalado le damos a **Launch**
+
+Además de Eclipse es necesario instalar un plugin dentro de Eclipse para ejecutar proyectos de Spring Boot, dentro de Eclipse arriba del todo nos dirigimos a **Help>Eclipse Marketplace**, en la pestaña **Search** buscamos **Spring Tools (aka Spring Tool Suite)** y lo instalamos, puede que durante el proceso de instalación pregunte varias veces si confías en el contenido de los siguientes autores, en la ventana **Authority** te mostrará de donde proviene y una casilla en blanco que tendrás que marcar y finalmente darle a **Trust Selected**.
+
+### Ejecución
+Dentro de Eclipse, arriba a la izquiera pulsamos en **File>Import>Existing Maven Projects** pulsamos en el botón **Browse** y navegamos al proyecto, concretamente tenemos que elegir la carpeta **gestionformacion** que es la que contiene el proyecto del backend. Al elegir la carpeta en la ventaja **Projects** deben aparecer varios ficheros que tienen que estar con la casilla marcada, por último le damos a **Finish**.
+Ahora a la izquierda en la ventana de **Package Explorer** deben de aparecer **gestionformacion**, **login-module**, y **register-module**, para ejecutarlo tenemos que hacer click derecho sobre **login-module** y **register-module** y darle a **Run As>Spring Boot App**, con ello ya lo tendríamos funcionando.
+#### Anotación
+Importante anotar que si durante la instalación de MySQL, modificamos el puerto por defecto **3306** o la contraseña **root**, tendremós que navegar dentro del **Package Explorer** dentro de los módulos a la carpeta **src/main/resources** y abrir el application.properties. En ambos tenemos es necesario modificar los campos **spring.datasource.url** (si has modificado el puerto) y **spring.datasource.password** (si has modificado la contraseña).
