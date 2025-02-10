@@ -1,0 +1,6 @@
+com\viewnext\register\presentation\controller\RegistroController.class
+com\viewnext\register\business\services\impl\RegistroServiceImpl.class
+com\viewnext\register\business\services\RegistroService.class
+com\viewnext\register\integration\repository\UsuarioRepository.class
+com\viewnext\register\RegisterApp.class
+com\viewnext\register\business\model\Usuario.class
