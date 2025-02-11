@@ -17,7 +17,7 @@ import com.viewnext.register.business.services.RegistroService;
 
 
 @WebMvcTest(RegistroController.class)
-public class UsuarioControllerTest extends AbstractControllerTest{
+public class RegistroControllerTest extends AbstractControllerTest{
 
     @MockitoBean
     private RegistroService registroService;
