@@ -1,4 +1,4 @@
-package com.viewnext.login.presentation.controllers;
+package com.viewnext.login.presentation.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.viewnext.login.business.model.Usuario;
 import com.viewnext.login.business.services.LoginServices;
-import com.viewnext.login.presentation.controller.LoginController;
 
 @WebMvcTest(LoginController.class)
 public class UsuarioControllerLoginTest extends AbstractControllerTest{

@@ -1,4 +1,4 @@
-package com.viewnext.login.presentation.controllers;
+package com.viewnext.login.presentation.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,7 +11,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viewnext.login.presentation.controller.LoginController;
 
 public abstract class AbstractControllerTest {
 
