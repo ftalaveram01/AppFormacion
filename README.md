@@ -30,3 +30,15 @@ Dentro de Eclipse, arriba a la izquiera pulsamos en **File>Import>Existing Maven
 Ahora a la izquierda en la ventana de **Package Explorer** deben de aparecer **gestionformacion**, **login-module**, y **register-module**, para ejecutarlo tenemos que hacer click derecho sobre **login-module** y **register-module** y darle a **Run As>Spring Boot App**, con ello ya lo tendríamos funcionando.
 #### Anotación
 Importante anotar que si durante la instalación de MySQL, modificamos el puerto por defecto **3306** o la contraseña **root**, tendremós que navegar dentro del **Package Explorer** dentro de los módulos a la carpeta **src/main/resources** y abrir el application.properties. En ambos tenemos es necesario modificar los campos **spring.datasource.url** (si has modificado el puerto) y **spring.datasource.password** (si has modificado la contraseña).
+
+## 3. Frontend
+### Instalación
+Nos dirigimos a la página oficial de Node.js https://nodejs.org/es y lo descargamos, lo ejecutamos y en el proceso de instalación dejamos todo por defecto. Para verificar la instalacion en la cmd **npm -v** y **node -v** deben funcionar.
+Ahora, nos dirigimos a la página oficial de VSCode https://code.visualstudio.com/download y descargamos la versión de nuestro Sistema Operativo, lo ejecutamos y en el proceso de instalación dejamos todo por defecto.
+Lo siguiente es abrir la cmd y ejecutar **npm install -g @angular/cli** para instalar Angular en nuestro Sistema Operativo. Para verificar la instalación en la cmd el comando **ng v** debe funcionar.
+
+### Ejecución
+Abrimos VSCode y arriba a la izquierda pinchamos **File>Open Folder**, en la carpeta de nuestro proyecto nos dirigimos a **frontend>gestionUsuarios** y seleccionamos esa carpeta.
+Dentro de VSCode hacemos click derecho en la carpeta gestionUsuarios y pinchamos en **Open in Integrated Terminal**, abajo se abrirá una terminal, por defecto suele ser powershell, si es así pulsamos en la flecha al lado de powershell y damos a la opción **Command Prompt**, primero ejecutamos el comando **npm install** y luego **ng serve**, accedemos a la direccion http://localhost:4200/ y ya tenemos el frontend funcionando.
+#### Anotación
+Hay que tener corriendo el backend también (obviamente).
