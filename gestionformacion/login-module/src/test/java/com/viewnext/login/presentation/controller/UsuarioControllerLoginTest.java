@@ -37,7 +37,7 @@ public class UsuarioControllerLoginTest extends AbstractControllerTest{
 	     
 	     when(loginServices.login(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
 	     
-	     MvcResult mvcResult = mockMvc.perform(get("/usuarios/login")
+	     MvcResult mvcResult = mockMvc.perform(get("/autentificacion/login")
 	             .param("email", user.getEmail())
 	             .param("password", user.getPassword()))
 	             .andExpect(status().isOk())
@@ -50,7 +50,7 @@ public class UsuarioControllerLoginTest extends AbstractControllerTest{
 	 public void testLoginFalse() throws Exception {
 		 when(loginServices.login("error@gmail.com", "123456")).thenReturn(Optional.empty());
 		 
-	     mockMvc.perform(get("/usuarios/login")
+	     mockMvc.perform(get("/autentificacion/login")
 	            .param("email", "error@email.com")
 	            .param("password", "wrongpassword"))
 	            .andExpect(status().isBadRequest());
