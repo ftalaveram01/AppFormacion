@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>course-module</artifactId>
-  <dependencies>
+  <dependencies> 
   	<dependency>
   		<groupId>com.viewnext.gestionformacion</groupId>
   		<artifactId>gestionformacion</artifactId>

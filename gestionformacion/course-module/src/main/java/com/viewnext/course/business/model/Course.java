@@ -31,6 +31,6 @@ public class Course {
 	private Date fechaInicio;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date fechaFin;
+	private Date fechaFin; 
 	
 }
