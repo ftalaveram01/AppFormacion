@@ -1,6 +1,7 @@
-C:\Users\6003290\Documents\GestionFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\business\model\Usuario.java
-C:\Users\6003290\Documents\GestionFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\business\services\impl\LoginServicesImpl.java
-C:\Users\6003290\Documents\GestionFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\business\services\LoginServices.java
-C:\Users\6003290\Documents\GestionFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\integration\repository\LoginRepository.java
-C:\Users\6003290\Documents\GestionFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\LoginApp.java
-C:\Users\6003290\Documents\GestionFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\presentation\controller\LoginController.java
+C:\Users\6003290\Documents\AppFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\business\model\Usuario.java
+C:\Users\6003290\Documents\AppFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\business\services\impl\LoginServicesImpl.java
+C:\Users\6003290\Documents\AppFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\business\services\LoginServices.java
+C:\Users\6003290\Documents\AppFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\integration\repository\LoginRepository.java
+C:\Users\6003290\Documents\AppFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\LoginApp.java
+C:\Users\6003290\Documents\AppFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\presentation\config\CentralizedExceptionHandler.java
+C:\Users\6003290\Documents\AppFormacion\gestionformacion\login-module\src\main\java\com\viewnext\login\presentation\controller\LoginController.java

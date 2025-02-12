@@ -1,32 +1,67 @@
-# AppFormacion
-# 1. Descarga
-Para descargar el proyecto simplemente hay que pulsar en el botón **Code** de color verde en la página del repositorio https://github.com/ftalaveram01/AppFormacion y ahí se abrirán varias opciones, le damos a la de **Download ZIP**
+# AppFormacion 
+## 1. Descarga 
+Para descargar el proyecto, simplemente haz clic en el botón **Code** de color verde en la página del repositorio y selecciona la opción **Download ZIP**. Una vez descargado, descomprime el archivo en la ubicación que prefieras.
 
-Una vez descargado, descomprima el archivo donde lo prefiera.
-Al descomprimirlo deberá aparecer una carpeta AppFormacion, la cual contendrá una carpeta llamada **script_bbdd**, otra llamada **gestionformacion**, y otra **frontend**.
+Al descomprimirlo, debería aparecer una carpeta llamada **AppFormacion**, que contendrá tres subcarpetas: **script_bbdd**, **gestionformacion** y **frontend**.
 
-## 2. Base de datos
-### Instalación
-Para la base de datos utilizamos MySQL.
-Primero nos dirigimos a la página de descargas https://dev.mysql.com/downloads/installer/ seleccionamos la última versión y aparecerán dos botones de descarga, le damos a descargar el archivo más grande de unos 300-400MB (redirigirá a una página pidiendo crear una cuenta, pero le damos a **No thanks, just start my download.**) 
-Una vez descargado ejecutamos el archivo y lo primero será escoger el tipo de configuración y pulsamos sobre **Custom**. Lo siguiente será seleccionar los productos a instalar, saldrán tres desplegables, primero pulsamos sobre el despegable de **MySQL Servers** y pinchamos en **MySQL Server** hasta llegar a la versión y deberá aparecer una flechita verde para seleccionarlo finalmente. Seguido de ello pulsamos sobre el despegable de **Applications** y hacemos lo mismo con **MySQL Workbench**. De tal manera que en la columna de **Products To Be installed** deberán aparecer ambos productos.
-Lo siguiente será darle a **Next** y nos mostrará al ruta de instalación predeterminada, pero se puede cambiar si se desea, volvemos a pinchar en **Next** y luego en **Execute** y procederán a la instalación.
-Una vez instalado pulsamos en **Next** dos veces y nos dirigirá a la configuración, seleccionamos en **Config Type** la opción **Development Computer** y el resto lo mantenemos por defecto, siendo posible cambiar el puerto si es necesario, le damos a **Next**.
-Ahora tienes que elegir el método de autenticación que deseas usar. El método que aparece marcado por defecto es **más moderno y seguro** , lo dejamos así y damos a **Next**. Lo siguiente será establecer la contraseña del usuario root, puedes elegir la que desees o poner root, clicamos en **Next**. Aparecerá una pestaña para configurarlo como Servicio de Windows, dejamos todo por defecto, debería estar marcado **Configure MySQL Server as a Windows Service** y **Standard System Account**, le damos a **Next** y luego a **Execute**, se aplicará la configuración y con ello la instalación estará finalizada.
+## 2. Base de datos 
+### Instalación Para instalar la base de datos, sigue estos pasos:
 
-### Creación
-Inicializamos MySQL Workbench, pulsamos en **Local instance** e introducimos la contraseña que asignamos a root en la instalación.
-Arriba a la izquierda pulsamos en **File>Open SQL Script**, navegamos a la ruta donde tenemos el proyecto descargado y en la carpeta **script_bbdd** pulsamos en el script **gestionformacion**. Se abrirá en el Workbench el script, y justo encima del script aparecerán unos iconos, dos serán un icono de trueno, pulsamos el trueno que no tiene nada más, que debería ser el de la izquierda, si dejamos el cursor sobre el botón debe aparecer un mensaje tal que **Execute the selected portion of the script or everything, if there is no selection** pulsamos sobre el botón y a la izquierda aparecerá la pestaña **SCHEMAS** y un poco a la derecha un botón pequeño para refrescar, pulsamos sobre el botón y en la pestaña debe aparecer nuestra base de datos **gestionformacion**.
+1.  Descarga el archivo más grande con la última versión de MySQL desde la [página oficial](https://www.mysql.com/downloads/).
+2.  Selecciona la opción **Custom** durante la instalación.
+3.  Selecciona los productos a instalar: **MySQL Server** y **MySQL Workbench**.
+4.  En la configuración selecciona **Development Computer**.
+5. El resto de cosas puedes dejarla por defecto.
+6.  Establece la contraseña del usuario root.
 
-## 3. Backend
-### Instalación
-Nos dirigimos a https://www.eclipse.org/downloads/packages/installer a la derecha debe aparecer una columna **Download**, pulsamos en **Windows>x86_64** y nos llevará a otra pestaña donde aparecerá un botón de **Download**
-Una vez descargado lo ejecutamos, seleccionamos la opción **Eclipse IDE for Java Developers** y pulsamos en **Install**, una vez instalado le damos a **Launch**
+### Creación Para crear la base de datos, sigue estos pasos:
 
-Además de Eclipse es necesario instalar un plugin dentro de Eclipse para ejecutar proyectos de Spring Boot, dentro de Eclipse arriba del todo nos dirigimos a **Help>Eclipse Marketplace**, en la pestaña **Search** buscamos **Spring Tools (aka Spring Tool Suite)** y lo instalamos, puede que durante el proceso de instalación pregunte varias veces si confías en el contenido de los siguientes autores, en la ventana **Authority** te mostrará de donde proviene y una casilla en blanco que tendrás que marcar y finalmente darle a **Trust Selected**.
+1.  Abre MySQL Workbench pulsa **Local instance** e introduce la contraseña del root.
+2.  **File>Open SQL Script** y abre el script **gestionformacion** desde la carpeta **script_bbdd**.
+3.  Presiona el icono del trueno y  ejecuta el script para crear la base de datos.
 
-### Ejecución
-Dentro de Eclipse, arriba a la izquiera pulsamos en **File>Import>Existing Maven Projects** pulsamos en el botón **Browse** y navegamos al proyecto, concretamente tenemos que elegir la carpeta **gestionformacion** que es la que contiene el proyecto del backend. Al elegir la carpeta en la ventaja **Projects** deben aparecer varios ficheros que tienen que estar con la casilla marcada, por último le damos a **Finish**.
-Ahora a la izquierda en la ventana de **Package Explorer** deben de aparecer **gestionformacion**, **login-module**, y **register-module**, para ejecutarlo tenemos que hacer click derecho sobre **login-module** y **register-module** y darle a **Run As>Spring Boot App**, con ello ya lo tendríamos funcionando.
-#### Anotación
-Importante anotar que si durante la instalación de MySQL, modificamos el puerto por defecto **3306** o la contraseña **root**, tendremós que navegar dentro del **Package Explorer** dentro de los módulos a la carpeta **src/main/resources** y abrir el application.properties. En ambos tenemos es necesario modificar los campos **spring.datasource.url** (si has modificado el puerto) y **spring.datasource.password** (si has modificado la contraseña).
+## 3. Backend 
+### Instalación Para instalar el backend, sigue estos pasos:
+
+1.  Descarga la última versión de Eclipse desde la [página oficial](https://www.eclipse.org/downloads/packages/installer), la opción **Windows>x86_64**.
+2.  Instala el plugin **Spring Tools (aka Spring Tool Suite)** desde Eclipse en **Help>Eclipse Marketplace**.
+
+### Ejecución Para ejecutar el backend, sigue estos pasos:
+
+1.  En Eclipse pulsa en **File>Import>Existing Maven Projects** y importa el proyecto **gestionformacion**.
+2.  Aparecerá el proyecto y varios módulos, click derecho en cada uno y **Run As>Spring Boot App** para ejecutarlos.
+
+### Escaneo con SonarQube
+
+1. Descargar SonarQube Community Build desde la [pagina oficial](https://www.sonarsource.com/products/sonarqube/downloads/)
+2. Debes descomprimir la carpeta en una ubicación de tu elección y acceder a "CARPETADESCOMPRIMIDA\sonarqube-25.2.0.102705\bin\windows-x86-64"
+3. Ejecutar como administrador el archivo "StartSonar.bat"
+4. Acceder a "http://localhost:9000" que es el puerto por defecto aplicado a SonarQube e iniciar sesión -> Usuario: admin , Contraseña: admin -> Resetear contraseña
+5. Pulsar en "Create Local Project"
+6. Rellenar "Project display name" con el nombre del proyecto y pulsar "Next"
+7. Pulsar en "Use the global setting" -> Pulsar "Create Project"
+8. Pulsar Locally -> Pulsa "Generate" para crear el token (guardar para mas adelante)
+9. Acceder a gestionformacion/login-module/pom.xml y dentro de properties, modificar los siguientes campos
+        - <sonar.token>TOKEN</sonar.token> -> Cambiar TOKEN por el token generado en el apartado anterior
+        - <sonar.projectKey>KEY</sonar.projectKey> -> Cambiar KEY por la key elegida al crear el proyecto que sera igual que el nombre por defecto
+        - <sonar.projectName>NAME</sonar.projectName> -> Cambiar NAME por el nombre elegido al crear el proyecto
+
+10. Abrir una terminal en AppFormacion\gestionformacion (carpeta raiz del proyecto) y ejecutar "mvn clean verify sonar:sonar"
+11. Por último, acceder a "http://localhost:9000/projects" y acceder al proyecto creado, en el saldrán los datos del escaneo.
+
+#### Nota Si modificaste el puerto o la contraseña durante la instalación de MySQL, debes actualizar los campos **spring.datasource.url** y **spring.datasource.password** en el archivo **application.properties**.
+
+## 4. Frontend 
+### Instalación Para instalar el frontend, sigue estos pasos:
+
+1.  Descarga la última versión de Node.js desde la [página oficial](https://nodejs.org/es).
+2.  Descarga la última versión de VSCode desde la [página oficial](https://code.visualstudio.com/download).
+3.  Instala Angular CLI con el comando **npm install -g @angular/cli** desde la CMD.
+
+### Ejecución Para ejecutar el frontend, sigue estos pasos:
+
+1.  Pulsa en **File>Open Folder** y abre la carpeta **frontend** desde VSCode.
+2.  Abre la terminal integrada y ejecuta el comando **npm install**.
+3.  Ejecuta el comando **ng serve** para iniciar la aplicación.
+
+#### Nota Debes tener el backend en ejecución para que el frontend funcione correctamente.
