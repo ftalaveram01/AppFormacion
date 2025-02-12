@@ -31,6 +31,24 @@ Al descomprimirlo, debería aparecer una carpeta llamada **AppFormacion**, que c
 1.  En Eclipse pulsa en **File>Import>Existing Maven Projects** y importa el proyecto **gestionformacion**.
 2.  Aparecerá el proyecto y varios módulos, click derecho en cada uno y **Run As>Spring Boot App** para ejecutarlos.
 
+### Escaneo con SonarQube
+
+1. Descargar SonarQube Community Build desde la [pagina oficial](https://www.sonarsource.com/products/sonarqube/downloads/)
+2. Debes descomprimir la carpeta en una ubicación de tu elección y acceder a "CARPETADESCOMPRIMIDA\sonarqube-25.2.0.102705\bin\windows-x86-64"
+3. Ejecutar como administrador el archivo "StartSonar.bat"
+4. Acceder a "http://localhost:9000" que es el puerto por defecto aplicado a SonarQube e iniciar sesión -> Usuario: admin , Contraseña: admin -> Resetear contraseña
+5. Pulsar en "Create Local Project"
+6. Rellenar "Project display name" con el nombre del proyecto y pulsar "Next"
+7. Pulsar en "Use the global setting" -> Pulsar "Create Project"
+8. Pulsar Locally -> Pulsa "Generate" para crear el token (guardar para mas adelante)
+9. Acceder a gestionformacion/login-module/pom.xml y dentro de properties, modificar los siguientes campos
+        - <sonar.token>TOKEN</sonar.token> -> Cambiar TOKEN por el token generado en el apartado anterior
+        - <sonar.projectKey>KEY</sonar.projectKey> -> Cambiar KEY por la key elegida al crear el proyecto que sera igual que el nombre por defecto
+        - <sonar.projectName>NAME</sonar.projectName> -> Cambiar NAME por el nombre elegido al crear el proyecto
+
+10. Abrir una terminal en AppFormacion\gestionformacion (carpeta raiz del proyecto) y ejecutar "mvn clean verify sonar:sonar"
+11. Por último, acceder a "http://localhost:9000/projects" y acceder al proyecto creado, en el saldrán los datos del escaneo.
+
 #### Nota Si modificaste el puerto o la contraseña durante la instalación de MySQL, debes actualizar los campos **spring.datasource.url** y **spring.datasource.password** en el archivo **application.properties**.
 
 ## 4. Frontend 
