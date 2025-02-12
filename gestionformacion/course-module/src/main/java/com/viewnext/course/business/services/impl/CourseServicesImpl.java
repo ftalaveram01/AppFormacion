@@ -37,19 +37,17 @@ public class CourseServicesImpl implements CourseServices {
 	    return Optional.ofNullable(cursoRepository.findById(id).orElse(null));
 	}
 
+	@Transactional
 	@Override
 	public void update(Course course) {
 
 		Long id = course.getId();
 		
-		boolean existe = cursoRepository.existsById(id);
-		
-		if(!existe) {
+		if(id!=null && !cursoRepository.existsById(id)) {
 			throw new IllegalStateException("El curso con ID [" + id + "] no existe.");
 		}
 		
 		cursoRepository.save(course);
-		
 	}
 
 	@Override
