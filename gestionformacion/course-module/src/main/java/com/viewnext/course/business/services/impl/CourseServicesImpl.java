@@ -43,7 +43,7 @@ public class CourseServicesImpl implements CourseServices {
 
 		Long id = course.getId();
 		
-		if(id!=null && !cursoRepository.existsById(id)) {
+		if(id==null || !cursoRepository.existsById(id)) {
 			throw new IllegalStateException("El curso con ID [" + id + "] no existe.");
 		}
 		
