@@ -14,6 +14,7 @@
   	<module>login-module</module>
   	<module>register-module</module>
   	<module>course-module</module>
+  	<module>core-module</module>
   </modules>
   <properties>
 		<java.version>17</java.version>
