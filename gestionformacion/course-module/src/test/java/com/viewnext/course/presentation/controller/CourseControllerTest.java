@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -155,7 +154,7 @@ public class CourseControllerTest{
 	@Test
 	public void testDelete() throws Exception{
 		
-		MvcResult response = mockMvc.perform(delete("/courses/2"))
+		mockMvc.perform(delete("/courses/2"))
 				.andExpect(status().isNoContent())
 				.andReturn();
 		
