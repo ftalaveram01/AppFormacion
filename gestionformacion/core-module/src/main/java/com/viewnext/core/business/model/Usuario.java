@@ -1,4 +1,4 @@
-package com.viewnext.course.business.model;
+package com.viewnext.core.business.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
