@@ -34,7 +34,7 @@ public class LoginController {
      * @return una ResponseEntity que contiene la información del usuario si el inicio de sesión es exitoso
      */
 	@GetMapping("/login")
-	public ResponseEntity<?> login(@RequestParam(required = true) String email, @RequestParam(required = true) String password){
+	public ResponseEntity<Optional<Usuario>> login(@RequestParam(required = true) String email, @RequestParam(required = true) String password){
 		
 		Optional<Usuario> usuario = loginServices.login(email, password);
 		
