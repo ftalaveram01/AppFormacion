@@ -8,6 +8,7 @@ class GestionformacionApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Only for check Spring Context
 	}
 
 }

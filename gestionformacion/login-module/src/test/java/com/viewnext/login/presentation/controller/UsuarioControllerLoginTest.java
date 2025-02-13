@@ -33,7 +33,7 @@ public class UsuarioControllerLoginTest extends AbstractControllerTest{
     }
 
 	 @Test
-	 public void testLoginTrue() throws Exception {
+	 void testLoginTrue() throws Exception {
 	     
 	     when(loginServices.login(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
 	     
@@ -47,7 +47,7 @@ public class UsuarioControllerLoginTest extends AbstractControllerTest{
 	 }
     
 	 @Test
-	 public void testLoginFalse() throws Exception {
+	 void testLoginFalse() throws Exception {
 		 when(loginServices.login("error@gmail.com", "123456")).thenReturn(Optional.empty());
 		 
 	     mockMvc.perform(get("/autentificacion/login")

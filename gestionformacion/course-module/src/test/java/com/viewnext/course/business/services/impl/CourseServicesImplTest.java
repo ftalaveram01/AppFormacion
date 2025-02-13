@@ -22,7 +22,7 @@ import com.viewnext.course.business.model.Course;
 import com.viewnext.course.integration.repository.CursoRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class CourseServicesImplTest {
+class CourseServicesImplTest {
 	
 	@Mock
 	private CursoRepository courseRepository;
@@ -33,7 +33,7 @@ public class CourseServicesImplTest {
 
     
     @Test
-    public void createTest() {
+    void createTest() {
     	Course course = new Course();
     	
     	Course coursev2 = new Course();
@@ -43,18 +43,18 @@ public class CourseServicesImplTest {
     	
     	Long id = courseServices.create(course);
     	
-    	assertTrue(id == 2L);
+    	assertEquals(2L, id);
     }
     
     @Test
-    public void createIdExistenteTest() {
+    void createIdExistenteTest() {
     	Course course = new Course();
     	course.setId(2L);
     	assertThrows(IllegalStateException.class, () -> courseServices.create(course));
     }
     
     @Test
-    public void readTest() {
+    void readTest() {
     	when(courseRepository.findById(any(Long.class))).thenReturn(Optional.empty());
     	when(courseRepository.findById(2L)).thenReturn(Optional.of(new Course()));
     	
@@ -64,7 +64,7 @@ public class CourseServicesImplTest {
     }
     
     @Test
-    public void updateIdExistenteTest() {
+    void updateIdExistenteTest() {
     	Course course = new Course();
     	course.setId(2L);
     	
@@ -74,7 +74,7 @@ public class CourseServicesImplTest {
     }
     
     @Test
-    public void updateIdNoExistenteTest() {
+    void updateIdNoExistenteTest() {
     	Course course = new Course();
     	course.setId(2L);
     	
@@ -86,20 +86,20 @@ public class CourseServicesImplTest {
     }
     
     @Test
-    public void deleteIdExistenteTest() {
+    void deleteIdExistenteTest() {
     	when(courseRepository.existsById(any(Long.class))).thenReturn(true);
     	courseServices.delete(2L);
     	verify(courseRepository, times(1)).deleteById(2L);
     }
     
     @Test
-    public void deleteIdNoExistenteTest() {
+    void deleteIdNoExistenteTest() {
     	when(courseRepository.existsById(any(Long.class))).thenReturn(false);
     	assertThrows(IllegalStateException.class, () -> courseServices.delete(2L));
     }
     
     @Test
-    public void testGetAll() {
+    void testGetAll() {
     	Course course = new Course();
     	course.setId(2L);
     	

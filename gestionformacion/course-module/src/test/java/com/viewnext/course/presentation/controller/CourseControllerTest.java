@@ -28,7 +28,7 @@ import com.viewnext.course.business.model.Course;
 import com.viewnext.course.business.services.CourseServices;
 
 @WebMvcTest(CursoController.class)
-public class CourseControllerTest{
+class CourseControllerTest{
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -40,7 +40,7 @@ public class CourseControllerTest{
 	private CourseServices courseServices;
 	
 	@Test
-	public void testGetAll() throws Exception{
+	void testGetAll() throws Exception{
 		Course course = new Course();
 		course.setId(2L);
 		Course coursev2 = new Course();
@@ -59,7 +59,7 @@ public class CourseControllerTest{
 	}
 	
 	@Test
-	public void testRead() throws Exception{
+	void testRead() throws Exception{
 		Course course = new Course();
 		course.setId(2L);
 		
@@ -76,7 +76,7 @@ public class CourseControllerTest{
 	}
 	
 	@Test
-	public void testReadNotFound() throws Exception{
+	void testReadNotFound() throws Exception{
 		
 		when(courseServices.read(any(Long.class))).thenReturn(Optional.empty());
 		
@@ -90,7 +90,7 @@ public class CourseControllerTest{
 	}
 	
 	@Test
-	public void testCreate() throws Exception{
+	void testCreate() throws Exception{
 		when(courseServices.create(any(Course.class))).thenReturn(2L);
 		
 		String json = mapper.writeValueAsString(new Course());
@@ -106,7 +106,7 @@ public class CourseControllerTest{
 	}
 	
 	@Test
-	public void testCreateExistente() throws Exception{
+	void testCreateExistente() throws Exception{
 		when(courseServices.create(any(Course.class))).thenThrow(new IllegalStateException("Excepcion de create"));
 		
 		String json = mapper.writeValueAsString(new Course());
@@ -122,7 +122,7 @@ public class CourseControllerTest{
 	}
 	
 	@Test
-	public void testUpdate() throws Exception{
+	void testUpdate() throws Exception{
 		
 		String json = mapper.writeValueAsString(new Course());
 		
@@ -136,7 +136,7 @@ public class CourseControllerTest{
 	}
 	
 	@Test
-	public void testUpdateNoExistente() throws Exception{
+	void testUpdateNoExistente() throws Exception{
 		
 		doThrow(new IllegalStateException("Error de update")).when(courseServices).update(any(Course.class));
 		
@@ -152,7 +152,7 @@ public class CourseControllerTest{
 	}
 	
 	@Test
-	public void testDelete() throws Exception{
+	void testDelete() throws Exception{
 		
 		mockMvc.perform(delete("/courses/2"))
 				.andExpect(status().isNoContent())
@@ -162,7 +162,7 @@ public class CourseControllerTest{
 	}
 	
 	@Test
-	public void testDeleteNoExistente() throws Exception{
+	void testDeleteNoExistente() throws Exception{
 		doThrow(new IllegalStateException("Error de delete")).when(courseServices).delete(2L);
 		
 		MvcResult response = mockMvc.perform(delete("/courses/2").contentType("application/json"))
