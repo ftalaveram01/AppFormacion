@@ -8,13 +8,16 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.login.business.model.Usuario;
 import com.viewnext.login.integration.repository.LoginRepository;
 
+@ExtendWith(MockitoExtension.class)
 public class LoginServicesImplTest {
 	
 	@Mock
@@ -34,7 +37,7 @@ public class LoginServicesImplTest {
     }
     
     @Test
-    public void loginTest() {
+    void loginTest() {
     	
     	 when(loginRepository.findByEmailAndPassword("prueba@gmail.com", "1234")).thenReturn(user);
          when(loginRepository.findByEmailAndPassword("error@gmail.com", "12345")).thenReturn(null);

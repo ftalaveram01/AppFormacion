@@ -10,16 +10,19 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.register.business.model.Usuario;
 import com.viewnext.register.integration.repository.UsuarioRepository;
 
+@ExtendWith(MockitoExtension.class)
 public class RegistroServiceImplTest {
 
-@Mock
+	@Mock
     private UsuarioRepository usuarioRepository;
 
     @InjectMocks
@@ -36,7 +39,7 @@ public class RegistroServiceImplTest {
     private Usuario usuario;
 
     @Test
-    public void testRegisterNuevoUsuario(){
+    void testRegisterNuevoUsuario(){
 
 
         when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
@@ -51,7 +54,7 @@ public class RegistroServiceImplTest {
     }
 
     @Test
-    public void testRegisterUsuarioExistente(){
+    void testRegisterUsuarioExistente(){
 
         when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(true);
 
@@ -59,7 +62,7 @@ public class RegistroServiceImplTest {
     }
 
     @Test
-    public void testRegisterEmailNull(){
+    void testRegisterEmailNull(){
 
         usuario.setEmail(null);
 
@@ -67,7 +70,7 @@ public class RegistroServiceImplTest {
     }
 
     @Test
-    public void testRegisterPasswordNull(){
+    void testRegisterPasswordNull(){
 
         usuario.setPassword(null);
 

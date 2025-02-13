@@ -5,6 +5,11 @@
     <artifactId>gestionformacion</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+  <properties>
+		<sonar.token>{TOKEN_SQ}</sonar.token>
+        <sonar.projectKey>AppFormacion</sonar.projectKey>
+        <sonar.projectName>AppFormacion</sonar.projectName>
+  </properties>
   <artifactId>login-module</artifactId>
   <dependencies>
   		<dependency>

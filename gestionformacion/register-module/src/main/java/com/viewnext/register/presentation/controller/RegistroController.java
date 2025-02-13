@@ -33,7 +33,7 @@ public class RegistroController {
      * @return una ResponseEntity con la URI del nuevo usuario registrado
      */
 	@PostMapping("/registrar")
-	public ResponseEntity<?> registrar(@RequestParam(required = true) String email, @RequestParam(required = true) String password, UriComponentsBuilder ucb){
+	public ResponseEntity<Void> registrar(@RequestParam(required = true) String email, @RequestParam(required = true) String password, UriComponentsBuilder ucb){
 		
 		Long id = registroService.register(email, password);
 		

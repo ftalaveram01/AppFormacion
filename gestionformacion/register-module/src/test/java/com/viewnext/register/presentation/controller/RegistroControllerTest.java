@@ -32,7 +32,7 @@ public class RegistroControllerTest extends AbstractControllerTest{
     }
     
     @Test
-    public void testRegistrar() throws Exception {
+    void testRegistrar() throws Exception {
 
         Usuario usuarioNuevo = new Usuario();
         usuarioNuevo.setId(null);

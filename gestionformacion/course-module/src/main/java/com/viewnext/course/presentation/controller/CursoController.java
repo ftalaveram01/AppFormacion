@@ -33,26 +33,31 @@ public class CursoController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> read(@PathVariable Long id){
+	public ResponseEntity<Course> read(@PathVariable Long id){
 		Optional<Course> course = courseServices.read(id);
 		return course.isPresent() ? ResponseEntity.ok(course.get()) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> create(@RequestBody Course course, UriComponentsBuilder ucb){
+	public ResponseEntity<Void> create(@RequestBody Course course, UriComponentsBuilder ucb){
 		Long id = courseServices.create(course);
 		return ResponseEntity.created(ucb.path("/courses/{id}").build(id)).build();
 	}
 	
+<<<<<<< HEAD
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Course course){
 		course.setId(id);
+=======
+	@PutMapping
+	public ResponseEntity<Void> update(@RequestBody Course course){
+>>>>>>> 10665cbac73489360a30430fb9a8df6604cbcad3
 		courseServices.update(course);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id){
+	public ResponseEntity<Void> delete(@PathVariable Long id){
 		courseServices.delete(id);
 		return ResponseEntity.noContent().build();
 	}
