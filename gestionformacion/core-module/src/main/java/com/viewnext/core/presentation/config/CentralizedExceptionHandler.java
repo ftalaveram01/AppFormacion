@@ -1,4 +1,4 @@
-package com.viewnext.course.presentation.config;
+package com.viewnext.core.presentation.config;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.http.ResponseEntity;
