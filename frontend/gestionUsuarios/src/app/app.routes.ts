@@ -1,11 +1,15 @@
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 import { InicioComponent } from './Component/inicio/inicio.component';
 import { LoginComponent } from './Component/login/login.component';
 import { RegisterComponent } from './Component/register/register.component';
+import { CursoFormComponent } from './Component/curso-form/curso-form.component';
+import { CursoListComponent } from './Component/curso-list/curso-list.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent},
     { path: 'login', component: LoginComponent},
     { path: 'register', component: RegisterComponent},
-    { path: 'inicio', component: InicioComponent}
+    { path: 'inicio', component: InicioComponent},
+    { path: 'cursos', component: CursoListComponent },
+    { path: 'cursos/form', component: CursoFormComponent },
 ];

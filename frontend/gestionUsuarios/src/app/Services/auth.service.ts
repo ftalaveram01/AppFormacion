@@ -30,7 +30,8 @@ export class AuthService {
       .set('email', email)
       .set('password', password);
 
-    this.http.get("http://localhost:8080/usuarios/login",{params}).subscribe((users :any) => {
+    this.http.get("http://localhost:8080/autentificacion/login",
+     {params}).subscribe((users :any) => {
       onLogin(true,users)
     });
 
@@ -42,7 +43,7 @@ export class AuthService {
       .set('email', email)
       .set('password', password);
 
-    this.http.post("http://localhost:8080/usuarios/registrar", {params}).subscribe(() => {
+    this.http.post("http://localhost:8081/autentificacion/registrar", params).subscribe(() => {
       onRegister(true)
     })
 
