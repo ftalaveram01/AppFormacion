@@ -44,8 +44,9 @@ public class CursoController {
 		return ResponseEntity.created(ucb.path("/courses/{id}").build(id)).build();
 	}
 	
-	@PutMapping
-	public ResponseEntity<?> update(@RequestBody Course course){
+	@PutMapping("/{id}")
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Course course){
+		course.setId(id);
 		courseServices.update(course);
 		return ResponseEntity.noContent().build();
 	}
