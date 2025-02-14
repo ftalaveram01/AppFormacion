@@ -1,3 +1,2 @@
 ./gestionformacion/.settings/*
-./gestionformacion/login-module/target
-./gestionformacion/register-module/target
+./gestionformacion/**/target/
