@@ -27,35 +27,66 @@ public class CursoController {
 		this.courseServices = courseServices;
 	}
 
+	/**
+	 * 
+	 * Retorna un 200 con todos los cursos.
+	 * 
+	 * @return {@link List} de {@link Course}
+	 */
 	@GetMapping
 	public List<Course> getAll(){
 		return courseServices.getAll();
 	}
 	
+	/**
+	 * 
+	 * Dado un id devuelve un 200 con el curso si existe 
+	 * o 404 si no existe.
+	 * 
+	 * @param {@link Long} id
+	 * @return 200 con el curso o 404 
+	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<Course> read(@PathVariable Long id){
 		Optional<Course> course = courseServices.read(id);
 		return course.isPresent() ? ResponseEntity.ok(course.get()) : ResponseEntity.notFound().build();
 	}
 	
+	/**
+	 * 
+	 * Crea un {@link Course} dado.
+	 * 
+	 * @param course
+	 * @param ucb
+	 * @return 201 con la ubicación
+	 */
 	@PostMapping
 	public ResponseEntity<Void> create(@RequestBody Course course, UriComponentsBuilder ucb){
 		Long id = courseServices.create(course);
 		return ResponseEntity.created(ucb.path("/courses/{id}").build(id)).build();
 	}
 	
-<<<<<<< HEAD
+	/**
+	 * 
+	 * Actualiza el curso dado.
+	 * 
+	 * @param id
+	 * @param course
+	 * @return 204
+	 */
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Course course){
-		course.setId(id);
-=======
-	@PutMapping
-	public ResponseEntity<Void> update(@RequestBody Course course){
->>>>>>> 10665cbac73489360a30430fb9a8df6604cbcad3
 		courseServices.update(course);
 		return ResponseEntity.noContent().build();
 	}
 	
+	/**
+	 * 
+	 * Borra el {@link Course} dado.
+	 * 
+	 * @param id
+	 * @return 204
+	 */
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id){
 		courseServices.delete(id);
