@@ -6,35 +6,25 @@ body {
 }
 
 .container {
-    max-width: 400px;
+    max-width: 800px;
     margin: 50px auto;
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 15px;
-    font-size: 14px;
+h1, p {
+    text-align: center;
     color: #333;
 }
 
-input[type="email"],
-input[type="password"] {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.btn-CrearCurso {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 button {
-    padding: 10px;
+    padding: 10px 20px;
     border: none;
     background-color: #007bff;
     color: #fff;
@@ -44,24 +34,32 @@ button {
     margin-top: 10px;
 }
 
+
+
+#btn-Eliminar{
+    margin-left: 25%;
+}
+
+#btn-Update{
+    margin-left: 20%;
+}
+
 button:hover {
     background-color: #0056b3;
 }
 
 a {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-    font-size: 14px;
-    color: #007bff;
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
+div {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
 }
 
-p {
-    color: green;
-    font-size: 14px;
+.lista-cursos {
+    padding-left: 20px;
 }

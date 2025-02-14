@@ -1,0 +1,24 @@
+<p>LISTADO DE CURSOS</p>
+
+<div class="btn-CrearCurso">
+
+    <a href="cursos/form"><button>Crear Nuevo Curso</button></a>
+
+</div>
+
+<div class="lista-cursos" *ngFor="let c of cursos">
+
+    <p>Nombre: {{c.nombre}}</p>
+    <p>Descripcion: {{c.descripcion}}</p>
+    <p>Fecha Inicio: {{c.fechaInicio}}</p>
+    <p>Fecha Fin: {{c.fechaFin}}</p>
+
+    <p>Usuarios: </p>
+    <div *ngFor="let u of c.usuarios">
+        <p>{{u.nombre}}</p>
+    </div>
+    <div class="botones">
+        <button id="btn-Eliminar" (click)="deleteCurso(c.id)">Eliminar -> {{c.nombre}}</button>
+        <button id="btn-Update" (click)="btnUpdateCurso(true,c.id)"> Actualizar -> {{c.nombre}}</button>
+    </div>
+</div>
