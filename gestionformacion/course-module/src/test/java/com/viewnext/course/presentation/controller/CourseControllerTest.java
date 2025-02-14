@@ -127,7 +127,7 @@ class CourseControllerTest{
 		String json = mapper.writeValueAsString(new Course());
 		
 		MvcResult response = mockMvc.perform(put("/courses").contentType("application/json").content(json))
-				.andExpect(status().isNoContent())
+				.andExpect(status().isOk())
 				.andReturn();
 		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		

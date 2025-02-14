@@ -61,9 +61,15 @@ public class CursoController {
 	 * @return 201 con la ubicación
 	 */
 	@PostMapping
-	public ResponseEntity<Void> create(@RequestBody Course course, UriComponentsBuilder ucb){
-		Long id = courseServices.create(course);
+	public ResponseEntity<String> create(@RequestBody Course course, UriComponentsBuilder ucb){
+
+		try{
+			Long id = courseServices.create(course);
 		return ResponseEntity.created(ucb.path("/courses/{id}").build(id)).build();
+		}catch (IllegalStateException e){
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		
 	}
 	
 	/**
@@ -74,11 +80,16 @@ public class CursoController {
 	 * @param course
 	 * @return 204
 	 */
-	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Course course){
-		courseServices.update(course);
-		return ResponseEntity.noContent().build();
+	@PutMapping
+	public ResponseEntity<String> update(@RequestBody Course course) {
+		try {
+			courseServices.update(course);
+			return ResponseEntity.ok().build();
+		} catch (IllegalStateException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
+
 	
 	/**
 	 * 
@@ -88,9 +99,13 @@ public class CursoController {
 	 * @return 204
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
-		courseServices.delete(id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<String> delete(@PathVariable Long id){
+		try {
+			courseServices.delete(id);
+			return ResponseEntity.noContent().build();
+		} catch (IllegalStateException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
 }
