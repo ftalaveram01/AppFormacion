@@ -39,21 +39,35 @@ public class CursoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> create(@RequestBody Course course, UriComponentsBuilder ucb){
-		Long id = courseServices.create(course);
+	public ResponseEntity<String> create(@RequestBody Course course, UriComponentsBuilder ucb){
+
+		try{
+			Long id = courseServices.create(course);
 		return ResponseEntity.created(ucb.path("/courses/{id}").build(id)).build();
+		}catch (IllegalStateException e){
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		
 	}
 	
 	@PutMapping
-	public ResponseEntity<Void> update(@RequestBody Course course){
-		courseServices.update(course);
-		return ResponseEntity.noContent().build();
-	}
+public ResponseEntity<String> update(@RequestBody Course course) {
+    try {
+        courseServices.update(course);
+        return ResponseEntity.ok().build();
+    } catch (IllegalStateException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
-		courseServices.delete(id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<String> delete(@PathVariable Long id){
+		try {
+			courseServices.delete(id);
+			return ResponseEntity.noContent().build();
+		} catch (IllegalStateException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
 }

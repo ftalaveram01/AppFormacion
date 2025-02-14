@@ -18,7 +18,7 @@ import com.viewnext.login.business.model.Usuario;
 import com.viewnext.login.business.services.LoginServices;
 
 @WebMvcTest(LoginController.class)
-public class UsuarioControllerLoginTest extends AbstractControllerTest{
+class UsuarioControllerLoginTest extends AbstractControllerTest{
 
     @MockitoBean
     private LoginServices loginServices;
@@ -27,6 +27,7 @@ public class UsuarioControllerLoginTest extends AbstractControllerTest{
 
     @SuppressWarnings("deprecation")
     @BeforeEach
+	@Override
     public void setup(){
         initObject();
         MockitoAnnotations.initMocks(this);

@@ -18,7 +18,7 @@ import com.viewnext.login.business.model.Usuario;
 import com.viewnext.login.integration.repository.LoginRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class LoginServicesImplTest {
+ class LoginServicesImplTest {
 	
 	@Mock
     private LoginRepository loginRepository;

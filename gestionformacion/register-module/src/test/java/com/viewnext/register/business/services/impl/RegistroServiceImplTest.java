@@ -20,7 +20,7 @@ import com.viewnext.register.business.model.Usuario;
 import com.viewnext.register.integration.repository.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class RegistroServiceImplTest {
+class RegistroServiceImplTest {
 
 	@Mock
     private UsuarioRepository usuarioRepository;

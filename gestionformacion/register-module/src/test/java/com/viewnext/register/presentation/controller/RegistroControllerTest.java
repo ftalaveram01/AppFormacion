@@ -17,7 +17,7 @@ import com.viewnext.register.business.services.RegistroService;
 
 
 @WebMvcTest(RegistroController.class)
-public class RegistroControllerTest extends AbstractControllerTest{
+class RegistroControllerTest extends AbstractControllerTest{
 
     @MockitoBean
     private RegistroService registroService;
@@ -26,6 +26,7 @@ public class RegistroControllerTest extends AbstractControllerTest{
 
     @SuppressWarnings("deprecation")
     @BeforeEach
+    @Override
     public void setup(){
         initObjects();
         MockitoAnnotations.initMocks(this);
