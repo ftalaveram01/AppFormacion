@@ -15,6 +15,7 @@
   	<module>register-module</module>
   	<module>course-module</module>
   	<module>core-module</module>
+  	<module>usuario-module</module>
   </modules>
   <properties>
 		<java.version>17</java.version>
@@ -60,29 +61,63 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-            	<groupId>org.apache.maven.plugins</groupId>
-            	<artifactId>maven-compiler-plugin</artifactId>
-            	<configuration>
-                	<source>23</source>
-                	<target>23</target>
-                	<compilerId>javac</compilerId>
-                	<forceJavacCompilerUse>true</forceJavacCompilerUse>
-                	<annotationProcessorPaths>
-                    	<path>
-                        	<groupId>org.projectlombok</groupId>
-                        	<artifactId>lombok</artifactId>
-                    	</path>
-                	</annotationProcessorPaths>
-            	</configuration>
-        	</plugin>
-			<plugin>
-            	<groupId>org.sonarsource.scanner.maven</groupId>
-            	<artifactId>sonar-maven-plugin</artifactId>
-            	<version>3.9.1.2184</version>
-            	
-        	</plugin>
-		</plugins>
+	    <plugins>
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-compiler-plugin</artifactId>
+	            <configuration>
+	                <source>17</source>
+	                <target>17</target>
+	                <compilerId>javac</compilerId>
+	                <forceJavacCompilerUse>true</forceJavacCompilerUse>
+	                <annotationProcessorPaths>
+	                    <path>
+	                        <groupId>org.projectlombok</groupId>
+	                        <artifactId>lombok</artifactId>
+	                    </path>
+	                </annotationProcessorPaths>
+	            </configuration>
+	        </plugin>
+	        <plugin>
+	            <groupId>org.sonarsource.scanner.maven</groupId>
+	            <artifactId>sonar-maven-plugin</artifactId>
+	            <version>3.9.1.2184</version>
+	        </plugin>
+	        <plugin>
+	            <groupId>org.jacoco</groupId>
+	            <artifactId>jacoco-maven-plugin</artifactId>
+	            <version>0.8.7</version>
+	            <executions>
+	                <execution>
+	                    <goals>
+	                        <goal>prepare-agent</goal>
+	                    </goals>
+	                </execution>
+	                <execution>
+	                    <id>report</id>
+	                    <phase>test</phase>
+	                    <goals>
+	                        <goal>report</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+	            <configuration>
+	                <append>true</append>
+	            </configuration>
+	        </plugin>
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <version>3.0.0-M5</version>
+	            <configuration>
+	                <argLine>
+	                    --add-modules java.instrument
+	                    --add-opens java.base/java.lang=ALL-UNNAMED
+	                    --add-opens java.base/java.util=ALL-UNNAMED
+	                </argLine>
+	            </configuration>
+	        </plugin>
+	    </plugins>
 	</build>
+
 </project>
