@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.viewnext.core.business.model.Rol;
 import com.viewnext.register.business.services.RegistroService;
 
 /**
@@ -33,9 +34,9 @@ public class RegistroController {
      * @return una ResponseEntity con la URI del nuevo usuario registrado
      */
 	@PostMapping("/registrar")
-	public ResponseEntity<Void> registrar(@RequestParam(required = true) String email, @RequestParam(required = true) String password, UriComponentsBuilder ucb){
+	public ResponseEntity<Void> registrar(@RequestParam(required = true) String email, @RequestParam(required = true) String password, UriComponentsBuilder ucb, @RequestParam(required = true) Rol rol){
 		
-		Long id = registroService.register(email, password);
+		Long id = registroService.register(email, password, rol);
 		
 		return ResponseEntity.created(ucb.path("/usuarios/{id}").build(id)).build();
 	}

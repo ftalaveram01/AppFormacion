@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.viewnext.login.business.model.Usuario;
+import com.viewnext.core.business.model.Usuario;
 import com.viewnext.login.business.services.LoginServices;
 
 /**
