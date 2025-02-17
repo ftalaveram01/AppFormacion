@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.viewnext.login.business.model.Usuario;
+import com.viewnext.core.business.model.Usuario;
 import com.viewnext.login.business.services.LoginServices;
 import com.viewnext.login.integration.repository.LoginRepository;
 

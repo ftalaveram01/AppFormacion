@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.viewnext.login.business.model.Usuario;
+import com.viewnext.core.business.model.Usuario;
 import com.viewnext.login.business.services.LoginServices;
 
 @WebMvcTest(LoginController.class)

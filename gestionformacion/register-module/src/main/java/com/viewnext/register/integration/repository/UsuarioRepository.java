@@ -2,7 +2,7 @@ package com.viewnext.register.integration.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.viewnext.register.business.model.Usuario;
+import com.viewnext.core.business.model.Usuario;
 
 /**
  * Repositorio de Usuario

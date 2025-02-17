@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.viewnext.login.business.model.Usuario;
+import com.viewnext.core.business.model.Usuario;
 import com.viewnext.login.integration.repository.LoginRepository;
 
 @ExtendWith(MockitoExtension.class)

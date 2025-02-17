@@ -2,7 +2,7 @@ package com.viewnext.login.business.services;
 
 import java.util.Optional;
 
-import com.viewnext.login.business.model.Usuario;
+import com.viewnext.core.business.model.Usuario;
 
 public interface LoginServices {
 	

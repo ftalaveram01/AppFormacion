@@ -2,7 +2,8 @@ package com.viewnext.register.business.services.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.viewnext.register.business.model.Usuario;
+import com.viewnext.core.business.model.Rol;
+import com.viewnext.core.business.model.Usuario;
 import com.viewnext.register.business.services.RegistroService;
 import com.viewnext.register.integration.repository.UsuarioRepository;
 
@@ -27,7 +28,7 @@ public class RegistroServiceImpl implements RegistroService{
 	 * Si existe, devuelve una excepcion
 	 */
 	@Override
-	public Long register(String email, String password) {
+	public Long register(String email, String password, Rol rol) {
 		
 		if(usuarioRepository.existsByEmail(email))
 			throw new IllegalStateException("Existe un usuario con ese email.");
@@ -35,6 +36,7 @@ public class RegistroServiceImpl implements RegistroService{
 		Usuario usuario = new Usuario();
 		usuario.setEmail(email);
 		usuario.setPassword(password);
+		usuario.setRol(rol);
 		
 		Usuario guardado = usuarioRepository.save(usuario);
 		
