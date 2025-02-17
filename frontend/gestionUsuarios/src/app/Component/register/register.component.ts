@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../Services/auth.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../Services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -17,12 +18,15 @@ export class RegisterComponent {
   succes = false;
   errors: { [nameError: string]: string} = {};
 
-  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router){
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private userService: UserService){
 
     this.form = this.fb.group({
       email: ['',Validators.required, Validators.email],
       password: ['', Validators.required, Validators.minLength(20)],
       confirmPassword: ['',Validators.required, Validators.minLength(20)]
+
+//TODO  rol: [''] 
+
     })
 
   }
@@ -33,6 +37,7 @@ export class RegisterComponent {
     this.validForm();
     this.validPass();
     this.validUser();
+    this.createUser(this.form.value);
   }
 
   validForm() :void{
@@ -58,5 +63,13 @@ export class RegisterComponent {
         this.succes = true;
       }
     })
+  }
+
+  createUser(user: any): void{
+    this.userService.createUser(user).subscribe((ok:boolean) =>{
+      if(ok){
+        console.log(`USUARIO CREADO CORRECTAMENTE`);
+      }
+    });
   }
 }

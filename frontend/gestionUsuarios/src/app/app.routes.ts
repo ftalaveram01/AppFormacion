@@ -4,6 +4,8 @@ import { LoginComponent } from './Component/login/login.component';
 import { RegisterComponent } from './Component/register/register.component';
 import { CursoFormComponent } from './Component/curso-form/curso-form.component';
 import { CursoListComponent } from './Component/curso-list/curso-list.component';
+import { UserComponent } from './Component/user/user.component';
+import { UserFormComponent } from './Component/user-form/user-form.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent},
@@ -12,4 +14,6 @@ export const routes: Routes = [
     { path: 'inicio', component: InicioComponent},
     { path: 'cursos', component: CursoListComponent },
     { path: 'cursos/form', component: CursoFormComponent },
+    { path: `user`, component: UserComponent},
+    { path: `user/form`, component: UserFormComponent}
 ];
