@@ -29,13 +29,8 @@ public class Course {
 	private Long id;
 	
 	private String nombre;
-	private String descripcion;
 	
-	@ManyToMany
-	@JoinTable(name="usuario_curso", 
-					joinColumns = @JoinColumn(name="id_curso"),
-					inverseJoinColumns = @JoinColumn(name="id_usuario"))
-	private List<Usuario> listaMiembros;
+	private String descripcion;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaInicio;
