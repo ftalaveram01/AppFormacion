@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../Services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -9,12 +10,27 @@ import { UserService } from '../../Services/user.service';
 })
 export class InicioComponent implements OnInit{
 
-  
-  constructor(private userService: UserService){}
+  user: any;
+  idUser!: number;
+
+  constructor(private userService: UserService, private router: ActivatedRoute){ }
 
   ngOnInit(): void {
     //TODO
+
+    this.router.queryParams.subscribe(params => {
+      this.idUser = +params['id']
+      this.userService.getUser(this.idUser).subscribe(data=>{
+        this.user = data;
+      })
+    })
   }
+
+  isAdmin(): boolean {
+    return this.user.rol == "ADMIN";
+  }
+
+
 
   
 }
