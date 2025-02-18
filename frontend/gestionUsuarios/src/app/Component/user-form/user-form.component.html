@@ -1,1 +1,29 @@
-<p>user-form works!</p>
+<div class="container">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <label>
+        Email:
+        <input type="email" formControlName="email" required>
+      </label>
+      <label>
+        Password:
+        <input type="password" formControlName="password" required>
+      </label>
+      <label>
+        Rol:
+        <select formControlName="rol" required>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </label>
+      <button type="submit">{{ isUpdate ? 'Actualizar' : 'Crear' }} Usuario</button>
+      <p *ngIf="isUpdate">Usuario actualizado {{ idUser }}</p>
+      <p *ngIf="!isUpdate">Usuario creado</p>
+    </form>
+  </div>
+
+<div class="btn-lCursos">
+
+    <a href="users"><button>Listado de Usuarios</button></a>
+
+</div>
+  

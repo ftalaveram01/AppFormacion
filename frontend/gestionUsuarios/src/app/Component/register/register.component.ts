@@ -23,9 +23,8 @@ export class RegisterComponent {
     this.form = this.fb.group({
       email: ['',Validators.required, Validators.email],
       password: ['', Validators.required, Validators.minLength(20)],
-      confirmPassword: ['',Validators.required, Validators.minLength(20)]
-
-//TODO  rol: [''] 
+      confirmPassword: ['',Validators.required, Validators.minLength(20)],
+      rol: ['', Validators.required] 
 
     })
 
@@ -56,7 +55,7 @@ export class RegisterComponent {
   }
 
   validUser(): void{
-    this.authService.registerUser(this.form.get('email')?.value, this.form.get('password')?.value, (ok : boolean) => {
+    this.authService.registerUser(this.form.get('email')?.value, this.form.get('password')?.value, this.form.get('rol')?.value, (ok : boolean) => {
       if(!ok){
         this.errors['email'] = 'REGISTRO FALLIDO, INTENTELO DE NUEVO';
       }else{
