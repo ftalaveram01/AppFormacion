@@ -14,6 +14,6 @@ export const routes: Routes = [
     { path: 'inicio', component: InicioComponent},
     { path: 'cursos', component: CursoListComponent },
     { path: 'cursos/form', component: CursoFormComponent },
-    { path: `user`, component: UserComponent},
+    { path: `users`, component: UserComponent},
     { path: `user/form`, component: UserFormComponent}
 ];
