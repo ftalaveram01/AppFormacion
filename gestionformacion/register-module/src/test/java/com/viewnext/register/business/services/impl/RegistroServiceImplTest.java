@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.viewnext.register.business.model.Usuario;
+import com.viewnext.core.business.model.Usuario;
 import com.viewnext.register.integration.repository.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +45,7 @@ class RegistroServiceImplTest {
         when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
 
-        Long idRegistro = registroServiceImpl.register(usuario.getEmail(), usuario.getPassword());
+        Long idRegistro = registroServiceImpl.register(usuario.getEmail(), usuario.getPassword(), usuario.getRol());
 
         assertNotNull(idRegistro);
         assertEquals(usuario.getId(), idRegistro);
@@ -58,7 +58,7 @@ class RegistroServiceImplTest {
 
         when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(true);
 
-       assertThrows(IllegalStateException.class,() ->  registroServiceImpl.register(usuario.getEmail(), usuario.getPassword()));
+       assertThrows(IllegalStateException.class,() ->  registroServiceImpl.register(usuario.getEmail(), usuario.getPassword(), usuario.getRol()));
     }
 
     @Test
@@ -66,7 +66,7 @@ class RegistroServiceImplTest {
 
         usuario.setEmail(null);
 
-       assertThrows(NullPointerException.class,() ->  registroServiceImpl.register(usuario.getEmail(), usuario.getPassword()));
+       assertThrows(NullPointerException.class,() ->  registroServiceImpl.register(usuario.getEmail(), usuario.getPassword(), usuario.getRol()));
     }
 
     @Test
@@ -74,7 +74,7 @@ class RegistroServiceImplTest {
 
         usuario.setPassword(null);
 
-       assertThrows(NullPointerException.class,() ->  registroServiceImpl.register(usuario.getEmail(), usuario.getPassword()));
+       assertThrows(NullPointerException.class,() ->  registroServiceImpl.register(usuario.getEmail(), usuario.getPassword(), usuario.getRol()));
     }
 
     private void initObjects(){
