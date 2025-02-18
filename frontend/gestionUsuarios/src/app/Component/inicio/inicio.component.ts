@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../Services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-inicio',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })

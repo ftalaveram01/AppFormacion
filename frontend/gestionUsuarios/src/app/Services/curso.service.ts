@@ -28,7 +28,8 @@ export class CursoService {
 
   updateCurso(id: number, curso: any): Observable<any>{
     this.getToken();
-    return this.http.put(`${this.cursoApiUrl}/${id}`,curso)
+    curso.id = id;
+    return this.http.put(`${this.cursoApiUrl}`,curso)
   }
 
   deleteCurso(id: number): Observable<any>{

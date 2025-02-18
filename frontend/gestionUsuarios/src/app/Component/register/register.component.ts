@@ -15,7 +15,7 @@ import { UserService } from '../../Services/user.service';
 export class RegisterComponent {
 
   form : FormGroup;
-  succes = false;
+  succes!: boolean;
   errors: { [nameError: string]: string} = {};
 
   constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private userService: UserService){
@@ -36,7 +36,7 @@ export class RegisterComponent {
     this.validForm();
     this.validPass();
     this.validUser();
-    this.createUser(this.form.value);
+    //this.createUser(this.form.value);
   }
 
   validForm() :void{
