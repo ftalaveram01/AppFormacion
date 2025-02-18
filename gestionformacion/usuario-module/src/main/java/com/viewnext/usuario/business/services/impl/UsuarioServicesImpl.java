@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.viewnext.core.business.model.Rol;
 import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.usuario.business.services.UsuarioServices;
+import com.viewnext.usuario.integration.repositories.RolRepository;
 import com.viewnext.usuario.integration.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
@@ -16,9 +18,12 @@ import jakarta.transaction.Transactional;
 public class UsuarioServicesImpl implements UsuarioServices{
 	
 	private UsuarioRepository usuarioRepository;
+	
+	private RolRepository rolRepository;
 
-	public UsuarioServicesImpl(UsuarioRepository usuarioRepository) {
+	public UsuarioServicesImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
 		this.usuarioRepository = usuarioRepository;
+		this.rolRepository = rolRepository;
 	}
 
 	@Transactional
@@ -30,6 +35,16 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		
 		if(usuarioRepository.existsByEmail(usuario.getEmail()))
 			throw new IllegalStateException("Ya existe un usuario con ese email.");
+		
+		if(usuario.getRol().getId() == null) {
+			
+			Rol rol = rolRepository.findByNombreRol(usuario.getRol().getNombreRol());
+			if(rol == null)
+				throw new IllegalStateException("No existe el rol del usuario.");
+			
+			usuario.setRol(rol);
+			
+		}
 		
 		Usuario creado = usuarioRepository.save(usuario);
 		
