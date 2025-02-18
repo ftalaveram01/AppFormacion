@@ -8,14 +8,16 @@ import com.viewnext.core.business.model.Usuario;
 
 public interface UsuarioServices {
 	
-	Long create(String email, String password, RolEnum rol);
+	Long create(Usuario usuario, Long idAdmin);
 	
-	void delete(Long id);
+	void delete(Long id, Long idAdmin);
 	
-	void update(Usuario usuario);
+	void update(Usuario usuario, Long idAdmin);
 	
-	List<Usuario> getAll();
+	List<Usuario> getAll(Long idAdmin);
 	
-	Usuario read(Long id);
+	Usuario read(Long id, Long idAdmin);
+	
+	boolean isAdmin(Long idAdmin);
 
 }

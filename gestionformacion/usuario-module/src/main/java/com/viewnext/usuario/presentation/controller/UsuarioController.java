@@ -30,32 +30,32 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/crear")
-	public ResponseEntity<String> create(@RequestParam(required = true) String email, @RequestParam(required = true) String password, @RequestParam(required = true) RolEnum rol, UriComponentsBuilder ucb){
-		Long id = usuarioServices.create(email, password, rol);
+	public ResponseEntity<String> create(@RequestBody Usuario usuario, @RequestParam Long idAdmin, UriComponentsBuilder ucb){
+		Long id = usuarioServices.create(usuario, idAdmin);
 		
 		return ResponseEntity.created(ucb.path("/usuarios/{id}").build(id)).build();
 	}
 	
 	@DeleteMapping("/borrar/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
-		usuarioServices.delete(id);
+	public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam Long idAdmin){
+		usuarioServices.delete(id, idAdmin);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/actualizar")
-	public ResponseEntity<Void> update(@RequestBody Usuario usuario){
-		usuarioServices.update(usuario);
+	public ResponseEntity<Void> update(@RequestBody Usuario usuario, @RequestParam Long idAdmin){
+		usuarioServices.update(usuario, idAdmin);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@GetMapping()
-	public List<Usuario> getAll(){
-		return usuarioServices.getAll();
+	public List<Usuario> getAll(@RequestParam Long idAdmin){
+		return usuarioServices.getAll(idAdmin);
 	}
 	
 	@GetMapping("/{id}")
-	public Usuario read(@PathVariable Long id) {
-		return usuarioServices.read(id);
+	public Usuario read(@PathVariable Long id, @RequestParam Long idAdmin) {
+		return usuarioServices.read(id, idAdmin);
 	}
 	
 	

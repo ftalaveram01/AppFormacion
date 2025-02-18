@@ -5,11 +5,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.viewnext.core.business.model.Rol;
 import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.usuario.business.services.UsuarioServices;
-import com.viewnext.usuario.integration.repositories.RolRepository;
 import com.viewnext.usuario.integration.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
@@ -18,34 +16,32 @@ import jakarta.transaction.Transactional;
 public class UsuarioServicesImpl implements UsuarioServices{
 	
 	private UsuarioRepository usuarioRepository;
-	
-	private RolRepository rolRepository;
 
-	public UsuarioServicesImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
+	public UsuarioServicesImpl(UsuarioRepository usuarioRepository) {
 		this.usuarioRepository = usuarioRepository;
-		this.rolRepository = rolRepository;
 	}
 
+	@Transactional
 	@Override
-	public Long create(String email, String password, RolEnum rol) {
+	public Long create(Usuario usuario, Long idAdmin) {
 		
-		if(usuarioRepository.existsByEmail(email))
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No eres administrador");
+		
+		if(usuarioRepository.existsByEmail(usuario.getEmail()))
 			throw new IllegalStateException("Ya existe un usuario con ese email.");
 		
-		Rol rolUsu = rolRepository.findByNombreRol(rol);
-				
-		Usuario usu = new Usuario();
-		usu.setEmail(email);
-		usu.setPassword(password);
-		usu.setRol(rolUsu);
-		
-		Usuario creado = usuarioRepository.save(usu);
+		Usuario creado = usuarioRepository.save(usuario);
 		
 		return creado.getId();
 	}
 
+	@Transactional
 	@Override
-	public void delete(Long id) {
+	public void delete(Long id, Long idAdmin) {
+		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No eres administrador");
 		
 		if(!usuarioRepository.existsById(id))
 			throw new IllegalStateException("No existe el usuario a borrar.");
@@ -53,8 +49,12 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		usuarioRepository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
-	public void update(Usuario usuario) {
+	public void update(Usuario usuario, Long idAdmin) {
+		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No eres administrador");
 		
 		if(!usuarioRepository.existsById(usuario.getId()))
 			throw new IllegalStateException("No existe el usuario a actualizar.");
@@ -63,18 +63,35 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	}
 
 	@Override
-	public List<Usuario> getAll() {
+	public List<Usuario> getAll(Long idAdmin) {
+		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No existe eres administrador");
+		
 		return usuarioRepository.findAll();
 	}
 
 	@Override
-	public Usuario read(Long id) {
+	public Usuario read(Long id, Long idAdmin) {
+		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No eres administrador");
+		
 		Optional<Usuario> usu = usuarioRepository.findById(id);
 		
 		if(usu.isEmpty())
 			throw new IllegalStateException("No existe el usuario");
 		
 		return usu.get();
+	}
+	
+	public boolean isAdmin(Long idAdmin) {
+		if(!usuarioRepository.existsById(idAdmin))
+			throw new IllegalStateException("No existe el usuario admin");
+		Usuario usuario = usuarioRepository.findById(idAdmin).get();
+		if(usuario.getRol().getNombreRol().equals(RolEnum.ADMIN))
+			return true;
+		return false;
 	}
 
 }
