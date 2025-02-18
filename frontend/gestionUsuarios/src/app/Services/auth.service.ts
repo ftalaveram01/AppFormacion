@@ -37,11 +37,12 @@ export class AuthService {
 
   }
 
-  registerUser(email:string , password: string , onRegister: (succes:boolean)=> void){
+  registerUser(email:string , password: string, rol: string , onRegister: (succes:boolean)=> void){
 
     const params = new HttpParams()
       .set('email', email)
-      .set('password', password);
+      .set('password', password)
+      .set('rol',rol);
 
     this.http.post("http://localhost:8081/autentificacion/registrar", params).subscribe(() => {
       onRegister(true)

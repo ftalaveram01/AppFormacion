@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../Services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-form',
-  imports: [],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.css'
 })
@@ -18,9 +19,8 @@ export class UserFormComponent implements OnInit {
   constructor(private userService: UserService, private fb: FormBuilder, private route: ActivatedRoute){
     this.userForm = this.fb.group({
       email: [''],
-      password: ['']
-//TODO rol: ['']
-
+      password: [''],
+      rol: ['']
     });
   }
 
