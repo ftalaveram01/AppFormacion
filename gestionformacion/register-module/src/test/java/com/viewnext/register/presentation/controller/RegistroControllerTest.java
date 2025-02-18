@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MvcResult;
 
+import com.viewnext.core.business.model.Rol;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.register.business.services.RegistroService;
 
@@ -39,12 +40,14 @@ class RegistroControllerTest extends AbstractControllerTest{
         usuarioNuevo.setId(null);
         usuarioNuevo.setEmail("nuevoUsuario@email.com");
         usuarioNuevo.setPassword("1234");
+        usuarioNuevo.setRol(Rol.ADMIN);
 
         when(registroService.register(usuarioNuevo.getEmail(), usuarioNuevo.getPassword(), usuarioNuevo.getRol())).thenReturn(500L);
 
         MvcResult result = mockMvc.perform(post("/autentificacion/registrar")
         .param("email", usuarioNuevo.getEmail())
-        .param("password", usuarioNuevo.getPassword()))
+        .param("password", usuarioNuevo.getPassword())
+        .param("rol", usuarioNuevo.getRol().toString()))
         .andReturn();
 
         assertEquals(201, result.getResponse().getStatus());
