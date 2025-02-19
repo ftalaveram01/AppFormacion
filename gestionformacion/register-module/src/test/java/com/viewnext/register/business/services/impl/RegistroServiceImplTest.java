@@ -1,19 +1,16 @@
 package com.viewnext.register.business.services.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.core.business.model.Rol;
@@ -45,7 +42,7 @@ class RegistroServiceImplTest {
     	usuario.setRol(rol);
     	
     	Usuario usuariov2 = new Usuario();
-    	usuario.setId(2L);
+    	usuario.setId(null);
     	usuario.setEmail("test@gmail.com");
     	usuario.setRol(rol);
 
@@ -91,7 +88,7 @@ class RegistroServiceImplTest {
     	usuario.setRol(rol);
     	
     	Usuario usuariov2 = new Usuario();
-    	usuario.setId(2L);
+    	usuario.setId(null);
     	usuario.setEmail("test@gmail.com");
     	usuario.setRol(rol);
     	
