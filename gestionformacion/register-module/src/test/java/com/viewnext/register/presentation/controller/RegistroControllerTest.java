@@ -1,17 +1,21 @@
 package com.viewnext.register.presentation.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.charset.StandardCharsets;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viewnext.core.business.model.Rol;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.register.business.services.RegistroService;
@@ -19,44 +23,55 @@ import com.viewnext.register.business.services.RegistroService;
 
 @WebMvcTest(RegistroController.class)
 class RegistroControllerTest extends AbstractControllerTest{
+	
+	@Autowired
+	private MockMvc mockMvc;
 
     @MockitoBean
     private RegistroService registroService;
+    
+	@Autowired
+	private ObjectMapper mapper;
 
-    private Usuario usuario;
-
-    @SuppressWarnings("deprecation")
-    @BeforeEach
-    @Override
-    public void setup(){
-        initObjects();
-        MockitoAnnotations.initMocks(this);
-    }
     
     @Test
     void testRegistrar() throws Exception {
+    	
+    	Usuario usuario = new Usuario();
+    	usuario.setRol(new Rol());
 
-        Usuario usuarioNuevo = new Usuario();
-        usuarioNuevo.setId(null);
-        usuarioNuevo.setEmail("nuevoUsuario@email.com");
-        usuarioNuevo.setPassword("1234");
-        usuarioNuevo.setRol(Rol.ADMIN);
+        when(registroService.register(any(Usuario.class))).thenReturn(500L);
+        
+        String json = mapper.writeValueAsString(usuario);
 
-        when(registroService.register(usuarioNuevo.getEmail(), usuarioNuevo.getPassword(), usuarioNuevo.getRol())).thenReturn(500L);
+        MvcResult result = mockMvc.perform(post("/autentificacion/registrar").contentType("application/json").content(json))
+				.andExpect(status().isCreated())
+				.andReturn();
 
-        MvcResult result = mockMvc.perform(post("/autentificacion/registrar")
-        .param("email", usuarioNuevo.getEmail())
-        .param("password", usuarioNuevo.getPassword())
-        .param("rol", usuarioNuevo.getRol().toString()))
-        .andReturn();
+		String responseBody = result.getResponse().getHeader("Location");
+		String expected = "http://localhost/usuarios/500";
+		
+		assertEquals(expected, responseBody);
+    }
+    
+    @Test
+    void testRegistrarExistente() throws Exception {
+    	
+    	Usuario usuario = new Usuario();
+    	usuario.setRol(new Rol());
 
-        assertEquals(201, result.getResponse().getStatus());
+        when(registroService.register(any(Usuario.class))).thenThrow(new IllegalStateException("Excepcion de registro"));
+        
+        String json = mapper.writeValueAsString(usuario);
+
+        MvcResult result = mockMvc.perform(post("/autentificacion/registrar").contentType("application/json").content(json))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+
+		String responseBody = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		String expected = "Excepcion de registro";
+		
+		assertEquals(expected, responseBody);
     }
 
-    private void initObjects(){
-        usuario = new Usuario();
-        usuario.setId(1L);
-        usuario.setEmail("prueba@email.com");
-        usuario.setPassword("1234");
-    }
 }

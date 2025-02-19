@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.viewnext.core.business.model.Rol;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.register.business.services.RegistroService;
+import com.viewnext.register.integration.repository.RolRepository;
 import com.viewnext.register.integration.repository.UsuarioRepository;
 
 /**
@@ -15,12 +16,14 @@ public class RegistroServiceImpl implements RegistroService{
 	
 	private UsuarioRepository usuarioRepository;
 	
-	public RegistroServiceImpl(UsuarioRepository usuarioRepository) {
+	private RolRepository rolRepository;
+	
+	public RegistroServiceImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
 		this.usuarioRepository = usuarioRepository;
+		this.rolRepository = rolRepository;
 	}
 
 	/**
-	 * Metodo para registrar al usuario a traves de su email y password
 	 * 
 	 * Si no existe un usuario con ese email registrado
 	 * Crea un nuevo usuario, lo guarda en el repositorio y devuelve el id del usuario guardado
@@ -28,19 +31,27 @@ public class RegistroServiceImpl implements RegistroService{
 	 * Si existe, devuelve una excepcion
 	 */
 	@Override
-	public Long register(String email, String password, Rol rol) {
+	public Long register(Usuario usuario) {
 		
-		if(usuarioRepository.existsByEmail(email))
-			throw new IllegalStateException("Existe un usuario con ese email.");
+		if(usuario.getId()!=null)
+			throw new IllegalStateException("El usuario no puede tener id");
 		
-		Usuario usuario = new Usuario();
-		usuario.setEmail(email);
-		usuario.setPassword(password);
-		usuario.setRol(rol);
+		if(usuarioRepository.existsByEmail(usuario.getEmail()))
+			throw new IllegalStateException("Ya existe un usuario con ese email.");
 		
-		Usuario guardado = usuarioRepository.save(usuario);
+		if(usuario.getRol().getId() == null) {
+			
+			Rol rol = rolRepository.findByNombreRol(usuario.getRol().getNombreRol());
+			if(rol == null)
+				throw new IllegalStateException("No existe el rol del usuario.");
+			
+			usuario.setRol(rol);
+			
+		}
 		
-		return guardado.getId();
+		Usuario creado = usuarioRepository.save(usuario);
+		
+		return creado.getId();
 	}
 	
 }

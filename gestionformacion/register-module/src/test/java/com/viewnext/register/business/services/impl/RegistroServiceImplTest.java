@@ -16,7 +16,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.viewnext.core.business.model.Rol;
+import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.register.integration.repository.RolRepository;
 import com.viewnext.register.integration.repository.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,64 +27,100 @@ class RegistroServiceImplTest {
 
 	@Mock
     private UsuarioRepository usuarioRepository;
+	
+	@Mock
+    private RolRepository rolRepository;
 
     @InjectMocks
     private RegistroServiceImpl registroServiceImpl;
 
-    @SuppressWarnings("deprecation")
-    @BeforeEach
-    public void setup(){
-        initObjects();
-        MockitoAnnotations.initMocks(this);
-        registroServiceImpl= new RegistroServiceImpl(usuarioRepository);
-    }
-
-    private Usuario usuario;
-
     @Test
     void testRegisterNuevoUsuario(){
+    	
+    	Usuario usuario = new Usuario();
+    	usuario.setId(null);
+    	usuario.setEmail("test@gmail.com");
+    	Rol rol = new Rol();
+    	rol.setId(0L);
+    	usuario.setRol(rol);
+    	
+    	Usuario usuariov2 = new Usuario();
+    	usuario.setId(2L);
+    	usuario.setEmail("test@gmail.com");
+    	usuario.setRol(rol);
 
+        when(usuarioRepository.existsByEmail(any(String.class))).thenReturn(false);
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuariov2);
 
-        when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
-        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
+        Long idRegistro = registroServiceImpl.register(usuario);
 
-        Long idRegistro = registroServiceImpl.register(usuario.getEmail(), usuario.getPassword(), usuario.getRol());
-
-        assertNotNull(idRegistro);
-        assertEquals(usuario.getId(), idRegistro);
-        verify(usuarioRepository, times(1)).save(any(Usuario.class));
+        assertEquals(usuariov2.getId(), idRegistro);
+        verify(rolRepository, times(0)).findByNombreRol(any(RolEnum.class));
 
     }
 
     @Test
     void testRegisterUsuarioExistente(){
+    	
+    	Usuario usuario = new Usuario();
+    	usuario.setId(null);
+    	usuario.setEmail("test@gmail.com");
 
-        when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(true);
+        when(usuarioRepository.existsByEmail(any(String.class))).thenReturn(true);
 
-       assertThrows(IllegalStateException.class,() ->  registroServiceImpl.register(usuario.getEmail(), usuario.getPassword(), usuario.getRol()));
+       assertThrows(IllegalStateException.class,() ->  registroServiceImpl.register(usuario));
     }
 
     @Test
-    void testRegisterEmailNull(){
+    void testRegisterIdNotNull(){
 
-        usuario.setEmail(null);
-
-       assertThrows(NullPointerException.class,() ->  registroServiceImpl.register(usuario.getEmail(), usuario.getPassword(), usuario.getRol()));
+    	Usuario usuario = new Usuario();
+    	usuario.setId(2L);
+        
+       assertThrows(IllegalStateException.class,() ->  registroServiceImpl.register(usuario));
     }
 
     @Test
-    void testRegisterPasswordNull(){
+    void testSinIdRol(){
 
-        usuario.setPassword(null);
+    	Usuario usuario = new Usuario();
+    	usuario.setId(null);
+    	usuario.setEmail("test@gmail.com");
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	usuario.setRol(rol);
+    	
+    	Usuario usuariov2 = new Usuario();
+    	usuario.setId(2L);
+    	usuario.setEmail("test@gmail.com");
+    	usuario.setRol(rol);
+    	
+        when(usuarioRepository.existsByEmail(any(String.class))).thenReturn(false);
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuariov2);
+        when(rolRepository.findByNombreRol(any(RolEnum.class))).thenReturn(rol);
 
-       assertThrows(NullPointerException.class,() ->  registroServiceImpl.register(usuario.getEmail(), usuario.getPassword(), usuario.getRol()));
+        Long idRegistro = registroServiceImpl.register(usuario);
+        
+        assertEquals(usuariov2.getId(), idRegistro);
+        
+    }
+    
+    @Test
+    void testRolNoExistente(){
+
+    	Usuario usuario = new Usuario();
+    	usuario.setId(null);
+    	usuario.setEmail("test@gmail.com");
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	usuario.setRol(rol);
+    	
+        when(usuarioRepository.existsByEmail(any(String.class))).thenReturn(false);
+        when(rolRepository.findByNombreRol(any(RolEnum.class))).thenReturn(null);
+
+        assertThrows(IllegalStateException.class,() ->  registroServiceImpl.register(usuario));
+        
     }
 
-    private void initObjects(){
-        usuario = new Usuario();
-        usuario.setId(1L);
-        usuario.setEmail("prueba@email.com");
-        usuario.setPassword("1234");
-    }
 
 }
