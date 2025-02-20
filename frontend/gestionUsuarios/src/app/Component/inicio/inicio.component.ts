@@ -13,6 +13,7 @@ export class InicioComponent implements OnInit{
 
   user: any;
   idUser!: number;
+  idAdmin!: number;
 
   constructor(private userService: UserService, private router: ActivatedRoute){ }
 
@@ -21,14 +22,16 @@ export class InicioComponent implements OnInit{
 
     this.router.queryParams.subscribe(params => {
       this.idUser = +params['id']
-      this.userService.getUser(this.idUser).subscribe(data=>{
+      this.idAdmin = +params['idAdmin']
+      this.userService.getUser(this.idUser, this.idAdmin).subscribe(data=>{
         this.user = data;
       })
     })
   }
 
   isAdmin(): boolean {
-    return this.user.rol == "ADMIN";
+    console.log(this.idAdmin, " : ", typeof(this.idAdmin))
+    return this.idAdmin == 0;
   }
 
 
