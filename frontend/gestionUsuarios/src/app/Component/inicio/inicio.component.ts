@@ -30,7 +30,6 @@ export class InicioComponent implements OnInit{
   }
 
   isAdmin(): boolean {
-    console.log(this.idAdmin, " : ", typeof(this.idAdmin))
     return this.idAdmin == 0;
   }
 
