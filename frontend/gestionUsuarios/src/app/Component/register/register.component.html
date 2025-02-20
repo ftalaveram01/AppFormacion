@@ -19,14 +19,13 @@
                 Selecciona ROL:
                 <select formControlName="rol">
 
-                    <option value="ALUMNO">Alumno</option>
-                    <option value="ADMIN">Admin</option>
+                    <option value="1">Alumno</option>
+                    <option value="0">Admin</option>
 
                 </select>
             </label>
 
             <p *ngIf="succes">Registration successful</p>
-            <p *ngIf="!succes">Registration failed</p>
             
             <button type="submit">Register</button>
             <a href="http://localhost:4200/login">¿Ya tienes cuenta? Login</a>

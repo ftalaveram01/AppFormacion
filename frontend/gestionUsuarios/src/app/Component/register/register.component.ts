@@ -17,6 +17,7 @@ export class RegisterComponent {
   form : FormGroup;
   succes!: boolean;
   errors: { [nameError: string]: string} = {};
+  rol: any = []
 
   constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private userService: UserService){
 
@@ -24,8 +25,7 @@ export class RegisterComponent {
       email: ['',Validators.required, Validators.email],
       password: ['', Validators.required, Validators.minLength(20)],
       confirmPassword: ['',Validators.required, Validators.minLength(20)],
-      rol: ['', Validators.required] 
-
+      rol: ['', Validators.required]
     })
 
   }
@@ -55,7 +55,7 @@ export class RegisterComponent {
   }
 
   validUser(): void{
-    this.authService.registerUser(this.form.get('email')?.value, this.form.get('password')?.value, this.form.get('rol')?.value, (ok : boolean) => {
+    this.authService.registerUser(this.form.value, (ok : boolean) => {
       if(!ok){
         this.errors['email'] = 'REGISTRO FALLIDO, INTENTELO DE NUEVO';
       }else{
