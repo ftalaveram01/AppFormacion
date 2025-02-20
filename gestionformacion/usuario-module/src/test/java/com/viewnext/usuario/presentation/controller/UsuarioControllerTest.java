@@ -56,12 +56,12 @@ public class UsuarioControllerTest {
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/usuarios/crear")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("idAdmin", "1")
+                .param("idAdmin", "0")
                 .content(objectMapper.writeValueAsString(usuario)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        verify(usuarioServices, times(1)).create(any(Usuario.class), eq(1L));
+        verify(usuarioServices, times(1)).create(any(Usuario.class), eq(0L));
         assertEquals("http://localhost/usuarios/1", result.getResponse().getHeader("Location"));
     }
 
@@ -69,10 +69,10 @@ public class UsuarioControllerTest {
     public void testDelete() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/usuarios/borrar/1")
-                .param("idAdmin", "1"))
+                .param("idAdmin", "0"))
                 .andExpect(status().isNoContent());
 
-        verify(usuarioServices, times(1)).delete(eq(1L), eq(1L));
+        verify(usuarioServices, times(1)).delete(eq(1L), eq(0L));
     }
 
     @Test
@@ -99,10 +99,10 @@ public class UsuarioControllerTest {
         when(usuarioServices.getAll(any(Long.class))).thenReturn(java.util.Collections.emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/usuarios")
-                .param("idAdmin", "1"))
+                .param("idAdmin", "0"))
                 .andExpect(status().isOk());
 
-        verify(usuarioServices, times(1)).getAll(eq(1L));
+        verify(usuarioServices, times(1)).getAll(eq(0L));
     }
 
     @Test
@@ -117,11 +117,11 @@ public class UsuarioControllerTest {
         when(usuarioServices.read(any(Long.class), any(Long.class))).thenReturn(usuario);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/usuarios/1")
-                .param("idAdmin", "1"))
+                .param("idAdmin", "0"))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(usuarioServices, times(1)).read(eq(1L), eq(1L));
+        verify(usuarioServices, times(1)).read(eq(1L), eq(0L));
         assertEquals(objectMapper.writeValueAsString(usuario), result.getResponse().getContentAsString());
     }
 }
