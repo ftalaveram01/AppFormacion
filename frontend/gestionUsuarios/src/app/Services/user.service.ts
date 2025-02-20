@@ -16,9 +16,10 @@ export class UserService {
     return this.http.get(`${this.userApiUrl}`)
   }
 
-  getUser(id:number): Observable<any>{
+  getUser(id:number, idAdmin:number): Observable<any>{
     this.getToken();
-    return this.http.get(`${this.userApiUrl}/${id}`)
+    const params = new HttpParams().set('idAdmin', idAdmin)
+    return this.http.get(`${this.userApiUrl}/${id}`, {params})
   } 
 
   createUser(user: any): Observable<any>{

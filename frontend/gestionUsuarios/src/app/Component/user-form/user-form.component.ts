@@ -15,6 +15,7 @@ export class UserFormComponent implements OnInit {
   userForm: FormGroup;
   isUpdate: boolean = false;
   idUser! : number;
+  idAdmin! : number;
 
   constructor(private userService: UserService, private fb: FormBuilder, private route: ActivatedRoute){
     this.userForm = this.fb.group({
@@ -29,8 +30,10 @@ export class UserFormComponent implements OnInit {
     this.route.queryParams.subscribe(params =>{
       this.isUpdate = params['isUpdate']
       if(params['id']){
+
         this.idUser = +params['id'];
-        this.userService.getUser(this.idUser).subscribe(user =>{
+        this.idAdmin = +params['idAdmin']
+        this.userService.getUser(this.idUser, this.idAdmin).subscribe(user =>{
           this.userForm.patchValue(user)
         })
       }

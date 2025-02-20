@@ -27,7 +27,7 @@ export class LoginComponent {
         console.log(user.token);
         this.localStorage.setItem('token',user.token);
         this.router.navigate(['/inicio'], {
-          queryParams: {id: user.id}
+          queryParams: {id: user.id, idAdmin: user.rol.id}
         });
         
       }else{
