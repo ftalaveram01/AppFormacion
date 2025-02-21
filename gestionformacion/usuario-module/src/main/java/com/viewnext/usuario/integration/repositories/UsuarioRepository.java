@@ -1,7 +1,6 @@
 package com.viewnext.usuario.integration.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.viewnext.core.business.model.Usuario;
@@ -12,8 +11,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 	Usuario findByEmailAndPassword(String email, String password);
 	
 	Boolean existsByEmail(String email);
-	
-	@Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END from Usuario u WHERE u.rol.id = :idAdmin")
-	Boolean existsByIdAdmin(Long idAdmin);
 	
 }
