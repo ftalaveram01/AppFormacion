@@ -23,7 +23,7 @@ export class InicioComponent implements OnInit{
       this.idUser = +params['id']
       this.idAdmin = +params['idAdmin']
       localStorage.setItem('idAdmin', Number(this.idAdmin).toString());
-      this.userService.getUser(this.idUser, this.idAdmin).subscribe(data=>{
+      this.userService.getUser(this.idUser, this.idUser).subscribe(data=>{
         this.user = data;
       })
     })
