@@ -13,7 +13,8 @@ export class UserService {
 
   getAllUsers(): Observable<any>{
     this.getToken();
-    const idAdmin = localStorage.getItem("idAdmin")
+
+    const idAdmin = localStorage.getItem("idUsuario")
 
     const params = new HttpParams()
                     .set('idAdmin', Number(idAdmin));
@@ -23,8 +24,9 @@ export class UserService {
 
   getUser(id:number, idAdmin:number): Observable<any>{
     this.getToken();
-    
-    const params  = new HttpParams().set('idAdmin', idAdmin)
+
+    const params = new HttpParams()
+    .set('idAdmin', id)
 
     return this.http.get(`${this.userApiUrl}/${id}`, {params})
   } 
@@ -40,7 +42,7 @@ export class UserService {
     user.rol = objetoRol
 
     const params = new HttpParams()
-          .set('idAdmin', objetoRol.id);
+          .set('idAdmin', user.id);
 
     return this.http.post(`${this.userApiUrl}/crear`, user, {params})
   }
@@ -48,10 +50,12 @@ export class UserService {
   updateUser(id:number, user: any): Observable<any>{
     this.getToken();
 
-    const idAdmin = localStorage.getItem("idAdmin")
+    const idAdmin = localStorage.getItem("idUsuario")
+    
+    user.id = id
 
     const objetoRol: any = {
-      id: Number(idAdmin)
+      id: Number(user.rol)
     }
     user.rol = objetoRol
 
@@ -67,7 +71,7 @@ export class UserService {
     const idAdmin = localStorage.getItem("idUsuario")
 
     const params = new HttpParams()
-                    .set('idUsuario', Number(idAdmin));
+                    .set('idAdmin', Number(idAdmin));
 
     return this.http.delete(`${this.userApiUrl}/borrar/${id}`, {params})
   }
