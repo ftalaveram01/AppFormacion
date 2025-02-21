@@ -27,9 +27,17 @@ export class UserComponent implements OnInit {
     });
   }
   
-  btnUpdateUser(isUpdate: boolean, id: number): void{
+  btnUpdateUser(isUpdate: boolean, isCreate: boolean, id: number): void{
     this.router.navigate(['user/form'], {
-      queryParams: {isUpdate: isUpdate, id: id}
+      queryParams: {isUpdate: isUpdate, isCreate: isCreate, id: id}
     });
+  }
+
+  btnCreateUser(isUpdate: boolean, isCreate: boolean): void{
+    console.log(isCreate)
+    console.log(isUpdate)
+    this.router.navigate(['user/form'], {
+      queryParams: {isUpdate: isUpdate, isCreate: isCreate}
+    })
   }
 }

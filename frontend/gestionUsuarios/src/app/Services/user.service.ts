@@ -34,21 +34,22 @@ export class UserService {
   createUser(user: any): Observable<any>{
     this.getToken();
 
-    const idAdmin = localStorage.getItem("idAdmin")
+    const idAdmin = localStorage.getItem("idUsuario")
 
     const objetoRol: any = {
-      id: Number(idAdmin)
+      id: Number(user.rol)
     }
     user.rol = objetoRol
 
-    const params = new HttpParams()
-          .set('idAdmin', user.id);
+    const params = new HttpParams().set('idAdmin', Number(idAdmin));
 
     return this.http.post(`${this.userApiUrl}/crear`, user, {params})
   }
 
   updateUser(id:number, user: any): Observable<any>{
     this.getToken();
+
+    console.log("SE HA METIDO EN UPDATE")
 
     const idAdmin = localStorage.getItem("idUsuario")
     

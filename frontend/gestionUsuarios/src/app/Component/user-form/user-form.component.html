@@ -16,8 +16,8 @@
         </select>
       </label>
       <button type="submit">{{ isUpdate ? 'Actualizar' : 'Crear' }} Usuario</button>
-      <p *ngIf="isUpdate">Usuario actualizado {{ idUser }}</p>
-      <p *ngIf="!isUpdate">Usuario creado</p>
+      <p *ngIf="usuarioActualizadoConExito">Usuario actualizado {{ idUser }}</p>
+      <p *ngIf="usuarioCreadoConExito">Usuario creado</p>
     </form>
   </div>
 

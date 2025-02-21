@@ -14,8 +14,11 @@ export class UserFormComponent implements OnInit {
 
   userForm: FormGroup;
   isUpdate: boolean = false;
+  isCreate: boolean = false;
   idUser! : number;
   idAdmin! : number;
+  usuarioActualizadoConExito: boolean = false
+  usuarioCreadoConExito: boolean = false
 
   constructor(private userService: UserService, private fb: FormBuilder, private route: ActivatedRoute){
     this.userForm = this.fb.group({
@@ -28,7 +31,8 @@ export class UserFormComponent implements OnInit {
   ngOnInit(): void {
     
     this.route.queryParams.subscribe(params =>{
-      this.isUpdate = params['isUpdate']
+      this.isUpdate = params['isUpdate'] === 'true'
+      this.isCreate = params['isCreate'] === 'true'
       if(params['id']){
 
         this.idUser = +params['id'];
@@ -44,10 +48,16 @@ export class UserFormComponent implements OnInit {
   onSubmit(): void{
 
     if(this.userForm.valid){
-      if(this.isUpdate){
+      console.log(this.isUpdate)
+      console.log(this.isCreate)
+      if(this.isUpdate == true){
         this.updateUser(this.idUser,this.userForm.value);
       }else{
-        this.createUser(this.userForm.value);
+        if(this.isCreate == true){
+          this.createUser(this.idUser, this.userForm.value);
+        } else{
+          console.log("ERROR EN EL FORM")
+        }
       }
     }
 
@@ -56,19 +66,15 @@ export class UserFormComponent implements OnInit {
   private updateUser(id:number, user: any): void{
     this.userService.updateUser(id,user).subscribe(response => {
       console.log('Usuario actualizado');
+      this.usuarioActualizadoConExito = true
       this.userForm.reset();
     },)
   }
 
-  private createUser(user: any): void{
-
-    const objetoRol: any = {
-      id: Number(user.rol)
-    }
-    user.rol = objetoRol
-
+  private createUser(id:number, user: any): void{
     this.userService.createUser(user).subscribe(response => {
       console.log('Usuario creado correctamente');
+      this.usuarioCreadoConExito = true
       this.userForm.reset();
     },)
   }
