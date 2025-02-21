@@ -61,6 +61,12 @@ export class UserFormComponent implements OnInit {
   }
 
   private createUser(user: any): void{
+
+    const objetoRol: any = {
+      id: Number(user.rol)
+    }
+    user.rol = objetoRol
+
     this.userService.createUser(user).subscribe(response => {
       console.log('Usuario creado correctamente');
       this.userForm.reset();
