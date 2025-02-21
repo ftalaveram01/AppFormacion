@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private userApiUrl = '';
+  private userApiUrl = 'http://localhost:8083/usuarios';
 
   constructor(private http: HttpClient) { }
 
@@ -16,24 +16,29 @@ export class UserService {
     return this.http.get(`${this.userApiUrl}`)
   }
 
-  getUser(id:number): Observable<any>{
+  getUser(id:number, idAdmin:number): Observable<any>{
     this.getToken();
-    return this.http.get(`${this.userApiUrl}/${id}`)
+    const params = new HttpParams().set('idAdmin', idAdmin)
+    return this.http.get(`${this.userApiUrl}/${id}`, {params})
   } 
 
   createUser(user: any): Observable<any>{
     this.getToken();
-    return this.http.post(`${this.userApiUrl}`,user)
+    const params = new HttpParams()
+          .set('email', user.email)
+          .set('password', user.password)
+          .set('rol', user.rol);
+    return this.http.post(`${this.userApiUrl}/crear`, params)
   }
 
   updateUser(id:number, user: any): Observable<any>{
     this.getToken();
-    return this.http.put(`${this.userApiUrl}/${id}`, user)
+    return this.http.put(`${this.userApiUrl}/actualizar`, user)
   }
 
   deleteUser(id: number){
     this.getToken();
-    return this.http.delete(`${this.userApiUrl}/${id}`)
+    return this.http.delete(`${this.userApiUrl}/borrar/${id}`)
   }
 
   getToken(): void{

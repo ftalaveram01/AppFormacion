@@ -26,11 +26,15 @@ export class LoginComponent {
       if(ok){
         console.log(user.token);
         this.localStorage.setItem('token',user.token);
-        this.router.navigate(['/inicio']);
+        this.router.navigate(['/inicio'], {
+          queryParams: {id: user.id, idAdmin: user.rol.id}
+        });
+        
       }else{
         console.log('FALLO AL HACER LOGIN')
       }
     })
   }
+
 
 }

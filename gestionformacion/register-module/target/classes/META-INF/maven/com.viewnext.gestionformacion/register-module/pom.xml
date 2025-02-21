@@ -6,4 +6,12 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>register-module</artifactId>
+  
+  <dependencies>
+  		<dependency>
+  			<groupId>com.viewnext.gestionformacion</groupId>
+  			<artifactId>core-module</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  </dependencies>
 </project>

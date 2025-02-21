@@ -1,1 +1,22 @@
-<p>user works!</p>
+<h2>Lista de Usuarios</h2>
+
+<div class="btn-CrearUser">
+
+    <a href="user/form"><button>Crear Nuevo Usuario</button></a>
+
+</div>
+
+<div class="lista-users" *ngFor="let u of users">
+
+    <h3>Usuario: {{u.idUser}}</h3>
+    <p>email: {{u.email}}</p>
+    <p>contraseña: {{u.password}}</p>
+    <p>ROL: {{u.rol}}</p>
+
+
+    <div class="botones">
+        <button id="btn-Eliminar" (click)="deleteUser(u.id)">Eliminar -> {{u.idUser}}</button>
+        <button id="btn-Update" (click)="btnUpdateUser(true,u.id)"> Actualizar -> {{u.idUser}}</button>
+    </div>
+
+</div>

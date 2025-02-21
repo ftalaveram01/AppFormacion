@@ -14,7 +14,19 @@
                 Confirm Password:
                 <input type="password" formControlName="confirmPassword" required>
             </label>
+
+            <label>
+                Selecciona ROL:
+                <select formControlName="rol">
+
+                    <option value="1">Alumno</option>
+                    <option value="0">Admin</option>
+
+                </select>
+            </label>
+
             <p *ngIf="succes">Registration successful</p>
+            
             <button type="submit">Register</button>
             <a href="http://localhost:4200/login">¿Ya tienes cuenta? Login</a>
         </form>
