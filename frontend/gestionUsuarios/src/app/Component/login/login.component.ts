@@ -24,8 +24,12 @@ export class LoginComponent {
   onSubmit(){
     this.authService.loginUser(this.email, this.password, (ok: boolean, user?:any) =>{
       if(ok){
-        console.log(user.token);
+        this.localStorage.setItem('idUsuario',user.id);
+        console.log(user.id)
+        this.localStorage.setItem('idAdmin',user.rol.id);
+        console.log(user.rol.id)
         this.localStorage.setItem('token',user.token);
+        console.log(user.token);
         this.router.navigate(['/inicio'], {
           queryParams: {id: user.id, idAdmin: user.rol.id}
         });

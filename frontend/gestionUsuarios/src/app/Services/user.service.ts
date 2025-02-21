@@ -13,35 +13,65 @@ export class UserService {
 
   getAllUsers(): Observable<any>{
     this.getToken();
+
+    const idAdmin = localStorage.getItem("idAdmin")
+
     const params = new HttpParams()
-    .set('idAdmin', Number(localStorage.getItem('idAmin')))
+                    .set('idAdmin', Number(idAdmin));
+
     return this.http.get(`${this.userApiUrl}`, {params})
   }
 
   getUser(id:number, idAdmin:number): Observable<any>{
     this.getToken();
+
     const params = new HttpParams()
     .set('idAdmin', idAdmin)
+
     return this.http.get(`${this.userApiUrl}/${id}`, {params})
   } 
 
   createUser(user: any): Observable<any>{
     this.getToken();
+
+    const idAdmin = localStorage.getItem("idAdmin")
+
+    const objetoRol: any = {
+      id: Number(idAdmin)
+    }
+    user.rol = objetoRol
+
     const params = new HttpParams()
-          .set('email', user.email)
-          .set('password', user.password)
-          .set('rol', user.rol);
-    return this.http.post(`${this.userApiUrl}/crear`, params)
+          .set('idAdmin', objetoRol.id);
+
+    return this.http.post(`${this.userApiUrl}/crear`, user, {params})
   }
 
   updateUser(id:number, user: any): Observable<any>{
     this.getToken();
-    return this.http.put(`${this.userApiUrl}/actualizar`, user)
+
+    const idAdmin = localStorage.getItem("idAdmin")
+
+    const objetoRol: any = {
+      id: Number(idAdmin)
+    }
+    user.rol = objetoRol
+
+    const params = new HttpParams()
+                    .set('idAdmin', Number(idAdmin));
+
+    return this.http.put(`${this.userApiUrl}/actualizar`, user, {params})
   }
 
   deleteUser(id: number){
     this.getToken();
-    return this.http.delete(`${this.userApiUrl}/borrar/${id}`)
+
+    const idAdmin = localStorage.getItem("idUsuario")
+
+    const params = new HttpParams()
+                    .set('idUsuario', Number(idAdmin));
+
+    return this.http.delete(`${this.userApiUrl}/borrar/${id}`, {params})
   }
 
   getToken(): void{
