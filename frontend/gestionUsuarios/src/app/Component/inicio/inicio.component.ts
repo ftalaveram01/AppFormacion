@@ -18,11 +18,11 @@ export class InicioComponent implements OnInit{
   constructor(private userService: UserService, private router: ActivatedRoute){ }
 
   ngOnInit(): void {
-    //TODO
 
     this.router.queryParams.subscribe(params => {
       this.idUser = +params['id']
       this.idAdmin = +params['idAdmin']
+      localStorage.setItem('idAdmin', Number(this.idAdmin).toString());
       this.userService.getUser(this.idUser, this.idAdmin).subscribe(data=>{
         this.user = data;
       })
@@ -30,11 +30,7 @@ export class InicioComponent implements OnInit{
   }
 
   isAdmin(): boolean {
-    console.log(this.idAdmin, " : ", typeof(this.idAdmin))
     return this.idAdmin == 0;
   }
-
-
-
   
 }

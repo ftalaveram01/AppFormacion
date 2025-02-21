@@ -13,12 +13,15 @@ export class UserService {
 
   getAllUsers(): Observable<any>{
     this.getToken();
-    return this.http.get(`${this.userApiUrl}`)
+    const params = new HttpParams()
+    .set('idAdmin', Number(localStorage.getItem('idAmin')))
+    return this.http.get(`${this.userApiUrl}`, {params})
   }
 
   getUser(id:number, idAdmin:number): Observable<any>{
     this.getToken();
-    const params = new HttpParams().set('idAdmin', idAdmin)
+    const params = new HttpParams()
+    .set('idAdmin', idAdmin)
     return this.http.get(`${this.userApiUrl}/${id}`, {params})
   } 
 
