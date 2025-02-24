@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CursoService } from '../../Services/curso.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-curso-form',
@@ -15,12 +17,13 @@ export class CursoFormComponent implements OnInit{
   isUpdate: boolean = false;
   idCurso!: number;
 
-  constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute){
+  constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
     this.cursoForm = this.fb.group({
       nombre: [''],
       descripcion: [''],
       fechaInicio: [''],
-      fechaFin: ['']
+      fechaFin: [''],
+      router:['']
     });
   }
 
@@ -52,6 +55,7 @@ export class CursoFormComponent implements OnInit{
     this.cursoService.updateCurso(id, curso ).subscribe(response => {
       console.log('Curso actualizado:');
       this.cursoForm.reset();
+      this.router.navigate(['/cursos'])
     },)
   }
 
@@ -59,6 +63,7 @@ export class CursoFormComponent implements OnInit{
     this.cursoService.createCurso(curso).subscribe(response => {
       console.log('Curso creado:');
       this.cursoForm.reset();
+      this.router.navigate(['/cursos'])
     },)
   }
 
