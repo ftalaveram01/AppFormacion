@@ -39,8 +39,10 @@ export class AuthService {
 
   registerUser(user: any, onRegister: (succes: boolean)=> void){
     
+    const numRol: number = 1;
+
     const objetoRol: any = {
-      id: Number(user.rol)
+      id: numRol
     }
     user.rol = objetoRol
     
