@@ -1,6 +1,6 @@
 <p>LISTADO DE CURSOS</p>
 
-<div class="btn-CrearCurso">
+<div *ngIf="idAdmin == 0" class="btn-CrearCurso">
 
     <a href="cursos/form"><button>Crear Nuevo Curso</button></a>
 
@@ -17,7 +17,7 @@
     <div *ngFor="let u of c.usuarios">
         <p>{{u.nombre}}</p>
     </div>
-    <div class="botones">
+    <div *ngIf="idAdmin == 0" class="botones">
         <button id="btn-Eliminar" (click)="deleteCurso(c.id)">Eliminar -> {{c.nombre}}</button>
         <button id="btn-Update" (click)="btnUpdateCurso(true,c.id)"> Actualizar -> {{c.nombre}}</button>
     </div>
