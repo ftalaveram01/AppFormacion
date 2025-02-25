@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../Services/auth.service';
 import { Router } from '@angular/router';
@@ -12,45 +12,57 @@ import { UserService } from '../../Services/user.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
 
-  form : FormGroup;
+  form !: FormGroup;
   succes!: boolean;
   errors: { [nameError: string]: string} = {};
   rol: any = []
 
-  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private userService: UserService){
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private userService: UserService){ }
 
+  ngOnInit(): void{
     this.form = this.fb.group({
-      email: ['',Validators.required, Validators.email],
-      password: ['', Validators.required, Validators.minLength(20)],
-      confirmPassword: ['',Validators.required, Validators.minLength(20)]
+      email: ['',Validators.required, this.emailValidator],
+      password: ['', Validators.required],
+      confirmPassword: ['',Validators.required]
+    }, {
+      validators: this.passwordMatchValidator
     })
-
   }
-
-  ngOnInit(): void{}
 
   onSubmit() :void{
-    this.validForm();
-    this.validPass();
-    this.validUser();
-    //this.createUser(this.form.value);
+    if(this.form.valid){
+      this.succes = true
+      this.validUser();
+    } 
   }
 
-  validForm() :void{
-    if(!this.form.valid){
-      console.log("ERROR NO SE HA PODIDO REGISTRAR AL USUARIO")
-      this.errors['not valid'] = 'ERROR NO SE HA PODIDO REGISTRAR AL USUARIO';
-      return;
+  async emailValidator(control: any) {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (control.value && !emailPattern.test(control.value)) {
+      return { invalidEmail: true };
+    }
+    return null;
+  }
+
+  passwordMatchValidator(formGroup: FormGroup) : void{
+    const password = formGroup.get('password')?.value;
+    const confirmPassword = formGroup.get('confirmPassword')?.value;
+  
+    if (password !== confirmPassword) {
+      formGroup.get('confirmPassword')?.setErrors({ noMatch: true });
+    } else {
     }
   }
 
-  validPass() : void{
+  validPass() : boolean{
     if(this.form.get('password')?.value != this.form.get('confirmPassword')?.value){
+      console.log("LAS CONTRASEÑAS NO COINCIDEN")
       this.errors['confirmPassword'] = 'LAS CONTRASEÑAS NO COINCIDEN';
-      return;
+      return false;
     }
+    return true;
   }
 
   validUser(): void{
@@ -69,5 +81,17 @@ export class RegisterComponent {
         console.log(`USUARIO CREADO CORRECTAMENTE`);
       }
     });
+  }
+
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
+
+  get confirmPassword() {
+    return this.form.get('confirmPassword');
   }
 }
