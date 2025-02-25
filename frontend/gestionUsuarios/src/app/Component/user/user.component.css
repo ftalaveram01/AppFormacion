@@ -75,6 +75,8 @@ div {
 }
 
 .lista-users {
+  margin: 0 auto;
   padding-left: 20px;
   border: 1px solid #ccc;
+  max-width: 60%;
 }
