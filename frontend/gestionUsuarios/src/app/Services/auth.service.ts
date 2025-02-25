@@ -32,7 +32,14 @@ export class AuthService {
 
     this.http.get("http://localhost:8080/autentificacion/login",
      {params}).subscribe((users :any) => {
-      onLogin(true,users)
+      if(users){
+        onLogin(true,users)
+      }
+    },
+    (error) => {
+      if(error.status === 400){
+        onLogin(false, undefined)
+      }
     });
 
   }
