@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.viewnext.course.business.model.Course;
+import com.viewnext.core.business.model.Course;
 import com.viewnext.course.business.services.CourseServices;
 
 @RestController
@@ -61,15 +62,9 @@ public class CursoController {
 	 * @return 201 con la ubicación
 	 */
 	@PostMapping
-	public ResponseEntity<String> create(@RequestBody Course course, UriComponentsBuilder ucb){
-
-		try{
-			Long id = courseServices.create(course);
+	public ResponseEntity<String> create(@RequestBody Course course, @RequestParam(required = true) Long idAdmin, UriComponentsBuilder ucb){
+		Long id = courseServices.create(course, idAdmin);
 		return ResponseEntity.created(ucb.path("/courses/{id}").build(id)).build();
-		}catch (IllegalStateException e){
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-		
 	}
 	
 	/**
@@ -80,14 +75,10 @@ public class CursoController {
 	 * @param course
 	 * @return 204
 	 */
-	@PutMapping
-	public ResponseEntity<String> update(@RequestBody Course course) {
-		try {
-			courseServices.update(course);
-			return ResponseEntity.ok().build();
-		} catch (IllegalStateException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	@PutMapping("/{id}")
+	public ResponseEntity<String> update(@RequestBody Course course, @PathVariable Long id, @RequestParam(required = true) Long idAdmin) {
+		courseServices.update(course, id, idAdmin);
+		return ResponseEntity.ok().build();
 	}
 
 	
@@ -99,13 +90,9 @@ public class CursoController {
 	 * @return 204
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete(@PathVariable Long id){
-		try {
-			courseServices.delete(id);
-			return ResponseEntity.noContent().build();
-		} catch (IllegalStateException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam(required = true) Long idAdmin){
+		courseServices.delete(id, idAdmin);
+		return ResponseEntity.noContent().build();
 	}
 
 }
