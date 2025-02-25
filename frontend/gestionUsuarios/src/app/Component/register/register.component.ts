@@ -56,15 +56,6 @@ export class RegisterComponent implements OnInit{
     }
   }
 
-  validPass() : boolean{
-    if(this.form.get('password')?.value != this.form.get('confirmPassword')?.value){
-      console.log("LAS CONTRASEÑAS NO COINCIDEN")
-      this.errors['confirmPassword'] = 'LAS CONTRASEÑAS NO COINCIDEN';
-      return false;
-    }
-    return true;
-  }
-
   validUser(): void{
     this.authService.registerUser(this.form.value, (ok : boolean) => {
       if(!ok){
