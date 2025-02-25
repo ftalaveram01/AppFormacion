@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../Services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-user-form',
@@ -20,11 +22,12 @@ export class UserFormComponent implements OnInit {
   usuarioActualizadoConExito: boolean = false
   usuarioCreadoConExito: boolean = false
 
-  constructor(private userService: UserService, private fb: FormBuilder, private route: ActivatedRoute){
+  constructor(private userService: UserService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
     this.userForm = this.fb.group({
       email: [''],
       password: [''],
-      rol: ['']
+      rol: [''],
+      router: ['']
     });
   }
 
@@ -65,12 +68,19 @@ export class UserFormComponent implements OnInit {
 
   private updateUser(id:number, user: any): void{
     this.userService.updateUser(id,user).subscribe(response => {
-      console.log('Usuario actualizado');
+      if(user.id==localStorage.getItem("idUsuario")){
+        this.usuarioActualizadoConExito = true
+        this.userForm.reset();
+        this.router.navigate(['/login']);
+        localStorage.clear();
+        return;
+      }
       this.usuarioActualizadoConExito = true
       this.userForm.reset();
+      console.log('Usuario actualizado');
     },)
   }
-
+  
   private createUser(id:number, user: any): void{
     this.userService.createUser(user).subscribe(response => {
       console.log('Usuario creado correctamente');
