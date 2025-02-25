@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -23,18 +23,30 @@ export class CursoService {
 
   createCurso(curso: any): Observable<any>{
     this.getToken();
-    return this.http.post(this.cursoApiUrl, curso);
+
+    const idAdmin = localStorage.getItem('idUsuario')
+    const params = new HttpParams().set('idAdmin', Number(idAdmin))
+
+    return this.http.post(this.cursoApiUrl, curso, {params});
   }
 
   updateCurso(id: number, curso: any): Observable<any>{
     this.getToken();
     curso.id = id;
-    return this.http.put(`${this.cursoApiUrl}`,curso)
+
+    const idAdmin = localStorage.getItem('idUsuario')
+    const params = new HttpParams().set('idAdmin', Number(idAdmin))
+
+    return this.http.put(`${this.cursoApiUrl}/${id}`,curso, {params})
   }
 
   deleteCurso(id: number): Observable<any>{
     this.getToken();
-    return this.http.delete(`${this.cursoApiUrl}/${id}`);
+
+    const idAdmin = localStorage.getItem('idUsuario')
+    const params = new HttpParams().set('idAdmin', Number(idAdmin))
+
+    return this.http.delete(`${this.cursoApiUrl}/${id}`, {params});
   }
 
   getToken(): void{

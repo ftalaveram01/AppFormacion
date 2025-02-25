@@ -5,6 +5,9 @@
             <label>
                 Email:
                 <input type="email" formControlName="email" required>
+                <div *ngIf="email?.invalid && email?.touched" class="error">
+                    El correo electrónico no es válido.
+                </div>
             </label>
             <label>
                 Password:
@@ -13,6 +16,9 @@
             <label>
                 Confirm Password:
                 <input type="password" formControlName="confirmPassword" required>
+                <div *ngIf="confirmPassword?.hasError('noMatch') && confirmPassword?.touched" class="error">
+                    Las contraseñas no coinciden.
+                </div>
             </label>
 
             <p *ngIf="succes">Registration successful</p>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CursoService } from '../../Services/curso.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-curso-form',
@@ -15,12 +17,19 @@ export class CursoFormComponent implements OnInit{
   isUpdate: boolean = false;
   idCurso!: number;
 
-  constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute){
+  // Boolean para mensaje si se ha creado o actualizado el curso
+  succesUpdate!: boolean;
+  succesCreate!: boolean;
+
+
+
+  constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
     this.cursoForm = this.fb.group({
       nombre: [''],
       descripcion: [''],
       fechaInicio: [''],
-      fechaFin: ['']
+      fechaFin: [''],
+      router:['']
     });
   }
 
@@ -51,14 +60,24 @@ export class CursoFormComponent implements OnInit{
   private updateCurso(id: number, curso: any): void{
     this.cursoService.updateCurso(id, curso ).subscribe(response => {
       console.log('Curso actualizado:');
+
+      // Boolean para mensaje si se ha actualizado el curso
+      this.succesUpdate=true
+
       this.cursoForm.reset();
+      this.router.navigate(['/cursos'])
     },)
   }
 
   private createCurso(curso: any): void{
     this.cursoService.createCurso(curso).subscribe(response => {
       console.log('Curso creado:');
+
+      // Boolean para mensaje si se ha creado el curso
+      this.succesCreate=true
+
       this.cursoForm.reset();
+      this.router.navigate(['/cursos'])
     },)
   }
 
