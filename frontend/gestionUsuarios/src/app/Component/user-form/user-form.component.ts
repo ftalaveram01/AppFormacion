@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../Services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -20,7 +20,7 @@ export class UserFormComponent implements OnInit {
   usuarioActualizadoConExito: boolean = false
   usuarioCreadoConExito: boolean = false
 
-  constructor(private userService: UserService, private fb: FormBuilder, private route: ActivatedRoute){
+  constructor(private userService: UserService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
     this.userForm = this.fb.group({
       email: [''],
       password: [''],
@@ -48,10 +48,13 @@ export class UserFormComponent implements OnInit {
   onSubmit(): void{
 
     if(this.userForm.valid){
-      console.log(this.isUpdate)
-      console.log(this.isCreate)
       if(this.isUpdate == true){
         this.updateUser(this.idUser,this.userForm.value);
+        if(this.userForm.value.id == Number(localStorage.getItem('idUsuario'))){
+          alert('El usuario fue correctamente actualizado')
+          this.router.navigate(['login'])
+          console.log("Entra")
+        }
       }else{
         if(this.isCreate == true){
           this.createUser(this.idUser, this.userForm.value);
