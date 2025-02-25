@@ -16,6 +16,7 @@ export class LoginComponent {
 
   email: string = '';
   password: string = '';
+  success!: boolean;
 
   constructor(private authService: AuthService, private localStorage: LocalStorageService, private router: Router){}
 
@@ -35,7 +36,7 @@ export class LoginComponent {
         });
         
       }else{
-        console.log('FALLO AL HACER LOGIN')
+        this.success = false
       }
     })
   }

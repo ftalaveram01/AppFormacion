@@ -30,10 +30,14 @@ export class AuthService {
       .set('email', email)
       .set('password', password);
 
-    this.http.get("http://localhost:8080/autentificacion/login",
-     {params}).subscribe((users :any) => {
-      onLogin(true,users)
-    });
+      this.http.get("http://localhost:8080/autentificacion/login",  { params }).subscribe({
+        next: (users: any) => {
+          onLogin(true, users);
+        },
+        error: (error: any) => {
+          onLogin(false);
+        }
+      });
 
   }
 

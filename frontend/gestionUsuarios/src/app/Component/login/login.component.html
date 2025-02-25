@@ -12,6 +12,9 @@
             </label>
             <button type="submit">Login</button>
             <a href="http://localhost:4200/register">¿No tienes cuenta? Registrate</a>
+            @if(success === false){
+                <small>Login fallido</small>
+            }
         </form>
     </div>
 </body>
