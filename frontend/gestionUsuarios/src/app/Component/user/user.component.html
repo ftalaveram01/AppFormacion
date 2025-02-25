@@ -1,22 +1,26 @@
-<h2>Lista de Usuarios</h2>
-
-<div class="btn-CrearUser">
-
+<div class="header">
+  <h2>Lista de Usuarios</h2>
+    <div class="cerrar-sesion">
+      <a href="login">
+        <button (click)="borrarCache()">CERRAR SESION</button>
+      </a>
+    </div>
+  </div>
+  
+  
+  <div class="btn-CrearUser">
     <button id="btn-Crear" (click)="btnCreateUser(false, true)">Crear -></button>
-
-</div>
-
-<div class="lista-users" *ngFor="let u of users">
-
+  </div>
+  
+  <div class="lista-users" *ngFor="let u of users">
     <h3>Usuario: {{u.idUser}}</h3>
     <p>email: {{u.email}}</p>
     <p>contraseña: {{u.password}}</p>
     <p>ROL: {{u.rol.nombreRol}}</p>
-
-
+  
     <div class="botones">
-        <button id="btn-Eliminar" (click)="deleteUser(u.id)">Eliminar -> {{u.idUser}}</button>
-        <button id="btn-Update" (click)="btnUpdateUser(true, false,u.id)"> Actualizar -> {{u.idUser}}</button>
+      <button id="btn-Eliminar" (click)="deleteUser(u.id)">Eliminar -> {{u.idUser}}</button>
+      <button id="btn-Update" (click)="btnUpdateUser(true, false,u.id)"> Actualizar -> {{u.idUser}}</button>
     </div>
-
-</div>
+  </div>
+  

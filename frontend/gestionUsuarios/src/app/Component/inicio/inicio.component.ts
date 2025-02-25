@@ -33,4 +33,8 @@ export class InicioComponent implements OnInit{
     return this.idAdmin == 0;
   }
   
+  borrarCache(): void {
+    localStorage.clear();
+  }
+
 }
