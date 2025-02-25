@@ -1,29 +1,44 @@
-body {
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+  }
+  
+  .cerrar-sesion {
+    margin-right: 20px;
+  }
+  
+  body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-}
-
-.container {
+  }
+  
+  .container {
     max-width: 800px;
     margin: 50px auto;
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1, p {
+    border: 1px solid #ccc;
+  }
+  
+  h1, p {
     text-align: center;
     color: #333;
-}
-
-.btn-CrearCurso {
+  }
+  
+  .btn-CrearCurso {
     text-align: center;
     margin-bottom: 20px;
-}
-
-button {
+    border: 1px solid #ccc;
+  }
+  
+  button {
     padding: 10px 20px;
     border: none;
     background-color: #007bff;
@@ -32,34 +47,36 @@ button {
     border-radius: 4px;
     cursor: pointer;
     margin-top: 10px;
-}
-
-
-
-#btn-Eliminar{
+  }
+  
+  #btn-Eliminar{
     margin-left: 25%;
-}
-
-#btn-Update{
+    border: 1px solid #ccc;
+  }
+  
+  #btn-Update{
     margin-left: 20%;
-}
-
-button:hover {
+    border: 1px solid #ccc;
+  }
+  
+  button:hover {
     background-color: #0056b3;
-}
-
-a {
+  }
+  
+  a {
     text-decoration: none;
-}
-
-div {
+  }
+  
+  div {
     margin-bottom: 20px;
     padding: 10px;
-    border: 1px solid #ccc;
+    
     border-radius: 4px;
     background-color: #f9f9f9;
-}
-
-.lista-cursos {
+  }
+  
+  .lista-cursos {
     padding-left: 20px;
-}
+    border: 1px solid #ccc;
+  }
+  

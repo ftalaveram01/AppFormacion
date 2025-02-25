@@ -4,28 +4,38 @@ body {
     margin: 0;
     padding: 0;
     text-align: center;
-}
-
-h1 {
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  h1 {
     color: #333;
-    margin-top: 50px;
-}
-
-a {
+    margin: 0;
+  }
+  
+  a {
     text-decoration: none;
-}
-
-button {
+  }
+  
+  button {
     padding: 10px 20px;
+    margin-top: 40px;
     border: none;
     background-color: #007bff;
     color: #fff;
     font-size: 16px;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 20px;
-}
-
-button:hover {
+  }
+  
+  button:hover {
     background-color: #0056b3;
-}
+  }
+  

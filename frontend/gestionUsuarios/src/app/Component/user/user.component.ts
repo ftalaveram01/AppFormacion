@@ -40,4 +40,8 @@ export class UserComponent implements OnInit {
       queryParams: {isUpdate: isUpdate, isCreate: isCreate}
     })
   }
+
+  borrarCache(): void {
+    localStorage.clear();
+  }
 }
