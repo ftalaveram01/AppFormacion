@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -238,6 +239,40 @@ class CourseControllerTest{
 		assertEquals(expected, responseBody);
 	}
 	@Test
+
+	void testDeleteUsuarioExistenteDeCurso() throws Exception{
+		
+		int idUsuario = 1;
+		int idCurso = 1;
+		
+		mockMvc.perform(delete("/courses")
+				.param("idUsuario", String.valueOf(idUsuario))
+				.param("idCurso", String.valueOf(idCurso))
+				.contentType("aplication/json"))
+			.andExpect(status().isCreated())
+			.andReturn();
+		
+		verify(courseServices,times(1)).deleteUsuario(1L, 1L);
+	}
+	
+	@Test
+	void testDeleteUsuarioNoExistenteDeCurso() throws Exception{
+		doThrow(new IllegalStateException("Error de delete")).when(courseServices).deleteUsuario(2L, 2L);
+		
+		int idUsuario = 2;
+		int idCurso = 2;
+		
+		MvcResult response = mockMvc.perform(delete("/courses")
+				.param("idAdmin", String.valueOf(idCurso))
+				.param("idUsuario", String.valueOf(idUsuario)).contentType("application/json"))
+			.andExpect(status().isBadRequest())
+			.andReturn();
+		
+		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		String expected = "Error de delete";
+		assertEquals(expected, responseBody);
+	}
+
 	void testInscribirAlumno() throws Exception{
 		
 		MvcResult response = mockMvc.perform(put("/courses").param("idUsuario", "5").param("idCurso", "3").contentType("application/json"))
