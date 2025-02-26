@@ -30,6 +30,16 @@ CREATE TABLE curso (
 
 );
 
+CREATE TABLE curso_usuario (
+
+	id_usuario INT NOT NULL,
+	id_curso BIGINT NOT NULL,
+	PRIMARY KEY (id_usuario, id_curso),
+	FOREIGN KEY(id_usuario) REFERENCES usuario(id),
+	FOREIGN KEY(id_curso) REFERENCES curso(id)
+
+);
+
 INSERT INTO rol (id, nombre_rol, descripcion) VALUES (0, 'ADMIN', 'Usuario con todos los permisos'),
 (1, 'ALUMNO', 'Usuario normal');
 
