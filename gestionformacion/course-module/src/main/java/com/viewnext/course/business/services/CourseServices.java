@@ -3,7 +3,8 @@ package com.viewnext.course.business.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.viewnext.course.business.model.Course;
+import com.viewnext.core.business.model.Course;
+
 
 public interface CourseServices {
  
@@ -15,7 +16,7 @@ public interface CourseServices {
 	 * @param course
 	 * @return id
 	 */
-	Long create(Course course);
+	Long create(Course course, Long idAdmin);
 	
 	/**
 	 * 
@@ -34,7 +35,7 @@ public interface CourseServices {
 	 * 
 	 * @param course
 	 */
-	void update(Course course);
+	void update(Course course, Long id, Long idAdmin);
 	
 	/**
 	 * 
@@ -43,7 +44,7 @@ public interface CourseServices {
 	 * 
 	 * @param id
 	 */
-	void delete(Long id);
+	void delete(Long id, Long idAdmin);
 	
 	/**
 	 * 

@@ -32,3 +32,6 @@ CREATE TABLE curso (
 
 INSERT INTO rol (id, nombre_rol, descripcion) VALUES (0, 'ADMIN', 'Usuario con todos los permisos'),
 (1, 'ALUMNO', 'Usuario normal');
+
+INSERT INTO usuario (id, email, password, id_rol)
+ VALUES (1, 'admin@gmail.com', '1234', 0);

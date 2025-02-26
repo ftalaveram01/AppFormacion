@@ -37,6 +37,10 @@ export class CursoListComponent implements OnInit{
     });
   }
 
+  borrarCache(): void {
+    localStorage.clear();
+  }
+
 }
 
 
