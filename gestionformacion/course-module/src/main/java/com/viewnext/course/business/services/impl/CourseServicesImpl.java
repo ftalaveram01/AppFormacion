@@ -99,6 +99,13 @@ public class CourseServicesImpl implements CourseServices {
 		
 		return false;
 	}
+
+	@Override
+	public void addUsuario(Long idUsuario, Long idCurso) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 }

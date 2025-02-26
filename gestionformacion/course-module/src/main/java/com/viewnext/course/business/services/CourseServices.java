@@ -54,4 +54,6 @@ public interface CourseServices {
 	 */
 	List<Course> getAll();
 	
+	void addUsuario(Long idUsuario, Long idCurso);
+	
 }
