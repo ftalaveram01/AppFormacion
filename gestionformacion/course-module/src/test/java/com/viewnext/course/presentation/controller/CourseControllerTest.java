@@ -2,11 +2,11 @@ package com.viewnext.course.presentation.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,7 +14,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viewnext.core.business.model.Course;
+import com.viewnext.core.business.model.Rol;
+import com.viewnext.core.business.model.Usuario;
 import com.viewnext.course.business.services.CourseServices;
 
 @WebMvcTest(CursoController.class)
@@ -174,4 +178,64 @@ class CourseControllerTest{
 		String expected = "Error de delete";
 		assertEquals(expected, responseBody);
 	}
+	
+	@Test
+	void testAlumnosEnCurso() throws Exception{
+		Course curso = new Course();
+		curso.setId(1L);
+		
+		Rol rolAlumno = new Rol();
+		rolAlumno.setId(1L);
+		
+		Usuario alumno1 = new Usuario();
+		alumno1.setId(1L);
+		alumno1.setEmail("alumno1@gmail.com");
+		alumno1.setPassword("1234");
+		alumno1.setRol(rolAlumno);
+		
+		Usuario alumno2 = new Usuario();
+		alumno2.setId(2L);
+		alumno2.setEmail("alumno2@gmail.com");
+		alumno2.setPassword("1234");
+		alumno2.setRol(rolAlumno);
+		
+		Usuario alumno3 = new Usuario();
+		alumno3.setId(3L);
+		alumno3.setEmail("alumno3@gmail.com");
+		alumno3.setPassword("1234");
+		alumno3.setRol(rolAlumno);
+		
+		List<Usuario> listaAlumnos = new ArrayList<>();
+		listaAlumnos.add(alumno1);
+		listaAlumnos.add(alumno2);
+		listaAlumnos.add(alumno3);
+		
+		curso.setUsuarios(listaAlumnos);
+		
+		when(courseServices.read(2L)).thenReturn(Optional.of(curso));
+		
+		MvcResult response = mockMvc.perform(get("/courses/2/alumnos").contentType("application/json"))
+	            .andExpect(status().isOk())
+	            .andReturn();
+		
+		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
+	    String json = mapper.writeValueAsString(listaAlumnos);
+
+	    assertEquals(json, responseBody);
+	}
+	
+	@Test
+	void testAlumnoEnCursoNoExistente() throws Exception {
+		doThrow(new IllegalStateException("Error curso no existente")).when(courseServices).read(2L);
+
+		MvcResult response = mockMvc.perform(get("/courses/2/alumnos").contentType("application/json"))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+
+		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		String expected = "Error curso no existente";
+
+		assertEquals(expected, responseBody);
+	}
+
 }
