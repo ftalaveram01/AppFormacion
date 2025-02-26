@@ -237,5 +237,30 @@ class CourseControllerTest{
 
 		assertEquals(expected, responseBody);
 	}
+	@Test
+	void testInscribirAlumno() throws Exception{
+		
+		MvcResult response = mockMvc.perform(put("/courses").param("idUsuario", "5").param("idCurso", "3").contentType("application/json"))
+				.andExpect(status().isCreated())
+				.andReturn();
+		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		
+		verify(courseServices, times(1)).inscribir(5L, 3L);
+		assertEquals("", responseBody);
+		
+	}
+	
+	@Test
+	void testInscribirAlumnoCursoNoExistente() throws Exception{
+		
+		doThrow(new IllegalStateException("Usuario o curso no existente")).when(courseServices).inscribir(5L, 3L);
+		
+		MvcResult response = mockMvc.perform(put("/courses").param("idUsuario", "5").param("idCurso", "3").contentType("application/json"))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
+		assertEquals("Usuario o curso no existente", responseBody);
+		
+	}
 }

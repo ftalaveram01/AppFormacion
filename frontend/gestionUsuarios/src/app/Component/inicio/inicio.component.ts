@@ -32,7 +32,7 @@ export class InicioComponent implements OnInit{
   isAdmin(): boolean {
     return this.idAdmin == 0;
   }
-  
+
   borrarCache(): void {
     localStorage.clear();
   }
