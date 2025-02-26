@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.core.business.model.Course;
@@ -221,6 +222,22 @@ class CourseServicesImplTest {
     	assertThrows(IllegalStateException.class, () -> courseServices.update(new Course(), 2L, 5L));
     	assertThrows(IllegalStateException.class, () -> courseServices.create(new Course(), 5L));
     	
+    }
+    
+    @Test
+    void deleteAlumnoCourseIdExiste() {
+    	
+    	Usuario usuario = new Usuario();
+    	Course curso = new Course();
+
+    	usuario.setId(1L);
+    	curso.setId(2L);
+    	
+    	when(usuarioRepository.existsById(usuario.getId())).thenReturn(true);
+        Mockito.when(courseServices.deleteAlumno(1L, 2L)).thenReturn(null);
+    	
+        assertEquals(null, courseServices.deleteAlumno(1L));
+        
     }
 
 }
