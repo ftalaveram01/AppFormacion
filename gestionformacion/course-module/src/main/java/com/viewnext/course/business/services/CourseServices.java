@@ -56,4 +56,6 @@ public interface CourseServices {
 	
 	void addUsuario(Long idUsuario, Long idCurso);
 	
+	void deleteUsuario(Long idUsuario, Long idCurso);
+	
 }

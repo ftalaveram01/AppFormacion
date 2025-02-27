@@ -257,6 +257,7 @@ class CourseServicesImplTest {
     	when(usuarioRepository.existsById(user2.getId())).thenReturn(true);
     	when(courseRepository.existsById(curso.getId())).thenReturn(true);
     	when(courseRepository.findById(curso.getId())).thenReturn(Optional.of(curso));
+    	when(usuarioRepository.findById(user2.getId())).thenReturn(Optional.of(user2));
     	
     	courseServices.addUsuario(user2.getId(),curso.getId());
     	
