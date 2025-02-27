@@ -37,7 +37,7 @@
       </div>
       
     <div *ngIf="idAdmin == 1" class="botones">
-      <button id="btn-Incripcion">Matricularse</button>
+      <button id="btn-Incripcion" (click)="btnMatricularse(c.id)">Matricularse</button>
       <button id="btn-Incripcion" (click)="btnDesmatricularse(c.id)">Desmatricularse</button>
     </div>
 </div>
