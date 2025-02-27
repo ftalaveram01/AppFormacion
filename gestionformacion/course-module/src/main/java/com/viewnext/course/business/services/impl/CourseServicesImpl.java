@@ -106,6 +106,9 @@ public class CourseServicesImpl implements CourseServices {
 		Course curso = getCursoById(idCurso);
 		Usuario user =getUsuarioById(idUsuario);
 		
+		if(curso.getUsuarios().contains(user))
+			throw new IllegalStateException("El usuario dado ya esta inscrito en el curso.");
+		
 		curso.getUsuarios().add(user);
 		
 		cursoRepository.save(curso);
