@@ -99,6 +99,52 @@ public class CourseServicesImpl implements CourseServices {
 		
 		return false;
 	}
+
+	@Override
+	public void inscribir(Long idUsuario, Long idCurso) {
+		
+		Course curso = getCursoById(idCurso);
+		Usuario user =getUsuarioById(idUsuario);
+		
+		curso.getUsuarios().add(user);
+	}
+
+	@Override
+	public void deleteUsuario(Long idUsuario, Long idCurso) {
+				
+		Course curso = getCursoById(idCurso);
+		
+		if(!usuarioRepository.existsById(idUsuario))
+			throw new IllegalStateException("No existe el usuario con id "+ idUsuario);
+		
+		curso.getUsuarios().removeIf(u -> u.getId().equals(idUsuario));
+		
+	}
+	
+	private Course getCursoById(Long idCurso) {
+		boolean existe = cursoRepository.existsById(idCurso);
+		
+		if(!existe) {
+			throw new IllegalStateException("El curso con ID [" + idCurso + "] no existe.");
+		}
+		
+		Optional <Course> cursoOptional = cursoRepository.findById(idCurso);
+		
+		return cursoOptional.get();
+	}
+	
+	private Usuario getUsuarioById(Long idUsuario) {
+		
+		if(!usuarioRepository.existsById(idUsuario))
+			throw new IllegalStateException("No existe el usuario con id "+ idUsuario);
+		
+		Optional <Usuario> userOptional = usuarioRepository.findById(idUsuario);
+		
+		return userOptional.get();
+	}
+	
+	
+
 	
 	
 }

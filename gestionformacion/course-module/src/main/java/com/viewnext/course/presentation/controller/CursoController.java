@@ -94,6 +94,18 @@ public class CursoController {
 		courseServices.delete(id, idAdmin);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@PutMapping
+	public ResponseEntity<String> inscribir(@RequestParam(required = true) Long idUsuario, @RequestParam(required = true) Long idCurso){
+		courseServices.inscribir(idUsuario, idCurso);
+		return ResponseEntity.ok().build();
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<Void> deleteUsuario(@RequestParam(required = true) Long idUsuario, @RequestParam(required = true) Long idCurso){
+		courseServices.deleteUsuario(idUsuario, idCurso);
+		return ResponseEntity.noContent().build();
+	}
 
 }
  

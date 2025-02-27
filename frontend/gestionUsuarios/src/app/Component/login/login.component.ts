@@ -36,8 +36,9 @@ export class LoginComponent {
         });
         
       }else{
-        console.log('FALLO AL HACER LOGIN')
+        
         this.somethingIncorrect = true;
+
       }
     })
   }

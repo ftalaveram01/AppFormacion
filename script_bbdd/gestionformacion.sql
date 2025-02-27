@@ -15,8 +15,8 @@ CREATE TABLE usuario (
 	id BIGINT AUTO_INCREMENT PRIMARY KEY,
 	email VARCHAR(100) UNIQUE NOT NULL,
 	password VARCHAR(20) NOT NULL,
-    id_rol BIGINT NOT NULL,
-    FOREIGN KEY(id_rol) REFERENCES rol(id)
+    id_rol BIGINT,
+    FOREIGN KEY(id_rol) REFERENCES rol(id) ON DELETE SET NULL
     
 );
 
