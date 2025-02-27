@@ -107,6 +107,8 @@ public class CourseServicesImpl implements CourseServices {
 		Usuario user =getUsuarioById(idUsuario);
 		
 		curso.getUsuarios().add(user);
+		
+		cursoRepository.save(curso);
 	}
 
 	@Override
@@ -118,6 +120,8 @@ public class CourseServicesImpl implements CourseServices {
 			throw new IllegalStateException("No existe el usuario con id "+ idUsuario);
 		
 		curso.getUsuarios().removeIf(u -> u.getId().equals(idUsuario));
+		
+		cursoRepository.save(curso);
 		
 	}
 	
