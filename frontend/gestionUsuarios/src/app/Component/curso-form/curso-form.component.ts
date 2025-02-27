@@ -16,6 +16,10 @@ export class CursoFormComponent implements OnInit{
   cursoForm: FormGroup;
   isUpdate: boolean = false;
   idCurso!: number;
+  succesUpdate!: boolean;
+  succesCreate!: boolean;
+
+
 
   constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
     this.cursoForm = this.fb.group({
@@ -54,7 +58,11 @@ export class CursoFormComponent implements OnInit{
   private updateCurso(id: number, curso: any): void{
     this.cursoService.updateCurso(id, curso ).subscribe(response => {
       console.log('Curso actualizado:');
+
+      this.succesUpdate=true
+
       this.cursoForm.reset();
+      alert('El curso fue correctamente actualizado')
       this.router.navigate(['/cursos'])
     },)
   }
@@ -62,7 +70,11 @@ export class CursoFormComponent implements OnInit{
   private createCurso(curso: any): void{
     this.cursoService.createCurso(curso).subscribe(response => {
       console.log('Curso creado:');
+
+      this.succesCreate=true
+
       this.cursoForm.reset();
+      alert('El curso fue correctamente creado')
       this.router.navigate(['/cursos'])
     },)
   }

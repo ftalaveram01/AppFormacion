@@ -40,7 +40,6 @@ export class CursoListComponent implements OnInit{
   btnMatricularse(idCurso: number): void{
     const idUsuario = Number(localStorage.getItem('idUsuario'))
     this.cursoService.addUsuarioToCurso(idCurso, idUsuario).subscribe(() => {
-
     })
   }
 
@@ -48,7 +47,7 @@ export class CursoListComponent implements OnInit{
     const idUsuario = Number(localStorage.getItem('idUsuario'))
     this.cursoService.deleteUsuarioFromCurso(idUsuario, idCurso).subscribe(() => {
 
-    })
+    }) 
   }
 
   borrarCache(): void {

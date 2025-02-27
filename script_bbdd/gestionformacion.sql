@@ -12,7 +12,7 @@ CREATE TABLE rol (
 
 CREATE TABLE usuario (
 
-	id INT AUTO_INCREMENT PRIMARY KEY,
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
 	email VARCHAR(100) UNIQUE NOT NULL,
 	password VARCHAR(20) NOT NULL,
     id_rol BIGINT NOT NULL,
@@ -30,5 +30,18 @@ CREATE TABLE curso (
 
 );
 
+CREATE TABLE curso_usuario (
+
+	id_usuario BIGINT NOT NULL,
+	id_curso BIGINT NOT NULL,
+	PRIMARY KEY (id_usuario, id_curso),
+	FOREIGN KEY(id_usuario) REFERENCES usuario(id),
+	FOREIGN KEY(id_curso) REFERENCES curso(id)
+
+);
+
 INSERT INTO rol (id, nombre_rol, descripcion) VALUES (0, 'ADMIN', 'Usuario con todos los permisos'),
 (1, 'ALUMNO', 'Usuario normal');
+
+INSERT INTO usuario (id, email, password, id_rol)
+ VALUES (1, 'admin@gmail.com', '1234', 0);

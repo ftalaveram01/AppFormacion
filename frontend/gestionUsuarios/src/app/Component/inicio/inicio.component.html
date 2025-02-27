@@ -1,10 +1,18 @@
-<h1>Bienvenido!!</h1>
-
-<a href="login"><button id="log-out" (click)="borrarCache()">log out</button></a>
-
-<a href="cursos"><button>Ir a CURSOS</button></a>
-
-
-<div *ngIf="isAdmin()">
-    <a href="users"><button>Ir a USUARIOS</button></a>
+<div class="header">
+    <h1>Bienvenido!!</h1>
+    <div class="cerrar-sesion">
+      <a href="login">
+        <button (click)="borrarCache()">CERRAR SESION</button>
+      </a>
+    </div>
+  </div>
+  
+  <a href="cursos">
+    <button>Ir a CURSOS</button>
+  </a>
+  
+  <div *ngIf="isAdmin()">
+    <a href="users">
+      <button>Ir a USUARIOS</button>
+    </a>
 </div>

@@ -23,18 +23,36 @@ export class CursoService {
 
   createCurso(curso: any): Observable<any>{
     this.getToken();
-    return this.http.post(this.cursoApiUrl, curso);
+
+    const idAdmin = localStorage.getItem('idUsuario')
+    const params = new HttpParams().set('idAdmin', Number(idAdmin))
+
+    return this.http.post(this.cursoApiUrl, curso, {params});
   }
 
   updateCurso(id: number, curso: any): Observable<any>{
     this.getToken();
     curso.id = id;
-    return this.http.put(`${this.cursoApiUrl}`,curso)
+
+    const idAdmin = localStorage.getItem('idUsuario')
+    const params = new HttpParams().set('idAdmin', Number(idAdmin))
+
+    return this.http.put(`${this.cursoApiUrl}/${id}`,curso, {params})
   }
 
   deleteCurso(id: number): Observable<any>{
     this.getToken();
-    return this.http.delete(`${this.cursoApiUrl}/${id}`);
+
+    const idAdmin = localStorage.getItem('idUsuario')
+    const params = new HttpParams().set('idAdmin', Number(idAdmin))
+
+    return this.http.delete(`${this.cursoApiUrl}/${id}`, {params});
+  }
+
+  addUsuarioToCurso(idCurso: number, idUsuario:number): Observable<any>{
+    // TODO : Conectar con endpoint de curso para inscribir usuario en el curso
+    // esta peticion esta mal hecha hasta nuevo aviso
+    return this.http.put(`${this.cursoApiUrl}/${idCurso}`, idCurso);
   }
 
   addUsuarioToCurso(idCurso: number, idUsuario:number): Observable<any>{

@@ -21,7 +21,7 @@ export class InicioComponent implements OnInit{
 
     this.router.queryParams.subscribe(params => {
       this.idUser = +params['id']
-      this.idAdmin = +params['idAdmin']
+      this.idAdmin = Number(localStorage.getItem("idAdmin"))
       localStorage.setItem('idAdmin', Number(this.idAdmin).toString());
       this.userService.getUser(this.idUser, this.idUser).subscribe(data=>{
         this.user = data;
@@ -33,8 +33,8 @@ export class InicioComponent implements OnInit{
     return this.idAdmin == 0;
   }
 
-  borrarCache(): void{
+  borrarCache(): void {
     localStorage.clear();
   }
-  
+
 }

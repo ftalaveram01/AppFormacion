@@ -16,7 +16,7 @@ export class LoginComponent {
 
   email: string = '';
   password: string = '';
-  success!: boolean;
+  somethingIncorrect: boolean = false;
 
   constructor(private authService: AuthService, private localStorage: LocalStorageService, private router: Router){}
 
@@ -36,10 +36,11 @@ export class LoginComponent {
         });
         
       }else{
-        this.success = false
+        
+        this.somethingIncorrect = true;
+
       }
     })
   }
-
 
 }

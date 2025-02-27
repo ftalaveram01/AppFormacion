@@ -10,6 +10,7 @@
                 Password:
                 <input type="password" [(ngModel)]="password" name="password" required>
             </label>
+            <p *ngIf="somethingIncorrect">El usuario o la contraseña son incorrectos</p>
             <button type="submit">Login</button>
             <a href="http://localhost:4200/register">¿No tienes cuenta? Registrate</a>
             @if(success === false){
