@@ -104,7 +104,7 @@ public class CourseServicesImpl implements CourseServices {
 	public void inscribir(Long idUsuario, Long idCurso) {
 		
 		Course curso = getCursoById(idCurso);
-		Usuario user =getUsuarioById(idUsuario);
+		Usuario user = getUsuarioById(idUsuario);
 		
 		curso.getUsuarios().add(user);
 		
