@@ -62,13 +62,14 @@ export class CursoService {
   }
 
   addUsuarioToCurso(idCurso: number, idUsuario:number): Observable<any>{
-    const params = new HttpParams().set('idCurso', idCurso).set('idUsuario', idUsuario)
-    return this.http.put(`${this.cursoApiUrl}`, {params});
+    const params = new HttpParams().set('idUsuario', idUsuario).set('idCurso', idCurso)
+    return this.http.put(`${this.cursoApiUrl}`, params);
   }
 
   deleteUsuarioFromCurso(idUsuario: number, idCurso: number): Observable<any>{
-    const params = new HttpParams().set('idUsuario', idUsuario)
-    params.append('idCurso', idCurso)
+    const params = new HttpParams()
+      .set('idUsuario', idUsuario)
+      .set('idCurso', idCurso)
 
     return this.http.delete(`${this.cursoApiUrl}`, {params});
   }
