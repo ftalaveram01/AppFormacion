@@ -50,9 +50,6 @@ export class CursoService {
   }
 
   addUsuarioToCurso(idCurso: number, idUsuario:number): Observable<any>{
-    // TODO : Conectar con endpoint de curso para inscribir usuario en el curso
-    // esta peticion esta mal hecha hasta nuevo aviso
-
     const params = new HttpParams().set('idCurso', idCurso).set('idUsuario', idUsuario)
     return this.http.put(`${this.cursoApiUrl}`, {params});
   }
