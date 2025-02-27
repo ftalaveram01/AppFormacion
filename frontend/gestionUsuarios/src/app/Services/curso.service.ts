@@ -55,17 +55,6 @@ export class CursoService {
     return this.http.put(`${this.cursoApiUrl}/${idCurso}`, idCurso);
   }
 
-  addUsuarioToCurso(idCurso: number, idUsuario:number): Observable<any>{
-    // TODO : Conectar con endpoint de curso para inscribir usuario en el curso
-    // esta peticion esta mal hecha hasta nuevo aviso
-
-    //const params = new HttpParams().set('idUsuario', idUsuario)
-    //params.append('idCurso', idCurso)
-    //return this.http.put(`${this.cursoApiUrl}`, {params});
-
-    return this.http.put(`${this.cursoApiUrl}/${idCurso}`, idCurso);
-  }
-
   deleteUsuarioFromCurso(idUsuario: number, idCurso: number): Observable<any>{
     const params = new HttpParams().set('idUsuario', idUsuario)
     params.append('idCurso', idCurso)
