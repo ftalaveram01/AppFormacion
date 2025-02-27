@@ -16,7 +16,7 @@ CREATE TABLE usuario (
 	email VARCHAR(100) UNIQUE NOT NULL,
 	password VARCHAR(20) NOT NULL,
     id_rol BIGINT NOT NULL,
-    FOREIGN KEY(id_rol) REFERENCES rol(id)
+    FOREIGN KEY(id_rol) REFERENCES rol(id) ON DELETE CASCADE
     
 );
 
