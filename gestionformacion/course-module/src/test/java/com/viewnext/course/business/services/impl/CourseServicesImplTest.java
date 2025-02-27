@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.core.business.model.Course;
@@ -227,6 +228,7 @@ class CourseServicesImplTest {
     }
     
     @Test
+<<<<<<< HEAD
     void testAddUserToCourse() {
     	
     	Rol rol = new Rol();
@@ -301,6 +303,21 @@ class CourseServicesImplTest {
         assertTrue(optional.get().getUsuarios().contains(user));
         assertTrue(optional.get().getUsuarios().contains(user1));
     	
+=======
+    void deleteAlumnoCourseIdExiste() {
+    	
+    	Usuario usuario = new Usuario();
+    	Course curso = new Course();
+
+    	usuario.setId(1L);
+    	curso.setId(2L);
+    	
+    	when(usuarioRepository.existsById(usuario.getId())).thenReturn(true);
+        Mockito.when(courseServices.deleteAlumno(1L, 2L)).thenReturn(null);
+    	
+        assertEquals(null, courseServices.deleteAlumno(1L));
+        
+>>>>>>> 29a2fafd8820d274399195bccf222df4a0e95e72
     }
 
 }

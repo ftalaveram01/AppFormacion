@@ -13,7 +13,7 @@ CursoService
 export class CursoListComponent implements OnInit{
 
    cursos: any[] = [];
-   idAdmin!: Number
+   idAdmin!: number;
 
   constructor(private cursoService: CursoService, private router: Router) {}
 
@@ -23,7 +23,6 @@ export class CursoListComponent implements OnInit{
     });
 
     this.idAdmin = Number(localStorage.getItem('idAdmin'))
-  
   }
 
   deleteCurso(id: number): void{

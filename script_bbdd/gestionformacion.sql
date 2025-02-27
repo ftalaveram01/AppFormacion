@@ -12,11 +12,11 @@ CREATE TABLE rol (
 
 CREATE TABLE usuario (
 
-	id INT AUTO_INCREMENT PRIMARY KEY,
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
 	email VARCHAR(100) UNIQUE NOT NULL,
 	password VARCHAR(20) NOT NULL,
     id_rol BIGINT NOT NULL,
-    FOREIGN KEY(id_rol) REFERENCES rol(id)
+    FOREIGN KEY(id_rol) REFERENCES rol(id) ON DELETE SET NULL
     
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE curso (
 
 CREATE TABLE curso_usuario (
 
-	id_usuario INT NOT NULL,
+	id_usuario BIGINT NOT NULL,
 	id_curso BIGINT NOT NULL,
 	PRIMARY KEY (id_usuario, id_curso),
 	FOREIGN KEY(id_usuario) REFERENCES usuario(id),

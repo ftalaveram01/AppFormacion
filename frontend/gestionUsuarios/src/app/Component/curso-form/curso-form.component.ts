@@ -16,8 +16,6 @@ export class CursoFormComponent implements OnInit{
   cursoForm: FormGroup;
   isUpdate: boolean = false;
   idCurso!: number;
-
-  // Boolean para mensaje si se ha creado o actualizado el curso
   succesUpdate!: boolean;
   succesCreate!: boolean;
 
@@ -61,10 +59,10 @@ export class CursoFormComponent implements OnInit{
     this.cursoService.updateCurso(id, curso ).subscribe(response => {
       console.log('Curso actualizado:');
 
-      // Boolean para mensaje si se ha actualizado el curso
       this.succesUpdate=true
 
       this.cursoForm.reset();
+      alert('El curso fue correctamente actualizado')
       this.router.navigate(['/cursos'])
     },)
   }
@@ -73,10 +71,10 @@ export class CursoFormComponent implements OnInit{
     this.cursoService.createCurso(curso).subscribe(response => {
       console.log('Curso creado:');
 
-      // Boolean para mensaje si se ha creado el curso
       this.succesCreate=true
 
       this.cursoForm.reset();
+      alert('El curso fue correctamente creado')
       this.router.navigate(['/cursos'])
     },)
   }
