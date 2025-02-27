@@ -49,6 +49,12 @@ export class CursoService {
     return this.http.delete(`${this.cursoApiUrl}/${id}`, {params});
   }
 
+  addUsuarioToCurso(idCurso: number, idUsuario:number): Observable<any>{
+    // TODO : Conectar con endpoint de curso para inscribir usuario en el curso
+    // esta peticion esta mal hecha hasta nuevo aviso
+    return this.http.put(`${this.cursoApiUrl}/${idCurso}`, idCurso);
+  }
+
   getToken(): void{
     const token = localStorage.getItem('token');
 

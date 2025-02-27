@@ -37,6 +37,13 @@ export class CursoListComponent implements OnInit{
     });
   }
 
+  btnMatricularse(idCurso: number): void{
+    const idUsuario = Number(localStorage.getItem('idUsuario'))
+    this.cursoService.addUsuarioToCurso(idCurso, idUsuario).subscribe(() => {
+
+    })
+  }
+
   borrarCache(): void {
     localStorage.clear();
   }
