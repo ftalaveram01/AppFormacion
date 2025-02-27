@@ -1,6 +1,7 @@
 package com.viewnext.course.business.services.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,7 @@ import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.course.integration.repository.CursoRepository;
 import com.viewnext.course.integration.repository.UsuarioRepository;
+import com.viewnext.course.presentation.controller.CursoController;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServicesImplTest {
@@ -225,6 +228,82 @@ class CourseServicesImplTest {
     }
     
     @Test
+<<<<<<< HEAD
+    void testAddUserToCourse() {
+    	
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ALUMNO);
+    	
+    	Usuario user = new Usuario();
+    	user.setId(1L);
+    	user.setRol(rol);
+    	
+    	Usuario user1 = new Usuario();
+    	user1.setId(1L);
+    	user1.setRol(rol);
+    	
+    	Usuario user2 = new Usuario();
+    	user2.setId(1L);
+    	user2.setRol(rol);
+    	
+    	List<Usuario> list = new ArrayList<Usuario>();
+    	list.add(user);
+    	list.add(user1);
+    	
+    	Course curso = new Course();
+    	
+    	curso.setId(2L);
+    	curso.setNombre("Curso Testing 2");
+    	curso.setUsuarios(list);
+    	
+    	when(usuarioRepository.existsById(user2.getId())).thenReturn(true);
+    	when(courseRepository.existsById(curso.getId())).thenReturn(true);
+    	when(courseRepository.findById(curso.getId())).thenReturn(Optional.of(curso));
+    	when(usuarioRepository.findById(user2.getId())).thenReturn(Optional.of(user2));
+    	
+    	courseServices.addUsuario(user2.getId(),curso.getId());
+    	
+    	assertEquals(3,curso.getUsuarios().size());
+    }
+    
+    @Test
+    void testGetAllUsersByCourse() {
+    	
+    	Course curso = new Course();
+    	curso.setId(1L);
+    	
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ALUMNO);
+    	
+    	Usuario user = new Usuario();
+    	user.setId(1L);
+    	user.setRol(rol);
+    	
+    	Usuario user1 = new Usuario();
+    	user1.setId(1L);
+    	user1.setRol(rol);
+    	
+    	Usuario user2 = new Usuario();
+    	user2.setId(1L);
+    	user2.setRol(rol);
+    	
+    	List<Usuario> list = new ArrayList<Usuario>();
+    	list.add(user);
+    	list.add(user1);
+    	
+    	curso.setUsuarios(list);
+    	
+    	when(courseRepository.findById(curso.getId())).thenReturn(Optional.of(curso));
+    	
+    	Optional<Course> optional = courseServices.read(curso.getId());
+    	
+        assertTrue(optional.isPresent());
+        
+        assertEquals(2, optional.get().getUsuarios().size());
+        assertTrue(optional.get().getUsuarios().contains(user));
+        assertTrue(optional.get().getUsuarios().contains(user1));
+    	
+=======
     void deleteAlumnoCourseIdExiste() {
     	
     	Usuario usuario = new Usuario();
@@ -238,6 +317,7 @@ class CourseServicesImplTest {
     	
         assertEquals(null, courseServices.deleteAlumno(1L));
         
+>>>>>>> 29a2fafd8820d274399195bccf222df4a0e95e72
     }
 
 }
