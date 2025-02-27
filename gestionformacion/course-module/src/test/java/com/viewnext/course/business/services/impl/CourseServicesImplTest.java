@@ -228,7 +228,7 @@ class CourseServicesImplTest {
     }
     
     @Test
-<<<<<<< HEAD
+
     void testAddUserToCourse() {
     	
     	Rol rol = new Rol();
@@ -261,7 +261,7 @@ class CourseServicesImplTest {
     	when(courseRepository.findById(curso.getId())).thenReturn(Optional.of(curso));
     	when(usuarioRepository.findById(user2.getId())).thenReturn(Optional.of(user2));
     	
-    	courseServices.addUsuario(user2.getId(),curso.getId());
+    	courseServices.inscribir(user2.getId(),curso.getId());
     	
     	assertEquals(3,curso.getUsuarios().size());
     }
@@ -302,22 +302,33 @@ class CourseServicesImplTest {
         assertEquals(2, optional.get().getUsuarios().size());
         assertTrue(optional.get().getUsuarios().contains(user));
         assertTrue(optional.get().getUsuarios().contains(user1));
-    	
-=======
+    }
+    
+    @Test	
     void deleteAlumnoCourseIdExiste() {
     	
-    	Usuario usuario = new Usuario();
-    	Course curso = new Course();
 
-    	usuario.setId(1L);
-    	curso.setId(2L);
+        Long idUsuario = 1L;
+        Long idCurso = 2L;
+
+        Usuario user = new Usuario();
+        user.setId(idUsuario);
+
+        Course curso = new Course();
+        curso.setId(idCurso);
+        curso.setUsuarios(new ArrayList<>(List.of(user)));
+
     	
-    	when(usuarioRepository.existsById(usuario.getId())).thenReturn(true);
-        Mockito.when(courseServices.deleteAlumno(1L, 2L)).thenReturn(null);
-    	
-        assertEquals(null, courseServices.deleteAlumno(1L));
-        
->>>>>>> 29a2fafd8820d274399195bccf222df4a0e95e72
-    }
+    	when(usuarioRepository.existsById(user.getId())).thenReturn(true);
+    	when(courseRepository.existsById(curso.getId())).thenReturn(true);
+
+        when(courseRepository.findById(idCurso)).thenReturn(Optional.of(curso));
+        when(usuarioRepository.findById(idUsuario)).thenReturn(Optional.of(user));
+
+        courseServices.deleteUsuario(user.getId(), curso.getId());
+
+        assertFalse(curso.getUsuarios().contains(user));
+
+       }
 
 }

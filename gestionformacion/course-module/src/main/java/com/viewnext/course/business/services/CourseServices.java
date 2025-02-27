@@ -54,7 +54,7 @@ public interface CourseServices {
 	 */
 	List<Course> getAll();
 	
-	void addUsuario(Long idUsuario, Long idCurso);
+	void inscribir(Long idUsuario, Long idCurso);
 	
 	void deleteUsuario(Long idUsuario, Long idCurso);
 	
