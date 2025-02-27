@@ -36,7 +36,24 @@ export class CursoListComponent implements OnInit{
       queryParams: {isUpdate: isUpdate, id: id}
     });
   }
+  
+  btnMatricularse(idCurso: number): void{
+    const idUsuario = Number(localStorage.getItem('idUsuario'))
+    this.cursoService.addUsuarioToCurso(idCurso, idUsuario).subscribe(() => {
 
+    })
+  }
+
+  btnDesmatricularse(idCurso: number): void{
+    const idUsuario = Number(localStorage.getItem('idUsuario'))
+    this.cursoService.deleteUsuarioFromCurso(idUsuario, idCurso).subscribe(() => {
+
+    })
+  }
+
+  borrarCache(): void {
+    localStorage.clear();
+  }
 }
 
 
