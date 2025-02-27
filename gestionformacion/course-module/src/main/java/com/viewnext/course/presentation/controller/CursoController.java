@@ -95,14 +95,14 @@ public class CursoController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/{idUsuario}")
-	public ResponseEntity<String> inscribir(@PathVariable Long idUsuario, @RequestParam(required = true) Long idCurso){
+	@PutMapping("/{id}")
+	public ResponseEntity<String> inscribir(@PathVariable("id") Long idUsuario, @RequestParam(required = true) Long idCurso){
 		courseServices.inscribir(idUsuario, idCurso);
 		return ResponseEntity.ok().build();
 	}
 	
-	@DeleteMapping("/{idUsuario}")
-	public ResponseEntity<Void> deleteUsuario(@PathVariable Long idUsuario, @RequestParam(required = true) Long idCurso){
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteUsuario(@PathVariable("id") Long idUsuario, @RequestParam(required = true) Long idCurso){
 		courseServices.deleteUsuario(idUsuario, idCurso);
 		return ResponseEntity.noContent().build();
 	}
