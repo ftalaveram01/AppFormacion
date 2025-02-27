@@ -8,6 +8,8 @@ import com.viewnext.core.business.model.Rol;
 import com.viewnext.rol.business.services.RolServices;
 import com.viewnext.rol.integration.repositories.RolRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class RolServicesImpl implements RolServices{
 	
@@ -17,6 +19,7 @@ public class RolServicesImpl implements RolServices{
 		this.rolRepository = rolRepository;
 	}
 
+	@Transactional
 	@Override
 	public Rol create(Rol rol) {
 		if(rol.getId() == null)
@@ -30,6 +33,7 @@ public class RolServicesImpl implements RolServices{
 		return guardado;
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) {
 		if(!rolRepository.existsById(id))
@@ -38,6 +42,7 @@ public class RolServicesImpl implements RolServices{
 		rolRepository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
 	public Rol update(Rol rol, Long id) {
 		if(rol.getId()==null)

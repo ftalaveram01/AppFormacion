@@ -1,2 +1,6 @@
 ./gestionformacion/.settings/*
 ./gestionformacion/**/target/
+/gestionformacion/rol-module/target
+/gestionformacion/usuario-module/target
+/gestionformacion/usuario-module/target
+/gestionformacion/core-module/target
