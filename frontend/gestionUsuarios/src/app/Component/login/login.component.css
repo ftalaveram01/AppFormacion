@@ -65,3 +65,7 @@ p {
     color: green;
     font-size: 14px;
 }
+
+small {
+    color:red;
+}
