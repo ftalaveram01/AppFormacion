@@ -44,6 +44,16 @@ export class CursoFormComponent implements OnInit{
         this.idCurso = +params['id'];
         this.cursoService.getCurso(this.idCurso).subscribe(curso => {
           this.cursoForm.patchValue(curso)
+
+          const fechaInicio = new Date(curso.fechaInicio);
+          const fechaFin = new Date(curso.fechaFin)
+ 
+          this.cursoForm.patchValue({
+            fechaInicio: formatearFecha(fechaInicio)
+          });
+          this.cursoForm.patchValue({
+            fechaFin: formatearFecha(fechaFin)
+          });
         })
       }
     })
@@ -102,5 +112,16 @@ export class CursoFormComponent implements OnInit{
       this.router.navigate(['/cursos'])
     },)
   }
+}
 
+function formatearFecha(fechaInicio: Date) : String{
+  const anio = fechaInicio.getFullYear();
+  const mes = (fechaInicio.getMonth() + 1).toString().padStart(2, '0');
+  const dia = fechaInicio.getDate().toString().padStart(2, '0');
+  const hora = fechaInicio.getHours().toString().padStart(2, '0');
+  const minutos = fechaInicio.getMinutes().toString().padStart(2, '0');
+ 
+  const fechaFormateada = `${anio}-${mes}-${dia}T${hora}:${minutos}`;
+ 
+  return fechaFormateada
 }
