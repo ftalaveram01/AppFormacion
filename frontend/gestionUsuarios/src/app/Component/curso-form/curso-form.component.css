@@ -60,3 +60,19 @@ a {
     text-align: center;
     margin-top: 20px;
 }
+
+.lista-usuarios {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .lista-usuarios th, .lista-usuarios td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .lista-usuarios th {
+    background-color: #f0f0f0;
+  }
+  

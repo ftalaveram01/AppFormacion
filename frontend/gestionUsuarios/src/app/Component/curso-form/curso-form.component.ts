@@ -3,11 +3,12 @@ import { CursoService } from '../../Services/curso.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-curso-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './curso-form.component.html',
   styleUrl: './curso-form.component.css'
 })
@@ -18,6 +19,9 @@ export class CursoFormComponent implements OnInit{
   idCurso!: number;
   succesUpdate!: boolean;
   succesCreate!: boolean;
+  usuarios: any[] = [];
+  seleccionadosForm: FormGroup;
+
 
 
 
@@ -29,50 +33,70 @@ export class CursoFormComponent implements OnInit{
       fechaFin: [''],
       router:['']
     });
+    this.seleccionadosForm = this.fb.group({});
+
   }
 
   ngOnInit(): void {
-
-    this.route.queryParams.subscribe(params =>{
+    this.route.queryParams.subscribe(params => {
       this.isUpdate = params['isUpdate']
-      if(params['id']){
+      if (params['id']) {
         this.idCurso = +params['id'];
-        this.cursoService.getCurso(this.idCurso).subscribe(curso =>{
+        this.cursoService.getCurso(this.idCurso).subscribe(curso => {
           this.cursoForm.patchValue(curso)
         })
       }
     })
+    this.getUsuarios();
+  }
 
+
+  getUsuarios(): void {
+    this.cursoService.getUsuarios(this.usuarios).subscribe(response => {
+      this.usuarios = response;
+      const grupo = this.fb.group({});
+      this.usuarios.forEach((usuario, i) => {
+        grupo.addControl(`seleccionado${i}`, this.fb.control(false));
+      });
+      this.seleccionadosForm = grupo;
+  })
   }
 
   onSubmit(): void{
     if(this.cursoForm.valid){
+      const usuariosSeleccionados: any[] = [];
+      Object.keys(this.seleccionadosForm.controls).forEach(key => {
+        if (this.seleccionadosForm.get(key)?.value) {
+          const index = parseInt(key.replace('seleccionado', ''));
+          usuariosSeleccionados.push(this.usuarios[index]);
+        }
+      });
       if(this.isUpdate){
-        this.updateCurso(this.idCurso,this.cursoForm.value);
+        this.updateCurso(this.idCurso,this.cursoForm.value, usuariosSeleccionados);
       }else{
-        this.createCurso(this.cursoForm.value);
+        this.createCurso(this.cursoForm.value, usuariosSeleccionados);
       }
     }
   }
 
-  private updateCurso(id: number, curso: any): void{
-    this.cursoService.updateCurso(id, curso ).subscribe(response => {
+  private updateCurso(id: number, curso: any, usuariosSeleccionados: any[]): void {
+    this.cursoService.updateCurso(id, curso, usuariosSeleccionados).subscribe(response => {
       console.log('Curso actualizado:');
-
-      this.succesUpdate=true
-
+  
+      this.succesUpdate = true
+  
       this.cursoForm.reset();
       alert('El curso fue correctamente actualizado')
       this.router.navigate(['/cursos'])
     },)
   }
 
-  private createCurso(curso: any): void{
-    this.cursoService.createCurso(curso).subscribe(response => {
+  private createCurso(curso: any, usuariosSeleccionados: any[]): void {
+    this.cursoService.createCurso(curso, usuariosSeleccionados).subscribe(response => {
       console.log('Curso creado:');
-
-      this.succesCreate=true
-
+  
+      this.succesCreate = true
+  
       this.cursoForm.reset();
       alert('El curso fue correctamente creado')
       this.router.navigate(['/cursos'])
