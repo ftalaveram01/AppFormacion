@@ -101,7 +101,7 @@ public class CourseServicesImpl implements CourseServices {
 	}
 
 	@Override
-	public void addUsuario(Long idUsuario, Long idCurso) {
+	public void inscribir(Long idUsuario, Long idCurso) {
 		
 		Course curso = getCursoById(idCurso);
 		Usuario user =getUsuarioById(idUsuario);
@@ -113,9 +113,11 @@ public class CourseServicesImpl implements CourseServices {
 	public void deleteUsuario(Long idUsuario, Long idCurso) {
 				
 		Course curso = getCursoById(idCurso);
-		Usuario user = getUsuarioById(idUsuario);
 		
+		if(!usuarioRepository.existsById(idUsuario))
+			throw new IllegalStateException("No existe el usuario con id "+ idUsuario);
 		
+		curso.getUsuarios().removeIf(u -> u.getId().equals(idUsuario));
 		
 	}
 	
