@@ -25,6 +25,11 @@ export class UserComponent implements OnInit {
     this.userService.deleteUser(id).subscribe(() => {
       this.users = this.users.filter( u => u.id !== id);
     });
+
+    if(id===Number(localStorage.getItem("idUsuario"))){
+      this.router.navigate(['/login']);
+      localStorage.clear();
+    }
   }
   
   btnUpdateUser(isUpdate: boolean, isCreate: boolean, id: number): void{
