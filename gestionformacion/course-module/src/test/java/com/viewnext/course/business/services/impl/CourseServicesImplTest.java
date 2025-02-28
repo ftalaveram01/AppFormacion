@@ -239,11 +239,11 @@ class CourseServicesImplTest {
     	user.setRol(rol);
     	
     	Usuario user1 = new Usuario();
-    	user1.setId(1L);
+    	user1.setId(2L);
     	user1.setRol(rol);
     	
     	Usuario user2 = new Usuario();
-    	user2.setId(1L);
+    	user2.setId(3L);
     	user2.setRol(rol);
     	
     	List<Usuario> list = new ArrayList<Usuario>();
@@ -323,7 +323,6 @@ class CourseServicesImplTest {
     	when(courseRepository.existsById(curso.getId())).thenReturn(true);
 
         when(courseRepository.findById(idCurso)).thenReturn(Optional.of(curso));
-        when(usuarioRepository.findById(idUsuario)).thenReturn(Optional.of(user));
 
         courseServices.deleteUsuario(user.getId(), curso.getId());
 
