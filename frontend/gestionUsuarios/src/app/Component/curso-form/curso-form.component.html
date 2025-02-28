@@ -1,25 +1,27 @@
 <div class="FormularioCursos">
 
     <form [formGroup]="cursoForm" (ngSubmit)="onSubmit()">
-        <div>
+        <div class="apartadoFormulario">
           <label for="nombre">Nombre del Curso:</label>
           <input id="nombre" formControlName="nombre">
         </div>
-        <div>
+        <div class="apartadoFormulario">
           <label for="descripcion">Descripción:</label>
           <input id="descripcion" formControlName="descripcion">
         </div>
-        <div>
+        <div class="apartadoFormulario">
           <label for="fechaInicio">Fecha de Inicio:</label>
           <input id="fechaInicio" type="datetime-local" formControlName="fechaInicio">
         </div>
-        <div>
+        <div class="apartadoFormulario">
           <label for="fechaFin">Fecha de Fin:</label>
           <input id="fechaFin" type="datetime-local" formControlName="fechaFin">
         </div>
         
         <label>
-          Añadir Usuarios:
+          <div class="apartadoFormulario">
+            <h3>Añadir Usuarios:</h3>
+          </div>
           <table class="lista-usuarios" [formGroup]="seleccionadosForm">
             <tr>
               <th>Email</th>
