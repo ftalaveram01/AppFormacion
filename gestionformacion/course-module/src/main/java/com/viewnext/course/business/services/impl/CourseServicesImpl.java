@@ -122,7 +122,10 @@ public class CourseServicesImpl implements CourseServices {
 		if(!usuarioRepository.existsById(idUsuario))
 			throw new IllegalStateException("No existe el usuario con id "+ idUsuario);
 		
-		curso.getUsuarios().removeIf(u -> u.getId().equals(idUsuario));
+		Boolean borrado = curso.getUsuarios().removeIf(u -> u.getId().equals(idUsuario));
+		
+		if(!borrado)
+			throw new IllegalStateException("El usuario dado no esta inscrito en el curso.");
 		
 		cursoRepository.save(curso);
 		
