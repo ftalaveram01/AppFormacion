@@ -104,7 +104,10 @@ public class CourseServicesImpl implements CourseServices {
 	public void inscribir(Long idUsuario, Long idCurso) {
 		
 		Course curso = getCursoById(idCurso);
-		Usuario user =getUsuarioById(idUsuario);
+		Usuario user = getUsuarioById(idUsuario);
+		
+		if(curso.getUsuarios().contains(user))
+			throw new IllegalStateException("El usuario dado ya esta inscrito en el curso.");
 		
 		curso.getUsuarios().add(user);
 		
@@ -119,9 +122,12 @@ public class CourseServicesImpl implements CourseServices {
 		if(!usuarioRepository.existsById(idUsuario))
 			throw new IllegalStateException("No existe el usuario con id "+ idUsuario);
 		
-		curso.getUsuarios().removeIf(u -> u.getId().equals(idUsuario));
+		Boolean borrado = curso.getUsuarios().removeIf(u -> u.getId().equals(idUsuario));
 		
-		cursoRepository.save(curso);
+		if(!borrado)
+			throw new IllegalStateException("El usuario dado no esta inscrito en el curso.");
+		
+		cursoRepository.deleteUsuarioFromCurso(idUsuario, idCurso);
 		
 	}
 	
