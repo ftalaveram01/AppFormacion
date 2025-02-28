@@ -127,7 +127,7 @@ public class CourseServicesImpl implements CourseServices {
 		if(!borrado)
 			throw new IllegalStateException("El usuario dado no esta inscrito en el curso.");
 		
-		cursoRepository.save(curso);
+		cursoRepository.deleteUsuarioFromCurso(idUsuario, idCurso);
 		
 	}
 	
