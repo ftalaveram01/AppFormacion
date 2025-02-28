@@ -91,6 +91,18 @@
     opacity: 0.5;
   }
 
+  #btn-EliminarUsuario, #btn-Eliminar{
+    background-color: #fa4a24;
+    
+    
+  }
+
+  #btn-EliminarUsuario:hover, #btn-Eliminar:hover{
+    background-color: #df2b04;
+    color: #ccc;
+
+  }
+
 
 
   
