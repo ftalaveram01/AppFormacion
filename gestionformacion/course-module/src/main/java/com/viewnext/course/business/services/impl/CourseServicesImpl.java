@@ -124,7 +124,7 @@ public class CourseServicesImpl implements CourseServices {
 		
 		curso.getUsuarios().removeIf(u -> u.getId().equals(idUsuario));
 		
-		cursoRepository.save(curso);
+		cursoRepository.deleteUsuarioFromCurso(idUsuario, idCurso);
 		
 	}
 	
