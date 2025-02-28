@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../Services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RolService } from '../../Services/rol.service';
 
 
 @Component({
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class UserFormComponent implements OnInit {
 
   userForm: FormGroup;
+  roles: any[] = [];
   isUpdate: boolean = false;
   isCreate: boolean = false;
   idUser! : number;
@@ -21,7 +23,7 @@ export class UserFormComponent implements OnInit {
   usuarioActualizadoConExito: boolean = false
   usuarioCreadoConExito: boolean = false
 
-  constructor(private userService: UserService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
+  constructor(private userService: UserService, private rolService: RolService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
     this.userForm = this.fb.group({
       email: [''],
       password: [''],
@@ -32,6 +34,11 @@ export class UserFormComponent implements OnInit {
 
   ngOnInit(): void {
     
+    this.rolService.getRoles().subscribe(data => {
+      console.log(data)
+      this.roles = data;
+    })
+
     this.route.queryParams.subscribe(params =>{
       this.isUpdate = params['isUpdate'] === 'true'
       this.isCreate = params['isCreate'] === 'true'
