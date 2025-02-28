@@ -26,7 +26,7 @@ export class UserService {
     this.getToken();
 
     const params = new HttpParams()
-    .set('idAdmin', id)
+    .set('idAdmin', idAdmin)
 
     return this.http.get(`${this.userApiUrl}/${id}`, {params})
   } 
@@ -59,6 +59,8 @@ export class UserService {
       id: Number(user.rol)
     }
     user.rol = objetoRol
+
+    console.log(idAdmin)
 
     const params = new HttpParams()
                     .set('idAdmin', Number(idAdmin));

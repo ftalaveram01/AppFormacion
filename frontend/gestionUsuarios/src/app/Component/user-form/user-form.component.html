@@ -11,8 +11,7 @@
       <label>
         Rol:
         <select formControlName="rol" required>
-          <option value="1">Alumno</option>
-          <option value="0">Admin</option>
+          <option *ngFor="let r of roles" value="{{r.id}}">{{r.nombreRol}}</option>
         </select>
       </label>
       <button type="submit">{{ isUpdate ? 'Actualizar' : 'Crear' }} Usuario</button>
