@@ -44,33 +44,45 @@ export class CursoFormComponent implements OnInit{
         this.idCurso = +params['id'];
         this.cursoService.getCurso(this.idCurso).subscribe(curso => {
           this.cursoForm.patchValue(curso)
-
+  
           const fechaInicio = new Date(curso.fechaInicio);
           const fechaFin = new Date(curso.fechaFin)
- 
+   
           this.cursoForm.patchValue({
             fechaInicio: formatearFecha(fechaInicio)
           });
           this.cursoForm.patchValue({
             fechaFin: formatearFecha(fechaFin)
           });
+          this.getUsuarios(curso);
         })
+      } else {
+        this.getUsuarios(null);
       }
     })
-    this.getUsuarios();
   }
-
-
-  getUsuarios(): void {
+  
+  getUsuarios(curso: any = null): void {
     this.cursoService.getUsuarios(this.usuarios).subscribe(response => {
       this.usuarios = response;
-      const grupo = this.fb.group({});
-      this.usuarios.forEach((usuario, i) => {
-        grupo.addControl(`seleccionado${i}`, this.fb.control(false));
-      });
-      this.seleccionadosForm = grupo;
-  })
+      if (curso) {
+        const usuariosCurso = curso.usuarios.map((u: any) => u.id);
+        const grupo = this.fb.group({});
+        this.usuarios.forEach((usuario, i) => {
+          const seleccionado = usuariosCurso.includes(usuario.id);
+          grupo.addControl(`seleccionado${i}`, this.fb.control(seleccionado));
+        });
+        this.seleccionadosForm = grupo;
+      } else {
+        const grupo = this.fb.group({});
+        this.usuarios.forEach((usuario, i) => {
+          grupo.addControl(`seleccionado${i}`, this.fb.control(false));
+        });
+        this.seleccionadosForm = grupo;
+      }
+    })
   }
+  
 
   onSubmit(): void{
     if(this.cursoForm.valid){
