@@ -1,8 +1,12 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+}
+
+body *{
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .FormularioCursos,
@@ -74,5 +78,20 @@ a {
   
   .lista-usuarios th {
     background-color: #f0f0f0;
+  }
+
+  .apartadoFormulario{
+    margin-bottom: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    label{
+        font-size: medium;
+        font-weight: bold;
+    }
+  }
+
+  #nombre, #descripcion{
+    padding: 5px;
+    margin-left: 5px;
   }
   
