@@ -42,17 +42,13 @@ export class CursoListComponent implements OnInit{
     this.cursoService.addUsuarioToCurso(idCurso, idUsuario).subscribe(() => {
     })
 
-    this.cursoService.getCursos().subscribe(data => {
-      this.cursos = data;
-    });
+    
   }
 
   btnDesmatricularse(idCurso: number): void{
     const idUsuario = Number(localStorage.getItem('idUsuario'))
     this.cursoService.deleteUsuarioFromCurso(idUsuario, idCurso).subscribe(() => {
-      this.cursoService.getCursos().subscribe(data => {
-        this.cursos = data;
-      });
+     
     })
   }
 
@@ -60,9 +56,7 @@ export class CursoListComponent implements OnInit{
  
     this.cursoService.deleteUsuarioFromCurso(id, idCurso).subscribe(() => {
       this.cursos = this.cursos.filter( u => u.id !== id)
-      this.cursoService.getCursos().subscribe(data => {
-        this.cursos = data;
-      });
+      
     })
   }
   
