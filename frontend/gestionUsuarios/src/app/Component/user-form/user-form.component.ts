@@ -45,7 +45,8 @@ export class UserFormComponent implements OnInit {
       if(params['id']){
 
         this.idUser = +params['id'];
-        this.idAdmin = +params['idAdmin']
+        this.idAdmin = Number(localStorage.getItem('idUsuario'))
+        console.log(this.idAdmin)
         this.userService.getUser(this.idUser, this.idAdmin).subscribe(user =>{
           this.userForm.patchValue(user)
         })
