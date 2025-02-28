@@ -68,6 +68,8 @@ export class UserFormComponent implements OnInit {
       }else{
         if(this.isCreate == true){
           this.createUser(this.idUser, this.userForm.value);
+          alert('El usuario fue correctamente creado')
+          this.router.navigate(['users'])
         } else{
           console.log("ERROR EN EL FORM")
         }
