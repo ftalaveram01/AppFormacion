@@ -55,6 +55,16 @@ export class CursoListComponent implements OnInit{
       });
     })
   }
+
+  btnDeleteUserCourse(id: number, idCurso: number): void{
+ 
+    this.cursoService.deleteUsuarioFromCurso(id, idCurso).subscribe(() => {
+      this.cursos = this.cursos.filter( u => u.id !== id)
+      this.cursoService.getCursos().subscribe(data => {
+        this.cursos = data;
+      });
+    })
+  }
   
 
   isInscrito(idCurso: number): boolean{
