@@ -35,8 +35,8 @@ CREATE TABLE curso_usuario (
 	id_usuario BIGINT NOT NULL,
 	id_curso BIGINT NOT NULL,
 	PRIMARY KEY (id_usuario, id_curso),
-	FOREIGN KEY(id_usuario) REFERENCES usuario(id),
-	FOREIGN KEY(id_curso) REFERENCES curso(id)
+	FOREIGN KEY(id_usuario) REFERENCES usuario(id) ON DELETE CASCADE,
+	FOREIGN KEY(id_curso) REFERENCES curso(id) ON DELETE CASCADE
 
 );
 
