@@ -17,6 +17,21 @@
           <label for="fechaFin">Fecha de Fin:</label>
           <input id="fechaFin" type="datetime-local" formControlName="fechaFin">
         </div>
+        
+        <label>
+          Añadir Usuarios:
+          <table class="lista-usuarios" [formGroup]="seleccionadosForm">
+            <tr>
+              <th>Email</th>
+              <th>Añadir</th>
+            </tr>
+            <tr *ngFor="let usuario of usuarios; let i = index">
+              <td>{{ usuario.email }}</td>
+              <td><input type="checkbox" formControlName="seleccionado{{i}}"></td>
+            </tr>
+          </table>
+        </label>
+
             <button type="submit">{{ isUpdate ? 'Actualizar Curso ' : 'Crear Curso'}}</button>
       </form>
       

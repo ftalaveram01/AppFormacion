@@ -36,11 +36,39 @@ export class CursoListComponent implements OnInit{
       queryParams: {isUpdate: isUpdate, id: id}
     });
   }
+  
+  btnMatricularse(idCurso: number): void{
+    const idUsuario = Number(localStorage.getItem('idUsuario'))
+    this.cursoService.addUsuarioToCurso(idCurso, idUsuario).subscribe(() => {
+    })
+
+    this.cursoService.getCursos().subscribe(data => {
+      this.cursos = data;
+    });
+  }
+
+  btnDesmatricularse(idCurso: number): void{
+    const idUsuario = Number(localStorage.getItem('idUsuario'))
+    this.cursoService.deleteUsuarioFromCurso(idUsuario, idCurso).subscribe(() => {
+      this.cursoService.getCursos().subscribe(data => {
+        this.cursos = data;
+      });
+    })
+  }
+  
+
+  isInscrito(idCurso: number): boolean{
+    const curso = this.cursos.find(c => c.id === idCurso);
+    if(!curso)
+      return false;
+    const idUsuario = Number(localStorage.getItem('idUsuario'));
+
+    return curso.usuarios.some((u: any) => u.id === idUsuario);
+  }
 
   borrarCache(): void {
     localStorage.clear();
   }
-
 }
 
 
