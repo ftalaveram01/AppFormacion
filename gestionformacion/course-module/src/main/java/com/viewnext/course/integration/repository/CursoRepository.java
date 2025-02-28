@@ -13,8 +13,5 @@ import jakarta.transaction.Transactional;
 @Repository
 public interface CursoRepository extends JpaRepository<Course, Long>{
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE Course c SET c.usuarios = (SELECT u FROM c.usuarios u WHERE u.id != :idUsuario) WHERE c.id = :idCurso")
-    void deleteUsuarioFromCurso(@Param("usuarioId") Long idUsuario, @Param("cursoId") Long idCurso);
+	
 }
