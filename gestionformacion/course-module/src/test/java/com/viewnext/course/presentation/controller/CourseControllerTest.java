@@ -215,21 +215,24 @@ class CourseControllerTest{
 		
 		when(courseServices.read(2L)).thenReturn(Optional.of(curso));
 		
-		MvcResult response = mockMvc.perform(get("/courses/2/alumnos").contentType("application/json"))
+		MvcResult response = mockMvc.perform(get("/courses/2").contentType("application/json"))
 	            .andExpect(status().isOk())
 	            .andReturn();
 		
-		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
-	    String json = mapper.writeValueAsString(listaAlumnos);
+	    String expected = mapper.writeValueAsString(listaAlumnos);
+	    
+	    String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
+	    Course courseResponse = mapper.readValue(responseBody, Course.class);
+	    String actual = mapper.writeValueAsString(courseResponse.getUsuarios());
 
-	    assertEquals(json, responseBody);
+	    assertEquals(expected, actual);
 	}
 	
 	@Test
 	void testAlumnoEnCursoNoExistente() throws Exception {
 		doThrow(new IllegalStateException("Error curso no existente")).when(courseServices).read(2L);
 
-		MvcResult response = mockMvc.perform(get("/courses/2/alumnos").contentType("application/json"))
+		MvcResult response = mockMvc.perform(get("/courses/2").contentType("application/json"))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 
@@ -249,7 +252,7 @@ class CourseControllerTest{
 				.param("idUsuario", String.valueOf(idUsuario))
 				.param("idCurso", String.valueOf(idCurso))
 				.contentType("aplication/json"))
-			.andExpect(status().isCreated())
+			.andExpect(status().isNoContent())
 			.andReturn();
 		
 		verify(courseServices,times(1)).deleteUsuario(1L, 1L);
@@ -263,8 +266,9 @@ class CourseControllerTest{
 		int idCurso = 2;
 		
 		MvcResult response = mockMvc.perform(delete("/courses")
-				.param("idAdmin", String.valueOf(idCurso))
-				.param("idUsuario", String.valueOf(idUsuario)).contentType("application/json"))
+				.param("idUsuario", String.valueOf(idUsuario))
+				.param("idCurso", String.valueOf(idCurso))
+				.contentType("application/json"))
 			.andExpect(status().isBadRequest())
 			.andReturn();
 		
