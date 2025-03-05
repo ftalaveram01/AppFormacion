@@ -48,16 +48,17 @@ export class CursoListComponent implements OnInit{
   btnDesmatricularse(idCurso: number): void{
     const idUsuario = Number(localStorage.getItem('idUsuario'))
     this.cursoService.deleteUsuarioFromCurso(idUsuario, idCurso).subscribe(() => {
-     
+      this.cursos = this.cursos.filter( u => u.id !== idUsuario)
     })
   }
 
   btnDeleteUserCourse(id: number, idCurso: number): void{
  
     this.cursoService.deleteUsuarioFromCurso(id, idCurso).subscribe(() => {
-      this.cursos = this.cursos.filter( u => u.id !== id)
+      this.cursos = this.cursos.filter( u => u.usuarios.id !== id)
       
     })
+    console.log(this.cursos)
   }
   
 
