@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.core.business.model.Course;
@@ -27,7 +26,6 @@ import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.course.integration.repository.CursoRepository;
 import com.viewnext.course.integration.repository.UsuarioRepository;
-import com.viewnext.course.presentation.controller.CursoController;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServicesImplTest {
