@@ -14,4 +14,8 @@ export class RolService {
   getRoles(): Observable<any>{
     return this.http.get(`${this.rolApiUrl}`)
   }
+
+  getRolById(idRol: number): Observable<any>{
+    return this.http.get(`${this.rolApiUrl}/${idRol}`)
+  }
 }
