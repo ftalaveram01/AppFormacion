@@ -12,6 +12,49 @@ export class RolService {
   constructor(private http: HttpClient) { }
 
   getRoles(): Observable<any>{
+    this.getToken();
+
     return this.http.get(`${this.rolApiUrl}`)
+  }
+
+  createRol(rol: any): Observable<any>{
+    this.getToken();
+
+    const idAdmin = localStorage.getItem('idUsuario')
+    const params = new HttpParams().set('idAdmin', Number(idAdmin))
+
+    return this.http.post(this.rolApiUrl, rol, {params});
+  }
+
+  updateRol(id: number, rol: any): Observable<any>{
+    this.getToken();
+
+    rol.id = id
+
+    const idAdmin = localStorage.getItem("idUsuario")
+    const params = new HttpParams().set('idAdmin', Number(idAdmin))
+
+    console.log(idAdmin)
+
+    return this.http.put(`${this.rolApiUrl}/${id}`,rol, {params})
+  }
+
+  deleteRol(id: number): Observable<any>{
+    this.getToken();
+
+    const idAdmin = localStorage.getItem('idUsuario')
+    const params = new HttpParams().set('idAdmin', Number(idAdmin))
+
+    return this.http.delete(`${this.rolApiUrl}/${id}`, {params});
+  }
+
+  getToken(): void{
+    const token = localStorage.getItem('token');
+
+    const header = {
+      headers: new HttpHeaders({
+        "Authorization": `Bearer ${token}`
+      })
+    }
   }
 }
