@@ -85,6 +85,23 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		
 		usuarioRepository.save(usuario);
 	}
+	
+	@Transactional
+	@Override
+	public void deshabilitarUsuario(String email) {
+		
+		if(!usuarioRepository.existsByEmail(email))
+			throw new IllegalStateException("No existe el usuario.");
+		
+		Usuario usu = usuarioRepository.findByEmail(email);
+		
+		if(!usu.getHabilitado())
+			throw new IllegalStateException("El usuario ya está deshabilitado");
+		usu.setHabilitado(false);
+		
+		usuarioRepository.save(usu);
+		
+	}
 
 	@Override
 	public List<Usuario> getAll(Long idAdmin) {
@@ -117,5 +134,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 			return true;
 		return false;
 	}
+
+
 
 }

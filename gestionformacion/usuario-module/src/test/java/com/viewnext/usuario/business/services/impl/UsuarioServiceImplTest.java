@@ -348,4 +348,46 @@ class UsuarioServiceImplTest {
         assertEquals(Arrays.asList(usuario1, usuario2), users);
         
     }
+    
+    @Test
+    void testDeshabilitar() {
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setEmail("hola@gmail.com");
+        usuario1.setHabilitado(true);
+        
+        when(usuarioRepository.existsByEmail(usuario1.getEmail())).thenReturn(true);
+        when(usuarioRepository.findByEmail(usuario1.getEmail())).thenReturn(usuario1);
+        
+        usuarioServicesImpl.deshabilitarUsuario(usuario1.getEmail());
+        
+        usuario1.setHabilitado(false);
+        
+        verify(usuarioRepository, times(1)).save(usuario1);
+    }
+    
+    @Test
+    void testDeshabilitarYaDeshabilitado() {
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setEmail("hola@gmail.com");
+        usuario1.setHabilitado(false);
+        
+        when(usuarioRepository.existsByEmail(usuario1.getEmail())).thenReturn(true);
+        when(usuarioRepository.findByEmail(usuario1.getEmail())).thenReturn(usuario1);
+        
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.deshabilitarUsuario(usuario1.getEmail()));
+    }
+    
+    @Test
+    void testDeshabilitarNoExistente() {
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setEmail("hola@gmail.com");
+        usuario1.setHabilitado(true);
+        
+        when(usuarioRepository.existsByEmail(usuario1.getEmail())).thenReturn(false);
+        
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.deshabilitarUsuario(usuario1.getEmail()));
+    }
 }
