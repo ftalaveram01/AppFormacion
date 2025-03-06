@@ -63,7 +63,6 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit(): void{
-<<<<<<< HEAD
       if(this.userForm.valid){
         if(this.isUpdate == true){
           this.updateUser(this.idUser,this.userForm.value);
@@ -81,9 +80,10 @@ export class UserFormComponent implements OnInit {
             console.log("ERROR EN EL FORM")
         }
       }
+    }
   }
 
-  passwordMatchValidator(formGroup: FormGroup) : void{
+  passwordMatchValidator(formGroup: FormGroup): void{
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
   
