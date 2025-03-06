@@ -64,7 +64,13 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		if(!usuarioRepository.existsById(id))
 			throw new IllegalStateException("No existe el usuario a borrar.");
 		
-		usuarioRepository.deleteById(id);
+		Usuario usu = usuarioRepository.findById(id).get();
+		
+		if(usu.getHabilitado()) {
+			usu.setHabilitado(false);
+			usuarioRepository.save(usu);
+		}else
+			throw new IllegalStateException("El usuario ya está deshabilitado");
 	}
 
 	@Transactional
