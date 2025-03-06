@@ -68,8 +68,6 @@ export class UserFormComponent implements OnInit {
       }else{
         if(this.isCreate == true){
           this.createUser(this.idUser, this.userForm.value);
-          alert('El usuario fue correctamente creado')
-          this.router.navigate(['users'])
         } else{
           console.log("ERROR EN EL FORM")
         }
@@ -94,11 +92,23 @@ export class UserFormComponent implements OnInit {
   }
   
   private createUser(id:number, user: any): void{
-    this.userService.createUser(user).subscribe(response => {
-      console.log('Usuario creado correctamente');
-      this.usuarioCreadoConExito = true
-      this.userForm.reset();
-    },)
+    this.userService.createUser(user).subscribe({
+      next: (response) => {
+        console.log('Usuario creado correctamente');
+        this.usuarioCreadoConExito = true
+        this.userForm.reset();
+        alert('El usuario fue correctamente creado')
+        this.router.navigate(['users'])
+      },
+      error: (error) => {
+        console.error('Error al crear usuario:');
+        alert('Error al crear usuario: ');
+      },
+      complete: () => {
+        console.log('La petición ha finalizado');
+      }
+    });
   }
+  
 
 }
