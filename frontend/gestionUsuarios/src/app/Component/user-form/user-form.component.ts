@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../Services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { RolService } from '../../Services/rol.service';
 })
 export class UserFormComponent implements OnInit {
 
-  userForm: FormGroup;
+  userForm!: FormGroup;
   roles: any[] = [];
   isUpdate: boolean = false;
   isCreate: boolean = false;
@@ -22,14 +22,18 @@ export class UserFormComponent implements OnInit {
   idAdmin! : number;
   usuarioActualizadoConExito: boolean = false
   usuarioCreadoConExito: boolean = false
+  errors: { [nameError: string]: string} = {};
 
   constructor(private userService: UserService, private rolService: RolService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
     this.userForm = this.fb.group({
-      email: [''],
-      password: [''],
-      rol: [''],
-      router: ['']
-    });
+      email: ['', Validators.required, this.emailValidator],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+      rol: ['']
+    }, {
+      validators: this.passwordMatchValidator
+    })
+
   }
 
   ngOnInit(): void {
@@ -49,6 +53,9 @@ export class UserFormComponent implements OnInit {
         console.log(this.idAdmin)
         this.userService.getUser(this.idUser, this.idAdmin).subscribe(user =>{
           this.userForm.patchValue(user)
+          this.userForm.patchValue({
+            rol: user.rol.id
+          })
         })
       }
     })
@@ -56,26 +63,46 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit(): void{
-
-    if(this.userForm.valid){
-      if(this.isUpdate == true){
-        this.updateUser(this.idUser,this.userForm.value);
-        if(this.userForm.value.id == Number(localStorage.getItem('idUsuario'))){
-          alert('El usuario fue correctamente actualizado')
-          this.router.navigate(['login'])
-          console.log("Entra")
-        }
-      }else{
-        if(this.isCreate == true){
-          this.createUser(this.idUser, this.userForm.value);
-          alert('El usuario fue correctamente creado')
-          this.router.navigate(['users'])
-        } else{
-          console.log("ERROR EN EL FORM")
+      if(this.userForm.valid){
+        if(this.isUpdate == true){
+          this.updateUser(this.idUser,this.userForm.value);
+          if(this.userForm.value.id == Number(localStorage.getItem('idUsuario'))){
+            alert('El usuario fue correctamente actualizado')
+            this.router.navigate(['login'])
+            console.log("Entra")
+          }
+        }else{
+          if(this.isCreate == true){
+            this.createUser(this.idUser, this.userForm.value);
+            alert('El usuario fue correctamente creado')
+            this.router.navigate(['users'])
+          } else{
+            console.log("ERROR EN EL FORM")
+          }
         }
       }
-    }
 
+
+    console.log(this.userForm.value)
+
+  }
+
+  passwordMatchValidator(formGroup: FormGroup) : void{
+    const password = formGroup.get('password')?.value;
+    const confirmPassword = formGroup.get('confirmPassword')?.value;
+  
+    if (password !== confirmPassword) {
+      formGroup.get('confirmPassword')?.setErrors({ noMatch: true });
+    } else {
+    }
+  }
+
+  async emailValidator(control: any) {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (control.value && !emailPattern.test(control.value)) {
+      return { invalidEmail: true };
+    }
+    return null;
   }
 
   private updateUser(id:number, user: any): void{
@@ -99,6 +126,18 @@ export class UserFormComponent implements OnInit {
       this.usuarioCreadoConExito = true
       this.userForm.reset();
     },)
+  }
+
+  get email() {
+    return this.userForm.get('email');
+  }
+
+  get password() {
+    return this.userForm.get('password');
+  }
+
+  get confirmPassword() {
+    return this.userForm.get('confirmPassword');
   }
 
 }
