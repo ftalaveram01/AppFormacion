@@ -1,1 +1,23 @@
-<p>rol works!</p>
+<div class="header">
+    <h2>Lista de Roles</h2>
+  
+    <div class="btn-inicio">
+        <a href="inicio">
+            <button>INICIO</button>
+        </a>
+    </div>
+  
+    <div class="cerrar-sesion">
+        <a href="login">
+            <button (click)="borrarCache()">CERRAR SESION</button>
+        </a>
+    </div>
+
+    <div class="lista-roles" *ngFor="let r of roles">
+        <h3>Rol:</h3>
+        <p>id: {{r.id}}</p>
+        <p>nombre: {{r.nombreRol}}</p>
+        <p>descripcion: {{r.descripcion}}</p>
+    </div>
+</div>
+    
