@@ -16,6 +16,7 @@ CREATE TABLE usuario (
 	email VARCHAR(100) UNIQUE NOT NULL,
 	password VARCHAR(20) NOT NULL,
     id_rol BIGINT,
+	habilitado BOOLEAN NOT NULL DEFAULT TRUE,
     FOREIGN KEY(id_rol) REFERENCES rol(id) ON DELETE SET NULL
     
 );
@@ -26,7 +27,8 @@ CREATE TABLE curso (
 	nombre VARCHAR(100) NOT NULL,
 	descripcion VARCHAR(500) ,
 	fecha_inicio TIMESTAMP NOT NULL,
-	fecha_fin TIMESTAMP NOT NULL
+	fecha_fin TIMESTAMP NOT NULL,
+	habilitado BOOLEAN NOT NULL DEFAULT TRUE
 
 );
 
@@ -43,5 +45,5 @@ CREATE TABLE curso_usuario (
 INSERT INTO rol (id, nombre_rol, descripcion) VALUES (0, 'ADMIN', 'Usuario con todos los permisos'),
 (1, 'ALUMNO', 'Usuario normal');
 
-INSERT INTO usuario (id, email, password, id_rol)
- VALUES (1, 'admin@gmail.com', '1234', 0);
+INSERT INTO usuario (id, email, password, id_rol, habilitado)
+ VALUES (1, 'admin@gmail.com', '1234', 0, TRUE);

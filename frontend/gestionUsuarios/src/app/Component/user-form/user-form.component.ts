@@ -63,6 +63,7 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit(): void{
+<<<<<<< HEAD
       if(this.userForm.valid){
         if(this.isUpdate == true){
           this.updateUser(this.idUser,this.userForm.value);
@@ -78,13 +79,8 @@ export class UserFormComponent implements OnInit {
             this.router.navigate(['users'])
           } else{
             console.log("ERROR EN EL FORM")
-          }
         }
       }
-
-
-    console.log(this.userForm.value)
-
   }
 
   passwordMatchValidator(formGroup: FormGroup) : void{
@@ -121,12 +117,24 @@ export class UserFormComponent implements OnInit {
   }
   
   private createUser(id:number, user: any): void{
-    this.userService.createUser(user).subscribe(response => {
-      console.log('Usuario creado correctamente');
-      this.usuarioCreadoConExito = true
-      this.userForm.reset();
-    },)
+    this.userService.createUser(user).subscribe({
+      next: (response) => {
+        console.log('Usuario creado correctamente');
+        this.usuarioCreadoConExito = true
+        this.userForm.reset();
+        alert('El usuario fue correctamente creado')
+        this.router.navigate(['users'])
+      },
+      error: (error) => {
+        console.error('Error al crear usuario:');
+        alert('Error al crear usuario: ');
+      },
+      complete: () => {
+        console.log('La petición ha finalizado');
+      }
+    });
   }
+  
 
   get email() {
     return this.userForm.get('email');
