@@ -21,7 +21,8 @@
                 </div>
             </label>
 
-            <p *ngIf="succes">Registration successful</p>
+            <p *ngIf="succes === true">Registro correcto</p>
+            <p class="error" *ngIf="succes === false">Error en el registro</p>
             
             <button type="submit">Register</button>
             <a href="http://localhost:4200/login">¿Ya tienes cuenta? Login</a>

@@ -60,6 +60,7 @@ export class RegisterComponent implements OnInit{
     this.authService.registerUser(this.form.value, (ok : boolean) => {
       if(!ok){
         this.errors['email'] = 'REGISTRO FALLIDO, INTENTELO DE NUEVO';
+        this.succes = false;
       }else{
         this.succes = true;
       }
