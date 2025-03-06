@@ -2,24 +2,41 @@ import { Component, OnInit } from '@angular/core';
 import { CursoService } from '../../Services/curso.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-CursoService
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-curso-list',
   imports: [CommonModule],
   templateUrl: './curso-list.component.html',
-  styleUrl: './curso-list.component.css'
+  styleUrls: ['./curso-list.component.css']
 })
 export class CursoListComponent implements OnInit{
 
-   cursos: any[] = [];
-   idAdmin!: number;
+  cursos: any[] = [];
+  idAdmin!: number;
+  cursoForm: FormGroup;
 
-  constructor(private cursoService: CursoService, private router: Router) {}
+  constructor(private cursoService: CursoService, private fb: FormBuilder,private router: Router) {
+    this.cursoForm = this.fb.group({
+      nombre: [''],
+      descripcion: [''],
+      fechaInicio: [''],
+      fechaFin: [''],
+      router:['']
+    });
+  }
 
   ngOnInit(): void {
     this.cursoService.getCursos().subscribe(data => {
-      this.cursos = data;
+      this.cursos = data.map((curso: any) => {
+        const fechaInicio = new Date(curso.fechaInicio);
+        const fechaFin = new Date(curso.fechaFin);
+        return {
+          ...curso,
+          fechaInicio: this.formatearFecha(fechaInicio),
+          fechaFin: this.formatearFecha(fechaFin)
+        };
+      });
     });
 
     this.idAdmin = Number(localStorage.getItem('idAdmin'))
@@ -41,7 +58,15 @@ export class CursoListComponent implements OnInit{
     const idUsuario = Number(localStorage.getItem('idUsuario'))
     this.cursoService.addUsuarioToCurso(idCurso, idUsuario).subscribe(() => {
       this.cursoService.getCursos().subscribe(data => {
-        this.cursos = data;
+        this.cursos = data.map((curso: any) => {
+          const fechaInicio = new Date(curso.fechaInicio);
+          const fechaFin = new Date(curso.fechaFin);
+          return {
+            ...curso,
+            fechaInicio: this.formatearFecha(fechaInicio),
+            fechaFin: this.formatearFecha(fechaFin)
+          };
+        });
       });
     })
   }
@@ -50,16 +75,33 @@ export class CursoListComponent implements OnInit{
     const idUsuario = Number(localStorage.getItem('idUsuario'))
     this.cursoService.deleteUsuarioFromCurso(idUsuario, idCurso).subscribe(() => {
       this.cursoService.getCursos().subscribe(data => {
-        this.cursos = data;
+        this.cursos = data.map((curso: any) => {
+          const fechaInicio = new Date(curso.fechaInicio);
+          const fechaFin = new Date(curso.fechaFin);
+          return {
+            ...curso,
+            fechaInicio: this.formatearFecha(fechaInicio),
+            fechaFin: this.formatearFecha(fechaFin)
+          };
+        });
       });
     })
   }
+  
 
   btnDeleteUserCourse(id: number, idCurso: number): void{
     this.cursoService.deleteUsuarioFromCurso(id, idCurso).subscribe(() => {
       this.cursos = this.cursos.filter( u => u.id !== id)
       this.cursoService.getCursos().subscribe(data => {
-        this.cursos = data;
+        this.cursos = data.map((curso: any) => {
+          const fechaInicio = new Date(curso.fechaInicio);
+          const fechaFin = new Date(curso.fechaFin);
+          return {
+            ...curso,
+            fechaInicio: this.formatearFecha(fechaInicio),
+            fechaFin: this.formatearFecha(fechaFin)
+          };
+        });
       });
     })
   }
@@ -77,6 +119,16 @@ export class CursoListComponent implements OnInit{
   borrarCache(): void {
     localStorage.clear();
   }
+
+  formatearFecha(fecha: Date): string {
+    const anio = fecha.getFullYear();
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const hora = fecha.getHours().toString().padStart(2, '0');
+    const minutos = fecha.getMinutes().toString().padStart(2, '0');
+ 
+    const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
+ 
+    return fechaFormateada
+  }
 }
-
-
