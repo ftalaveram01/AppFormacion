@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RolService } from '../../Services/rol.service';
 import { Router } from '@angular/router';
+import { RolService } from '../../Services/rol.service';
 
 @Component({
   selector: 'app-rol',
@@ -13,7 +13,9 @@ export class RolComponent {
 
   roles: any[] = [];
 
-  constructor(private rolService:RolService, private router: Router) {}
+  constructor(private rolService: RolService, private router: Router) {
+
+  }
 
   ngOnInit(): void{
     this.rolService.getRoles().subscribe((data) => {
@@ -24,4 +26,17 @@ export class RolComponent {
   borrarCache(): void {
     localStorage.clear();
   }
+
+  btnUpdateRol(isUpdate: boolean, id: number): void{
+    this.router.navigate(['rol/form'], {
+      queryParams: {isUpdate: isUpdate, id: id}
+    });
+  }
+
+  deleteRol(id: number): void{
+    this.rolService.deleteRol(id).subscribe(() =>{
+      this.roles = this.roles.filter(r => r.id !== id);
+    })
+  }
+  
 }
