@@ -17,6 +17,14 @@ export class RolComponent {
 
   }
 
+  btnCreateRol(isUpdate: boolean, isCreate: boolean): void{
+    console.log(isCreate)
+    console.log(isUpdate)
+    this.router.navigate(['rols/form'], {
+      queryParams: {isUpdate: isUpdate, isCreate: isCreate}
+    })
+  }
+
   btnUpdateRol(isUpdate: boolean, id: number): void{
     this.router.navigate(['rol/form'], {
       queryParams: {isUpdate: isUpdate, id: id}
