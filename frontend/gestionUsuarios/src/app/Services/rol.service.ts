@@ -17,6 +17,10 @@ export class RolService {
     return this.http.get(`${this.rolApiUrl}`)
   }
 
+  getRolById(idRol: number): Observable<any>{
+    return this.http.get(`${this.rolApiUrl}/${idRol}`)
+  }
+
   createRol(rol: any): Observable<any>{
     this.getToken();
 
@@ -57,4 +61,5 @@ export class RolService {
       })
     }
   }
+    
 }

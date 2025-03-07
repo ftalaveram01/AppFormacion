@@ -80,8 +80,13 @@ public class CourseServicesImpl implements CourseServices {
 			throw new IllegalStateException("El curso con ID [" + id + "] no existe.");
 		}
 		
-		cursoRepository.deleteById(id);
+		Course curso = cursoRepository.findById(id).get();
 		
+		if(curso.getHabilitado()) {
+			curso.setHabilitado(false);
+			cursoRepository.save(curso);
+		}else
+			throw new IllegalStateException("El curso ya está deshabilitado");	
 	}
 
 	@Override

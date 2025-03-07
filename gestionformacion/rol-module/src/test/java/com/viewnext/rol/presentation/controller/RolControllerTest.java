@@ -70,9 +70,11 @@ public class RolControllerTest {
     	
     	String json = mapper.writeValueAsString(rol);
     	
-    	when(rolServices.create(rol)).thenReturn(rol);
+    	when(rolServices.create(rol, 0L)).thenReturn(rol);
     	
-		MvcResult response = mockMvc.perform(post("/roles").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(post("/roles").contentType("application/json")
+				.param("idAdmin", "0")
+				.content(json))
 				.andExpect(status().isOk())
 				.andReturn();
 		
@@ -90,9 +92,11 @@ public class RolControllerTest {
     	
     	String json = mapper.writeValueAsString(rol);
     	
-    	when(rolServices.create(rol)).thenThrow(new IllegalStateException("Excepcion de create"));
+    	when(rolServices.create(rol, 0L)).thenThrow(new IllegalStateException("Excepcion de create"));
     	
-		MvcResult response = mockMvc.perform(post("/roles").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(post("/roles").contentType("application/json")
+				.param("idAdmin", "0")
+				.content(json))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		
@@ -140,11 +144,13 @@ public class RolControllerTest {
     	rol.setNombreRol(RolEnum.ADMIN);
     	rol.setDescripcion("Prueba");
     	
-		when(rolServices.update(rol, 5L)).thenReturn(rol);
+		when(rolServices.update(rol, 5L, 0L)).thenReturn(rol);
 		
 		String json = mapper.writeValueAsString(rol);
 		
-		MvcResult response = mockMvc.perform(put("/roles/5").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(put("/roles/5").contentType("application/json")
+				.param("idAdmin", "0")
+				.content(json))
 				.andExpect(status().isOk())
 				.andReturn();
 		
@@ -160,11 +166,13 @@ public class RolControllerTest {
     	rol.setNombreRol(RolEnum.ADMIN);
     	rol.setDescripcion("Prueba");
     	
-		when(rolServices.update(rol, 5L)).thenThrow(new IllegalStateException("Excepcion de update"));
+		when(rolServices.update(rol, 5L, 0L)).thenThrow(new IllegalStateException("Excepcion de update"));
 		
 		String json = mapper.writeValueAsString(rol);
 		
-		MvcResult response = mockMvc.perform(put("/roles/5").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(put("/roles/5").contentType("application/json")
+				.param("idAdmin", "0")
+				.content(json))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		
@@ -176,19 +184,19 @@ public class RolControllerTest {
 	@Test
 	void testDelete() throws Exception{
 		
-		mockMvc.perform(delete("/roles/5").contentType("application/json"))
+		mockMvc.perform(delete("/roles/5").contentType("application/json").param("idAdmin", "0"))
 			.andExpect(status().isNoContent())
 			.andReturn();
 		
-		verify(rolServices, times(1)).delete(5L);
+		verify(rolServices, times(1)).delete(5L, 0L);
 	}
 	
 	@Test
 	void testDeleteError() throws Exception{
 		
-		doThrow(new IllegalStateException("Excepcion de delete")).when(rolServices).delete(5L);;
+		doThrow(new IllegalStateException("Excepcion de delete")).when(rolServices).delete(5L, 0L);;
 		
-		mockMvc.perform(delete("/roles/5").contentType("application/json"))
+		mockMvc.perform(delete("/roles/5").contentType("application/json").param("idAdmin", "0"))
 			.andExpectAll(status().isBadRequest())
 			.andReturn();
 	}

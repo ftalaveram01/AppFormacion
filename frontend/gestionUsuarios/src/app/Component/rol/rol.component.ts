@@ -1,11 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RolService } from '../../Services/rol.service';
 
-
 @Component({
   selector: 'app-rol',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './rol.component.html',
   styleUrl: './rol.component.css'
 })
@@ -15,6 +15,16 @@ export class RolComponent {
 
   constructor(private rolService: RolService, private router: Router) {
 
+  }
+
+  ngOnInit(): void{
+    this.rolService.getRoles().subscribe((data) => {
+      this.roles = data;
+    })
+  }
+
+  borrarCache(): void {
+    localStorage.clear();
   }
 
   btnUpdateRol(isUpdate: boolean, id: number): void{
