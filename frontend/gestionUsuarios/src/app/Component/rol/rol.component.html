@@ -13,6 +13,10 @@
         </a>
     </div>
 
+    <div class="btn-CrearUser">
+        <button id="btn-Crear" (click)="btnCreateRol(false, true)">Crear -></button>
+    </div>
+
     <div class="lista-roles" *ngFor="let r of roles">
         <h3>Rol:</h3>
         <p>id: {{r.id}}</p>
