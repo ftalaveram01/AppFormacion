@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viewnext.core.business.model.Rol;
@@ -31,8 +32,8 @@ public class RolController {
 	}
 	
 	@PostMapping
-	public Rol createRol(@RequestBody Rol rol) {
-		return rolServices.create(rol);
+	public Rol createRol(@RequestBody Rol rol, @RequestParam Long idAdmin) {
+		return rolServices.create(rol, idAdmin);
 	}
 	
 	@GetMapping("/{id}")
@@ -41,13 +42,13 @@ public class RolController {
 	}
 	
 	@PutMapping("/{id}")
-	public Rol update(@PathVariable Long id, @RequestBody Rol rol) {
-		return rolServices.update(rol, id);
+	public Rol update(@PathVariable Long id, @RequestBody Rol rol, @RequestParam Long idAdmin) {
+		return rolServices.update(rol, id, idAdmin);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
-		rolServices.delete(id);
+	public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam Long idAdmin){
+		rolServices.delete(id, idAdmin);
 		return ResponseEntity.noContent().build();
 	}
 	
