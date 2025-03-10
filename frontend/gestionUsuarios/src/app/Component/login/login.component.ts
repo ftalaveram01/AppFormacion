@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../Services/auth.service';
 import { LocalStorageService } from '../../Services/localstorage.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../Services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -16,31 +17,48 @@ export class LoginComponent {
 
   email: string = '';
   password: string = '';
-  somethingIncorrect: boolean = false;
+  userEmail: string = this.email;
+  contadorClick: number = 0;
+  mensajeError!: any; 
 
-  constructor(private authService: AuthService, private localStorage: LocalStorageService, private router: Router){}
+  constructor(private authService: AuthService,private userService: UserService, private localStorage: LocalStorageService, private router: Router){}
 
   ngOnInit(): void{}
 
   onSubmit(){
-    this.authService.loginUser(this.email, this.password, (ok: boolean, user?:any) =>{
-      if(ok){
-        this.localStorage.setItem('idUsuario',user.id);
-        console.log(user.id)
-        this.localStorage.setItem('idAdmin',user.rol.id);
-        console.log(user.rol.id)
-        this.localStorage.setItem('token',user.token);
-        console.log(user.token);
-        this.router.navigate(['/inicio'], {
+
+    if(this.userEmail.localeCompare(this.email) != 0){
+      this.userEmail = this.email
+      this.contadorClick = 0
+    }
+
+    if(this.contadorClick>=5){
+
+      this.userService.deshabilitar(this.userEmail)
+    
+    }else{
+
+      this.authService.loginUser(this.email, this.password, (ok: boolean, user?:any) =>{
+        if(ok){
+          this.localStorage.setItem('idUsuario',user.id);
+          console.log(user.id)
+          this.localStorage.setItem('idAdmin',user.rol.id);
+          console.log(user.rol.id)
+          this.localStorage.setItem('token',user.token);
+          console.log(user.token);
+          this.router.navigate(['/inicio'], {
           queryParams: {id: user.id, idAdmin: user.rol.id}
-        });
-        
-      }else{
-        
-        this.somethingIncorrect = true;
-
-      }
-    })
+          });  
+        }else{
+          
+          this.mensajeError = user
+  
+          this.contadorClick++
+  
+          console.log(this.contadorClick)
+  
+          }
+        })
+    }  
   }
-
 }

@@ -39,7 +39,7 @@ export class AuthService {
     },
     (error) => {
       if(error.status === 400){
-        onLogin(false, undefined)
+        onLogin(false, error.error)
       }
     });
 
@@ -52,6 +52,7 @@ export class AuthService {
       id: numRol
     }
     user.rol = objetoRol
+    user.habilitado = 1
   
     this.http.post("http://localhost:8081/autentificacion/registrar", user).subscribe(
       () => {
