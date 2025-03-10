@@ -129,10 +129,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	public boolean isAdmin(Long idAdmin) {
 		if(!usuarioRepository.existsById(idAdmin))
 			throw new IllegalStateException("No existe el usuario admin");
-		Usuario usuario = usuarioRepository.findById(idAdmin).get();
-		if(usuario.getRol().getNombreRol().equals(RolEnum.ADMIN))
-			return true;
-		return false;
+		return usuarioRepository.isAdmin(idAdmin);
 	}
 
 
