@@ -4,7 +4,7 @@ USE gestionformacion;
 
 CREATE TABLE rol (
 	
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre_rol VARCHAR(200) NOT NULL UNIQUE,
     descripcion VARCHAR(200)
     
@@ -17,7 +17,7 @@ CREATE TABLE usuario (
 	password VARCHAR(20) NOT NULL,
     id_rol BIGINT,
 	habilitado BOOLEAN NOT NULL DEFAULT TRUE,
-    FOREIGN KEY(id_rol) REFERENCES rol(id) ON DELETE SET NULL
+    FOREIGN KEY(id_rol) REFERENCES rol(id) ON DELETE RESTRICT
     
 );
 
