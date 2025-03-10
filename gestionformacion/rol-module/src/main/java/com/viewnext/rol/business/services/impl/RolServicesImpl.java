@@ -1,7 +1,9 @@
 package com.viewnext.rol.business.services.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Rol;
@@ -11,6 +13,7 @@ import com.viewnext.rol.business.services.RolServices;
 import com.viewnext.rol.integration.repositories.RolRepository;
 import com.viewnext.rol.integration.repositories.UsuarioRepository;
 
+import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -45,14 +48,18 @@ public class RolServicesImpl implements RolServices{
 	@Transactional
 	@Override
 	public void delete(Long id, Long idAdmin) {
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
-		
-		if(!rolRepository.existsById(id))
-			throw new IllegalStateException("Rol no encontrado");
-		
-		rolRepository.deleteById(id);
+	    if(!isAdmin(idAdmin))
+	        throw new IllegalStateException("No eres administrador");
+	    
+	    if(!rolRepository.existsById(id))
+	        throw new IllegalStateException("Rol no encontrado");
+	    
+	    rolRepository.deleteById(id);
 	}
+
+
+
+
 
 	@Transactional
 	@Override
@@ -67,6 +74,8 @@ public class RolServicesImpl implements RolServices{
 		
 		if(!rolRepository.existsById(id))
 			throw new IllegalStateException("El rol con ID [" + id + "] no existe.");
+		
+		
 		
 		Rol creado = rolRepository.save(rol);
 		return creado;
@@ -87,10 +96,7 @@ public class RolServicesImpl implements RolServices{
 	private boolean isAdmin(Long idAdmin) {
 		if(!usuarioRepository.existsById(idAdmin))
 			throw new IllegalStateException("No existe el usuario admin");
-		Usuario usuario = usuarioRepository.findById(idAdmin).get();
-		if(usuario.getRol().getNombreRol().equals(RolEnum.ADMIN))
-			return true;
-		return false;
+		return usuarioRepository.isAdmin(idAdmin);
 	}
 
 }
