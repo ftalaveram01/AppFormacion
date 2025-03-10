@@ -4,7 +4,7 @@ USE gestionformacion;
 
 CREATE TABLE rol (
 	
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre_rol VARCHAR(200) NOT NULL UNIQUE,
     descripcion VARCHAR(200)
     
