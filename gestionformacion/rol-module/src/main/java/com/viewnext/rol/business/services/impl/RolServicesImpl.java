@@ -31,8 +31,8 @@ public class RolServicesImpl implements RolServices{
 		if(!isAdmin(idAdmin))
 			throw new IllegalStateException("No eres administrador");
 		
-		if(rol.getId() == null)
-			throw new IllegalStateException("El rol tiene que tener un id asignado.");
+		if(rol.getId() != null)
+			throw new IllegalStateException("El rol tiene que tener un id nulo.");
 		
 		if(rolRepository.existsById(rol.getId()))
 			throw new IllegalStateException("Ya existe un rol con ese id.");
