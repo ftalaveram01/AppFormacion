@@ -1,6 +1,7 @@
 package com.viewnext.core.presentation.config;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -61,5 +62,18 @@ public class CentralizedExceptionHandler {
 		
 		return ResponseEntity.internalServerError().body("Se ha producido un error en el servidor.");
 	}
+	
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        if (e.getMessage().contains("Duplicate entry")) {
+            return ResponseEntity.badRequest().body("Clave primaria duplicada o campo unico duplicado");
+        } else if (e.getMessage().contains("Cannot delete or update a parent row")) {
+            return ResponseEntity.badRequest().body("No se puede eliminar el registro porque tiene registros dependientes");
+        } else if (e.getMessage().contains("foreign key constraint fails")) {
+            return ResponseEntity.badRequest().body("Violación de la restricción de foreign key");
+        } else {
+            return ResponseEntity.badRequest().body("Error de integridad de datos");
+        }
+    }
 
 }
