@@ -79,9 +79,23 @@ export class UserService {
     return this.http.delete(`${this.userApiUrl}/borrar/${id}`, {params})
   }
 
+  deshabilitar(email: string){
+    this.getToken();
+
+    const params = new HttpParams()
+                    .set('email', email);
+
+    console.log(email)
+    console.log(params)
+    console.log(`${this.userApiUrl}/deshabilitar`, params)
+
+    return this.http.delete(`${this.userApiUrl}/deshabilitar?email=${email}`)
+
+  }
+
   getToken(): void{
       const token = localStorage.getItem('token');
-  
+      
       const header = {
         headers: new HttpHeaders({
           "Authorization": `Bearer ${token}`

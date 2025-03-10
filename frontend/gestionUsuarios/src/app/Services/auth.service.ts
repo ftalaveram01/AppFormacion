@@ -39,7 +39,7 @@ export class AuthService {
     },
     (error) => {
       if(error.status === 400){
-        onLogin(false, undefined)
+        onLogin(false, error.error)
       }
     });
 
