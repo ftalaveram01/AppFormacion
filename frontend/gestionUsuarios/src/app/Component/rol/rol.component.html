@@ -17,11 +17,31 @@
         <button id="btn-Crear" (click)="btnCreateRol(false, true)">Crear -></button>
     </div>
 
-    <div class="lista-roles" *ngFor="let r of roles">
-        <h3>Rol:</h3>
-        <p>id: {{r.id}}</p>
-        <p>nombre: {{r.nombreRol}}</p>
-        <p>descripcion: {{r.descripcion}}</p>
+    <div>
+        <form [formGroup]="formulario" (ngSubmit)="buscarRol()">
+            <label>
+                <input type="text" placeholder="Nombre Rol" formControlName="nombreRol">
+                <button type="submit">🔍</button>
+            </label>
+        </form>
+    </div>
+
+    <div *ngIf="!filtrado">
+        <div class="lista-roles" *ngFor="let r of roles">
+            <h3>Rol:</h3>
+            <p>id: {{r.id}}</p>
+            <p>nombre: {{r.nombreRol}}</p>
+            <p>descripcion: {{r.descripcion}}</p>
+        </div>
+    </div>
+    
+    <div *ngIf="filtrado">
+        <div class="lista-roles" *ngFor="let r of resultado">
+            <h3>Rol:</h3>
+            <p>id: {{r.id}}</p>
+            <p>nombre: {{r.nombreRol}}</p>
+            <p>descripcion: {{r.descripcion}}</p>
+        </div>
     </div>
 </div>
     
