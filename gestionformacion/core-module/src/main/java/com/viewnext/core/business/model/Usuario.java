@@ -33,5 +33,7 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "id_rol")
     private Rol rol;
+    
+    private Boolean habilitado;
 
 }

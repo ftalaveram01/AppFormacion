@@ -17,5 +17,7 @@ public interface UsuarioServices {
 	Usuario read(Long id, Long idAdmin);
 	
 	boolean isAdmin(Long idAdmin);
+	
+	void deshabilitarUsuario(String email);
 
 }

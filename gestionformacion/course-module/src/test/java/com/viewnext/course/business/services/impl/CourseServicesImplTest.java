@@ -161,13 +161,20 @@ class CourseServicesImplTest {
     	rol.setNombreRol(RolEnum.ADMIN);
     	admin.setRol(rol);
     	
-    	when(courseRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
+    	Course curso = new Course();
+    	curso.setId(2L);
+    	curso.setHabilitado(true);
+    	
+    	when(usuarioRepository.existsById(5L)).thenReturn(true);
     	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
+    	when(courseRepository.existsById(2L)).thenReturn(true);
+    	when(courseRepository.findById(2L)).thenReturn(Optional.of(curso));
     	
     	courseServices.delete(2L, 5L);
     	
-    	verify(courseRepository, times(1)).deleteById(2L);
+    	curso.setHabilitado(false);
+    	
+    	verify(courseRepository, times(1)).save(curso);
     }
     
     @Test

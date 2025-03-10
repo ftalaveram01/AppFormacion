@@ -46,4 +46,6 @@ public class Course {
 	    inverseJoinColumns = @JoinColumn(name = "id_usuario"))
 	private List<Usuario> usuarios;
 	
+	private Boolean habilitado;
+	
 }

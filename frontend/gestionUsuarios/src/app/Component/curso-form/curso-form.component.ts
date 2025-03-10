@@ -126,7 +126,7 @@ export class CursoFormComponent implements OnInit{
       this.router.navigate(['/cursos'])
     },)
   }
-  
+ 
   private formatearFecha(fechaInicio: Date) : String{
     const anio = fechaInicio.getFullYear();
     const mes = (fechaInicio.getMonth() + 1).toString().padStart(2, '0');
@@ -172,4 +172,3 @@ export class CursoFormComponent implements OnInit{
     }
   }
 }
-
