@@ -27,6 +27,8 @@ export class RolService {
     const idAdmin = localStorage.getItem('idUsuario')
     const params = new HttpParams().set('idAdmin', Number(idAdmin))
 
+    rol.id = this.generarIdAleatoria()
+
     return this.http.post(this.rolApiUrl, rol, {params});
   }
 
@@ -40,7 +42,7 @@ export class RolService {
 
     console.log(idAdmin)
 
-    return this.http.put(`${this.rolApiUrl}/${id}`,rol, {params})
+    return this.http.put(`${this.rolApiUrl}/${id}`, rol.descripcion, {params})
   }
 
   deleteRol(id: number): Observable<any>{
@@ -60,6 +62,10 @@ export class RolService {
         "Authorization": `Bearer ${token}`
       })
     }
+  }
+
+  private generarIdAleatoria(){
+    return Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER - 2 + 1)) + 2;
   }
     
 }
