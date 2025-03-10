@@ -2,8 +2,6 @@ package com.viewnext.core.business.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -25,8 +23,7 @@ public class Rol {
 	Long id;
 	
 	@Column(name = "nombre_rol")
-	@Enumerated(EnumType.STRING)
-	private RolEnum nombreRol;
+	private String nombreRol;
 	
 	private String descripcion;
 
