@@ -68,13 +68,12 @@ export class CursoFormComponent implements OnInit{
           });
           this.getUsuarios(curso);
 
-
-          // PAGINACION
-          this.getUsersPage();
-
         })
+        // PAGINACION
+        this.getUsersPage();
       }
     })
+    
 
   }
   

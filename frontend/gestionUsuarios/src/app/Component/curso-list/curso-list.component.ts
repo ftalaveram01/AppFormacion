@@ -42,10 +42,13 @@ export class CursoListComponent implements OnInit{
     this.idAdmin = Number(localStorage.getItem('idAdmin'))
   }
 
-  deleteCurso(id: number): void{
-    this.cursoService.deleteCurso(id).subscribe(() => {
-      this.cursos = this.cursos.filter(c => c.id !== id);
-    })
+  deleteCurso(id: number, nombreCurso: string): void{
+    const ok = confirm("¿Estas seguro que deseas eliminar el curso "+nombreCurso.toUpperCase()+" ?")
+    if(ok){
+      this.cursoService.deleteCurso(id).subscribe(() => {
+        this.cursos = this.cursos.filter(c => c.id !== id);
+      })  
+    }
   }
 
   btnUpdateCurso(isUpdate: boolean, id: number): void{
