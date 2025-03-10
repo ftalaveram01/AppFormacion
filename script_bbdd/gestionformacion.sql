@@ -17,7 +17,7 @@ CREATE TABLE usuario (
 	password VARCHAR(20) NOT NULL,
     id_rol BIGINT,
 	habilitado BOOLEAN NOT NULL DEFAULT TRUE,
-    FOREIGN KEY(id_rol) REFERENCES rol(id) ON DELETE SET NULL
+    FOREIGN KEY(id_rol) REFERENCES rol(id) ON DELETE RESTRICT
     
 );
 
