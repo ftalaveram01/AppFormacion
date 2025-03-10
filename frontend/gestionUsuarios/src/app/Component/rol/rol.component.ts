@@ -12,6 +12,8 @@ import { RolService } from '../../Services/rol.service';
 export class RolComponent {
 
   roles: any[] = [];
+  idAdmin!: number;
+
 
   constructor(private rolService: RolService, private router: Router) {
 
@@ -30,6 +32,12 @@ export class RolComponent {
     console.log(isUpdate)
     this.router.navigate(['rols/form'], {
       queryParams: {isUpdate: isUpdate, isCreate: isCreate, id: id}
+    });
+  }
+
+  btnDeleteRol(id: number): void{
+    this.rolService.deleteRol(id).subscribe(() => {
+      this.roles = this.roles.filter( r => r.id !== id);
     });
   }
 

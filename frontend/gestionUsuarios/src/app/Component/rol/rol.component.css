@@ -1,0 +1,72 @@
+.header {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .header h2 {
+    margin-bottom: 10px;
+  }
+  
+  .btn-inicio, .cerrar-sesion, .btn-CrearRol {
+    margin: 10px;
+    display: inline-block;
+  }
+  
+  .btn-inicio button, .cerrar-sesion button, .btn-CrearRol button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-inicio button:hover, .cerrar-sesion button:hover, .btn-CrearRol button:hover {
+    background-color: #0056b3;
+  }
+  
+  .lista-roles {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .lista-roles h3 {
+    margin-top: 0;
+  }
+  
+  .lista-roles p {
+    margin-bottom: 10px;
+  }
+  
+  .btn-ActualizarRol, .btn-deleteRol {
+    margin-top: 10px;
+  }
+  
+  .btn-ActualizarRol button, .btn-deleteRol button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-ActualizarRol button:hover, .btn-deleteRol button:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-deleteRol button {
+    background-color: #dc3545;
+  }
+  
+  .btn-deleteRol button:hover {
+    background-color: #c82333;
+  }
+  
