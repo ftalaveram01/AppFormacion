@@ -66,7 +66,7 @@ public class CentralizedExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         if (e.getMessage().contains("Duplicate entry")) {
-            return ResponseEntity.badRequest().body("Clave primaria duplicada");
+            return ResponseEntity.badRequest().body("Clave primaria duplicada o campo unico duplicado");
         } else if (e.getMessage().contains("Cannot delete or update a parent row")) {
             return ResponseEntity.badRequest().body("No se puede eliminar el registro porque tiene registros dependientes");
         } else if (e.getMessage().contains("foreign key constraint fails")) {

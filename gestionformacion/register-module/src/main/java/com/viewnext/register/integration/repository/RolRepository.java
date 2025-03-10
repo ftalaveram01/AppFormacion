@@ -7,5 +7,5 @@ import com.viewnext.core.business.model.RolEnum;
 
 public interface RolRepository extends JpaRepository<Rol, Long> {
 
-	Rol findByNombreRol(RolEnum nombreRol);
+	Rol findByNombreRol(String nombreRol);
 }
