@@ -27,10 +27,13 @@
               <th>Email</th>
               <th>Añadir</th>
             </tr>
-            <tr *ngFor="let usuario of usuarios; let i = index">
-              <td>{{ usuario.email }}</td>
-              <td><input type="checkbox" formControlName="seleccionado{{i}}"></td>
+            <tr *ngFor="let usuario of usuariosMostrados; let i = index">
+              <td>{{ usuario.email }} , {{usuario.id}}</td>
+              <td><input type="checkbox" formControlName="seleccionado{{usuario.id}}"></td>
             </tr>
+            <button type="button" (click)="prevPage(usuariosMostrados)" [disabled]="page === 1">Anterior</button>
+            <button type="button"(click)="nextPage(usuariosMostrados)" [disabled]="page === totalPages">Siguiente</button>
+            <p>Página {{ page }} de {{ totalPages }}</p>
           </table>
         </label>
 

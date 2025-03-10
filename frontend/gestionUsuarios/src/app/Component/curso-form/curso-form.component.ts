@@ -22,8 +22,13 @@ export class CursoFormComponent implements OnInit{
   usuarios: any[] = [];
   seleccionadosForm: FormGroup;
 
+  // PAGINACION DE USUARIOS
 
-
+  seleccionados: Set<number> = new Set();
+  usuariosMostrados: any[] = []
+  page: number = 1;
+  limiteUsuarios: number = 5;
+  totalPages: number = 0;
 
   constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
     this.cursoForm = this.fb.group({
@@ -49,50 +54,47 @@ export class CursoFormComponent implements OnInit{
           const fechaFin = new Date(curso.fechaFin)
    
           this.cursoForm.patchValue({
-            fechaInicio: formatearFecha(fechaInicio)
+            fechaInicio: this.formatearFecha(fechaInicio)
           });
           this.cursoForm.patchValue({
-            fechaFin: formatearFecha(fechaFin)
+            fechaFin: this.formatearFecha(fechaFin)
           });
           this.getUsuarios(curso);
+
+
+          // PAGINACION
+          this.getUsersPage();
+
         })
-      } else {
-        this.getUsuarios(null);
       }
     })
+
   }
   
   getUsuarios(curso: any = null): void {
     this.cursoService.getUsuarios(this.usuarios).subscribe(response => {
       this.usuarios = response;
+
       if (curso) {
         const usuariosCurso = curso.usuarios.map((u: any) => u.id);
         const grupo = this.fb.group({});
-        this.usuarios.forEach((usuario, i) => {
-          const seleccionado = usuariosCurso.includes(usuario.id);
-          grupo.addControl(`seleccionado${i}`, this.fb.control(seleccionado));
+        this.usuarios.forEach((usuario,i) => {
+          const seleccionado = curso ? usuariosCurso.includes(usuario.id) : false;
+          grupo.addControl(`seleccionado${usuario.id}`, this.fb.control(seleccionado));
+          console.log(seleccionado)
         });
         this.seleccionadosForm = grupo;
-      } else {
-        const grupo = this.fb.group({});
-        this.usuarios.forEach((usuario, i) => {
-          grupo.addControl(`seleccionado${i}`, this.fb.control(false));
-        });
-        this.seleccionadosForm = grupo;
-      }
+      }      
     })
+  
   }
   
 
   onSubmit(): void{
     if(this.cursoForm.valid){
-      const usuariosSeleccionados: any[] = [];
-      Object.keys(this.seleccionadosForm.controls).forEach(key => {
-        if (this.seleccionadosForm.get(key)?.value) {
-          const index = parseInt(key.replace('seleccionado', ''));
-          usuariosSeleccionados.push(this.usuarios[index]);
-        }
-      });
+      const usuariosSeleccionados = this.usuarios.filter(usuario =>
+        this.seleccionadosForm.get(`seleccionado${usuario.id}`)?.value
+      );
       if(this.isUpdate){
         this.updateCurso(this.idCurso,this.cursoForm.value, usuariosSeleccionados);
       }else{
@@ -124,16 +126,50 @@ export class CursoFormComponent implements OnInit{
       this.router.navigate(['/cursos'])
     },)
   }
+  
+  private formatearFecha(fechaInicio: Date) : String{
+    const anio = fechaInicio.getFullYear();
+    const mes = (fechaInicio.getMonth() + 1).toString().padStart(2, '0');
+    const dia = fechaInicio.getDate().toString().padStart(2, '0');
+    const hora = fechaInicio.getHours().toString().padStart(2, '0');
+    const minutos = fechaInicio.getMinutes().toString().padStart(2, '0');
+   
+    const fechaFormateada = `${anio}-${mes}-${dia}T${hora}:${minutos}`;
+   
+    return fechaFormateada
+  }
+
+  // PAGINACION
+
+  private paginar(users: any[]){
+    const start = (this.page -1) * this.limiteUsuarios;
+    const end = start + this.limiteUsuarios;
+    
+    this.usuariosMostrados = users.slice(start,end)
+    console.log(this.usuariosMostrados)
+  }
+
+  private getUsersPage(){
+    this.cursoService.getUsuarios(this.usuarios).subscribe(response => {
+
+      this.totalPages = Math.ceil(response.length / this.limiteUsuarios);
+      this.paginar(response);
+
+    });
+  }
+
+  nextPage(users: any[]){
+    if(this.page < this.totalPages){
+      this.page++;
+      this.getUsersPage();
+    }
+  }
+
+  prevPage(users: any[]){
+    if(this.page > 1){
+      this.page-- ;
+      this.getUsersPage();
+    }
+  }
 }
 
-function formatearFecha(fechaInicio: Date) : String{
-  const anio = fechaInicio.getFullYear();
-  const mes = (fechaInicio.getMonth() + 1).toString().padStart(2, '0');
-  const dia = fechaInicio.getDate().toString().padStart(2, '0');
-  const hora = fechaInicio.getHours().toString().padStart(2, '0');
-  const minutos = fechaInicio.getMinutes().toString().padStart(2, '0');
- 
-  const fechaFormateada = `${anio}-${mes}-${dia}T${hora}:${minutos}`;
- 
-  return fechaFormateada
-}
