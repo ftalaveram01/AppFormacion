@@ -42,8 +42,8 @@ public class RolController {
 	}
 	
 	@PutMapping("/{id}")
-	public Rol update(@PathVariable Long id, @RequestBody Rol rol, @RequestParam Long idAdmin) {
-		return rolServices.update(rol, id, idAdmin);
+	public Rol update(@PathVariable Long id, @RequestBody String descripcion, @RequestParam Long idAdmin) {
+		return rolServices.update(descripcion, id, idAdmin);
 	}
 	
 	@DeleteMapping("/{id}")

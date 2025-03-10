@@ -11,7 +11,7 @@ public interface RolServices {
 	
 	void delete(Long id, Long idAdmin);
 	
-	Rol update(Rol rol, Long id, Long idAdmin);
+	Rol update(String descripcion, Long id, Long idAdmin);
 	
 	List<Rol> getAll();
 	

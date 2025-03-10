@@ -7,13 +7,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Rol;
-import com.viewnext.core.business.model.RolEnum;
-import com.viewnext.core.business.model.Usuario;
 import com.viewnext.rol.business.services.RolServices;
 import com.viewnext.rol.integration.repositories.RolRepository;
 import com.viewnext.rol.integration.repositories.UsuarioRepository;
 
-import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -57,25 +54,17 @@ public class RolServicesImpl implements RolServices{
 	    rolRepository.deleteById(id);
 	}
 
-
-
-
-
 	@Transactional
 	@Override
-	public Rol update(Rol rol, Long id, Long idAdmin) {
+	public Rol update(String descripcion, Long id, Long idAdmin) {
 		if(!isAdmin(idAdmin))
 			throw new IllegalStateException("No eres administrador");
-		
-		if(rol.getId()==null)
-			rol.setId(id);
-		else if(rol.getId() != id)
-			throw new IllegalStateException("No coincide el id del body con la ruta");
 		
 		if(!rolRepository.existsById(id))
 			throw new IllegalStateException("El rol con ID [" + id + "] no existe.");
 		
-		
+		Rol rol = rolRepository.findById(id).get();
+		rol.setDescripcion(descripcion);
 		
 		Rol creado = rolRepository.save(rol);
 		return creado;
