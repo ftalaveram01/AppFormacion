@@ -85,12 +85,11 @@ export class UserService {
     const params = new HttpParams()
                     .set('email', email);
 
-    console.log(email)
-    console.log(params)
-    console.log(`${this.userApiUrl}/deshabilitar`, params)
-
-    return this.http.delete(`${this.userApiUrl}/deshabilitar?email=${email}`)
-
+    return this.http.delete(`${this.userApiUrl}/deshabilitar`, {params}).subscribe((error : any) =>{
+      if(error.status == 400){
+        // ENVIA EL ERROR QUE SEA
+      }
+    })
   }
 
   getToken(): void{
