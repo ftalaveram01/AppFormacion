@@ -15,6 +15,8 @@ import { CommonModule } from '@angular/common';
 export class CursoFormComponent implements OnInit{
 
   cursoForm: FormGroup;
+  searchForm: FormGroup;
+
   isUpdate: boolean = false;
   idCurso!: number;
   succesUpdate!: boolean;
@@ -38,6 +40,11 @@ export class CursoFormComponent implements OnInit{
       fechaFin: [''],
       router:['']
     });
+
+    this.searchForm = this.fb.group({
+      userSearch: ['']
+    })
+
     this.seleccionadosForm = this.fb.group({});
 
   }
@@ -89,6 +96,13 @@ export class CursoFormComponent implements OnInit{
   
   }
   
+  onSearch(): void {
+    const searchTerm = this.searchForm.get('userSearch')?.value.toLowerCase();
+    const filteredUsuarios = this.usuarios.filter(usuario =>
+      usuario.email.includes(searchTerm)
+    );
+    this.paginar(filteredUsuarios);
+  }
 
   onSubmit(): void{
     if(this.cursoForm.valid){

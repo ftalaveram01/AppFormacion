@@ -21,6 +21,10 @@
         <label>
           <div class="apartadoFormulario">
             <h3>Añadir Usuarios:</h3>
+            <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+              <input type="text" formControlName="userSearch" placeholder="Buscar por email">
+              <button type="submit">Buscar</button>
+            </form>
           </div>
           <table class="lista-usuarios" [formGroup]="seleccionadosForm">
             <tr>
@@ -28,7 +32,7 @@
               <th>Añadir</th>
             </tr>
             <tr *ngFor="let usuario of usuariosMostrados; let i = index">
-              <td>{{ usuario.email }} , {{usuario.id}}</td>
+              <td>{{ usuario.email }}</td>
               <td><input type="checkbox" formControlName="seleccionado{{usuario.id}}"></td>
             </tr>
             <button type="button" (click)="prevPage(usuariosMostrados)" [disabled]="page === 1">Anterior</button>
