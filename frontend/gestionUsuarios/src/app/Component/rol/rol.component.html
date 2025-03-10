@@ -13,7 +13,7 @@
         </a>
     </div>
 
-    <div class="btn-CrearUser">
+    <div class="btn-CrearRol">
         <button id="btn-Crear" (click)="btnCreateRol(false, true)">Crear -></button>
     </div>
 
@@ -32,6 +32,11 @@
             <p>id: {{r.id}}</p>
             <p>nombre: {{r.nombreRol}}</p>
             <p>descripcion: {{r.descripcion}}</p>
+          
+            <div class="btn-ActualizarRol">
+              <button id="btn-Actualizar" (click)="btnUpdateRol(true, false,r.id)">Actualizar -></button>
+            </div>
+          
         </div>
     </div>
     

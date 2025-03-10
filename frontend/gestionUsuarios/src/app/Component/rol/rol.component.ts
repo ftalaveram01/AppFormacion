@@ -29,6 +29,14 @@ export class RolComponent {
     })
   }
 
+  btnUpdateRol(isUpdate: boolean, isCreate: boolean, id: number): void{
+    console.log(isCreate)
+    console.log(isUpdate)
+    this.router.navigate(['rols/form'], {
+      queryParams: {isUpdate: isUpdate, isCreate: isCreate, id: id}
+    });
+  }
+
   ngOnInit(): void{
     this.rolService.getRoles().subscribe((data) => {
       this.roles = data;
@@ -42,11 +50,6 @@ export class RolComponent {
     localStorage.clear();
   }
 
-  btnUpdateRol(isUpdate: boolean, id: number): void{
-    this.router.navigate(['rol/form'], {
-      queryParams: {isUpdate: isUpdate, id: id}
-    });
-  }
 
   deleteRol(id: number): void{
     this.rolService.deleteRol(id).subscribe(() =>{
