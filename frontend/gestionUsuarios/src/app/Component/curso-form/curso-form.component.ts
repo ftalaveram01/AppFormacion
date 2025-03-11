@@ -52,6 +52,8 @@ export class CursoFormComponent implements OnInit{
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.isUpdate = params['isUpdate']
+      
+      //PARA TRAER TODO LOS USUARIOS AL ACTUALIZAR UN CURSO
       if (params['id']) {
         this.idCurso = +params['id'];
         this.cursoService.getCurso(this.idCurso).subscribe(curso => {
@@ -69,12 +71,14 @@ export class CursoFormComponent implements OnInit{
           this.getUsuarios(curso);
 
         })
-        // PAGINACION
-        this.getUsersPage();
+
+      }else{
+        //PARA TRAER TODOS LOS USUARIOS AL CREAR UN CURSO
+        this.getUsuarios(null)
       }
     })
-    
-
+    // PAGINACION
+    this.getUsersPage();
   }
   
   getUsuarios(curso: any = null): void {
@@ -90,7 +94,14 @@ export class CursoFormComponent implements OnInit{
           console.log(seleccionado)
         });
         this.seleccionadosForm = grupo;
-      }      
+      }else{
+          const grupo = this.fb.group({});
+          this.usuarios.forEach((usuario, i) => {
+            grupo.addControl(`seleccionado${usuario.id}`, this.fb.control(false));
+          });
+          this.seleccionadosForm = grupo;
+   
+      }   
     })
   
   }

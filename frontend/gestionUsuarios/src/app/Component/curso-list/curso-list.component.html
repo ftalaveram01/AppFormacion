@@ -22,8 +22,7 @@
     </div>
   
     <div class="lista-cursos" *ngFor="let c of cursos">
-
-      <div class="cursos-disponibles" *ngIf="c.habilitado">
+      
         <p>Nombre: {{c.nombre}}</p>
         <p>Descripcion: {{c.descripcion}}</p>
         <p>Fecha Inicio: {{c.fechaInicio}}</p>
@@ -57,6 +56,5 @@
           <button id="btn-Desincripcion" (click)="btnDesmatricularse(c.id)" [disabled]="!isInscrito(c.id)" [ngClass]="{'disabled': !isInscrito(c.id)}">Desmatricularse</button>
         </div>
 
-      </div>
     </div>
 </div>
