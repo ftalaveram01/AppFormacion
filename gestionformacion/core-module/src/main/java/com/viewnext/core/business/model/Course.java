@@ -1,6 +1,5 @@
 package com.viewnext.core.business.model;
 
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -11,9 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -31,13 +29,8 @@ public class Course {
 	
 	private String descripcion;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "fecha_inicio", nullable = false)
-	private Date fechaInicio;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "fecha_fin", nullable = false)
-	private Date fechaFin;
+	@Column(name = "numero_horas")
+	private Integer numeroHoras;
 	
 	@ManyToMany
 	@JoinTable(
@@ -45,6 +38,10 @@ public class Course {
 	    joinColumns = @JoinColumn(name = "id_curso"),
 	    inverseJoinColumns = @JoinColumn(name = "id_usuario"))
 	private List<Usuario> usuarios;
+	
+	@OneToMany(mappedBy = "curso")
+	private List<Convocatoria> convocatorias;
+
 	
 	private Boolean habilitado;
 	
