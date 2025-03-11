@@ -13,6 +13,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class RolComponent {
 
   roles: any[] = [];
+  idAdmin!: number;
+
   formulario!: FormGroup
   resultado: any[] = []
   filtrado: boolean = false
@@ -34,6 +36,12 @@ export class RolComponent {
     console.log(isUpdate)
     this.router.navigate(['rols/form'], {
       queryParams: {isUpdate: isUpdate, isCreate: isCreate, id: id}
+    });
+  }
+
+  btnDeleteRol(id: number): void{
+    this.rolService.deleteRol(id).subscribe(() => {
+      this.roles = this.roles.filter( r => r.id !== id);
     });
   }
 
