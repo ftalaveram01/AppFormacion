@@ -16,6 +16,8 @@
   	<module>course-module</module>
   	<module>core-module</module>
   	<module>usuario-module</module>
+  	<module>rol-module</module>
+  	<module>convocatoria-module</module>
   </modules>
   <properties>
 		<java.version>17</java.version>

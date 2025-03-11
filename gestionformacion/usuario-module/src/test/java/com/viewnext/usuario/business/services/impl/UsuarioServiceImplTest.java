@@ -32,7 +32,7 @@ import com.viewnext.usuario.integration.repositories.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
 class UsuarioServiceImplTest {
-	
+    
     @Mock
     private UsuarioRepository usuarioRepository;
 
@@ -41,223 +41,353 @@ class UsuarioServiceImplTest {
 
     @InjectMocks
     private UsuarioServicesImpl usuarioServicesImpl;
-
-    @BeforeEach
-    void setUp() {
-        usuarioServicesImpl = Mockito.spy(new UsuarioServicesImpl(usuarioRepository, rolRepository));
-    }
-	
-	 @Test
-	    void testDarAltaUser() {
-		 
-	        Usuario usuario = new Usuario();
-	        usuario.setId(null);
-	        usuario.setEmail("test@gmail.com");
-	        Rol rol = new Rol();
-	        rol.setId(0L);
-	        usuario.setRol(rol);
-	        
-	        when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
-	        when(usuarioRepository.save(usuario)).thenAnswer(invocation -> {
-	            Usuario savedUsuario = invocation.getArgument(0);
-	            savedUsuario.setId(1L);
-	            return savedUsuario;
-	        });
-
-	        doReturn(true).when(usuarioServicesImpl).isAdmin(anyLong());
-	        
-	        Long id = usuarioServicesImpl.create(usuario, usuario.getRol().getId());
-	        
-	        assertEquals(usuario.getId(), id);
-	        verify(usuarioRepository, times(1)).save(usuario);
-	        verify(rolRepository, times(0)).findByNombreRol(any(RolEnum.class));
-	        
-	    }
-	
-	@Test
-	void testDarAltaUserNoAdmin() {
-		testNoAdmin();
-	}
-	
-	@Test
-	void testDarAltaUserNotNull() {
-
-    	Usuario usuario = new Usuario();
-    	usuario.setId(2L);
-        
-       assertThrows(IllegalStateException.class,() ->  
-       				usuarioServicesImpl.create(usuario, 1L));
-		
-	}
-	
-	@Test
-	@MockitoSettings(strictness = org.mockito.quality.Strictness.LENIENT)
-	void testDarAltaUserExistente() {
-		
-    	Usuario usuario = new Usuario();
-    	usuario.setId(null);
-    	usuario.setEmail("test@gmail.com");
-
-        when(usuarioRepository.existsByEmail("test@gmail.com")).thenReturn(true);
-
-       assertThrows(IllegalStateException.class,() -> 
-       				usuarioServicesImpl.create(usuario, 0L));
-		
-	}
-	
-	@Test
-	void testDarAltaUserRolNull() {
-		
+    
+    @Test
+    void testDarAltaUser() {
+    	
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+         
         Usuario usuario = new Usuario();
         usuario.setId(null);
         usuario.setEmail("test@gmail.com");
-        usuario.setRol(null);
+        Rol rolv2 = new Rol();
+        rolv2.setId(0L);
+        usuario.setRol(rolv2);
+        
+        Usuario usuario2 = new Usuario();
+        usuario2.setId(2L);
+        
+        when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
+        when(usuarioRepository.save(usuario)).thenReturn(usuario2);
+        
+        Long id = usuarioServicesImpl.create(usuario, 1L);
+        assertEquals(2L, id);
+        
+        
+    }
+    
+    @Test
+    void testDarAltaUserExistente() {
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	
+        Usuario usuario = new Usuario();
+        usuario.setId(null);
+        usuario.setEmail("test@gmail.com");
+
+        when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(true);
+
+        assertThrows(IllegalStateException.class, () -> 
+                usuarioServicesImpl.create(usuario, 1L));
+    }
+    
+    @Test
+    void testDarAltaUserNotNull() {
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+
+        Usuario usuario = new Usuario();
+        usuario.setId(2L);
+        
+       assertThrows(IllegalStateException.class,() ->  
+                       usuarioServicesImpl.create(usuario, 1L));
+        
+    }
+    
+    @Test
+    void testDarAltaUserRolNoExistente() {
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+        
+        Usuario usuario = new Usuario();
+        usuario.setId(null);
+        usuario.setEmail("test@gmail.com");
+        Rol rolv2 = new Rol();
+        rolv2.setNombreRol(RolEnum.ADMIN);
+        usuario.setRol(rolv2);
+        
+        when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
+        when(rolRepository.findByNombreRol(rolv2.getNombreRol())).thenReturn(null);
 
         assertThrows(IllegalStateException.class, () -> {
-        			usuarioServicesImpl.create(usuario, 1L);       
+                    usuarioServicesImpl.create(usuario, 1L);       
         });
         
-	}
-	
-	@Test
-	@MockitoSettings(strictness = org.mockito.quality.Strictness.LENIENT)
-	void testDelete() {
-		
-		when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-		usuarioRepository.deleteById(1L);
-		verify(usuarioRepository, times(1)).deleteById(1L);
-		
-	}
-	
-	@Test
-	void testDeleteNoAdmin() {
-		testNoAdmin();
-	}
-	
-	@Test
-	void testDeleteNoExisteUser() {
-		when(usuarioRepository.existsById(any(Long.class))).thenReturn(false);
-		assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(1L, 1L));	
-	}
-	
-	@Test
-	void testGetAll() {
-		
-		Usuario usuario1 = new Usuario();
-		usuario1.setId(1L);
-		
-		Usuario usuario2 = new Usuario();
-		usuario2.setId(2L);
-		
-	    Rol rol = new Rol();
-	    rol.setNombreRol(RolEnum.ADMIN);
-	    usuario1.setRol(rol);
-		
-		when(usuarioRepository.findAll()).thenReturn(Arrays.asList(usuario1, usuario2));
-	    doReturn(true).when(usuarioServicesImpl).isAdmin(1L);
-		
-		List<Usuario> users = usuarioServicesImpl.getAll(1L);
-		
-		assertEquals(Arrays.asList(usuario1, usuario2), users);
-		
-	}
-	
-	@Test
-	void testUpdate() {
-		
-	    Usuario user = new Usuario();
-	    Rol rol = new Rol();
-	    rol.setNombreRol(RolEnum.ADMIN);
-	    
-	    user.setId(1L);
-	    user.setRol(rol);
-	    
-	    when(usuarioRepository.existsById(1L)).thenReturn(true);
+    }
+    
+    @Test
+    void testDarAltaUserRolSinId() {
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+        
+        Usuario usuario = new Usuario();
+        usuario.setId(null);
+        usuario.setEmail("test@gmail.com");
+        Rol rolv2 = new Rol();
+        rolv2.setNombreRol(RolEnum.ADMIN);
+        usuario.setRol(rolv2);
+        
+        when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
+        when(rolRepository.findByNombreRol(rolv2.getNombreRol())).thenReturn(rolv2);
+        
+        Usuario usuario2 = new Usuario();
+        usuario2.setId(2L);
+        
+        when(usuarioRepository.save(usuario)).thenReturn(usuario2);
+        Long id = usuarioServicesImpl.create(usuario, 1L);
 
-
-	    when(usuarioRepository.findById(1L)).thenReturn(Optional.of(user));
-
-	    when(usuarioServicesImpl.isAdmin(1L)).thenReturn(true);
-
-	    usuarioServicesImpl.update(user, user.getId());
-
-	    verify(usuarioRepository, times(1)).findById(1L);
-	    verify(usuarioRepository, times(1)).save(user);
-	    
-	}
-
-	
-	@Test
-	void testUpdateNoAdmin() {
-		testNoAdmin();
-	}
-	
-	@Test
-	void testUpdateNoExiste(){
-		
-		Usuario user = new Usuario();
-		user.setId(3L);
-		
-		when(usuarioRepository.existsById(any(Long.class))).thenReturn(false);
-		assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.update(user, 1L));
-		
-    	user.setId(null);
-    	assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.update(user, 1l));
+        
+        
+    }
+    
+    @Test
+    void testDeleteNoExisteUser() {
+        when(usuarioRepository.existsById(any(Long.class))).thenReturn(false);
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(1L, 1L));	
+    }
+    
+    @Test
+    void testDelete() {
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+        
+        Usuario usuario = new Usuario();
+        usuario.setId(2L);
+        usuario.setHabilitado(true);
+        
+        when(usuarioRepository.existsById(2L)).thenReturn(true);
+        when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuario));
+        
+        usuarioServicesImpl.delete(2L, 1L);
+        
+        usuario.setHabilitado(false);
+        
+        verify(usuarioRepository, times(1)).save(usuario);
+    }
+    
+    @Test
+    void testDeleteDeshabilitado() {
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+        
+        Usuario usuario = new Usuario();
+        usuario.setId(2L);
+        usuario.setHabilitado(false);
+        
+        when(usuarioRepository.existsById(2L)).thenReturn(true);
+        when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuario));
+        
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(2L, 1L));
+    }
+    
+    @Test
+    void testDeleteIdNoExistente() {
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+        
+        Usuario usuario = new Usuario();
+        usuario.setId(2L);
+        
+        when(usuarioRepository.existsById(2L)).thenReturn(false);
+        
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(2L, 1L));
+    }
+    
+    @Test
+    void testUpdate() {
     	
-	}
-	
-	@Test
-	void testGetAllNoAdmin() {
-		testNoAdmin();
-	}
-	
-	@Test
-	public void testRead() {
-
-	    Usuario usuario = new Usuario();
-	    usuario.setId(1L);
-
-	    Rol rol = new Rol();
-	    rol.setNombreRol(RolEnum.ADMIN);
-	    usuario.setRol(rol);
-
-	    when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
-
-
-	    when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
-	    doReturn(true).when(usuarioServicesImpl).isAdmin(1L);
-
-	    Usuario resultado = usuarioServicesImpl.read(1L, 1L);
-
-	    verify(usuarioRepository, times(1)).findById(1L);
-	    assertNotNull(resultado);
-	    assertEquals(usuario, resultado);
-	    
-	}
-	
-	@Test
-	void testReadNoAdmin() {
-		testNoAdmin();
-	}
-		
-	
-	// ********************************************
-	//
-	// Private Methods
-	//
-	// ********************************************
-	
-	private void testNoAdmin() {
-
-        Rol rol = new Rol();
-        rol.setId(1L);
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
         
-        doReturn(true).when(usuarioServicesImpl).isAdmin(anyLong());
+        Usuario user = new Usuario();
+        user.setId(2L);
+        user.setRol(rol);
         
-        boolean esAdmin = usuarioServicesImpl.isAdmin(rol.getId());
-        
-        assertTrue(esAdmin);	
-        
-	}
+        when(usuarioRepository.existsById(2L)).thenReturn(true);
 
+        usuarioServicesImpl.update(user, 1L);
+
+        verify(usuarioRepository, times(1)).save(user);
+        
+    }
+    
+    @Test
+    void testUpdateNoExiste() {
+    	
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+        
+        Usuario user = new Usuario();
+        user.setId(2L);
+        user.setRol(rol);
+        
+        when(usuarioRepository.existsById(2L)).thenReturn(false);
+
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.update(user, 1L));
+        
+    }
+    
+    @Test
+    public void testRead() {
+    	
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+
+        Usuario usuario = new Usuario();
+        usuario.setId(2L);
+        usuario.setRol(rol);
+
+        when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuario));
+
+        Usuario resultado = usuarioServicesImpl.read(2L, 1L);
+
+        verify(usuarioRepository, times(1)).findById(1L);
+        assertEquals(usuario, resultado);
+        
+    }
+    
+    @Test
+    public void testReadNoExistente() {
+    	
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+
+        Usuario usuario = new Usuario();
+        usuario.setId(2L);
+        usuario.setRol(rol);
+
+        when(usuarioRepository.findById(2L)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.read(2L,  1L));
+    }
+    
+    @Test
+    void testGetAll() {
+    	
+    	Usuario admin = new Usuario();
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ADMIN);
+    	admin.setRol(rol);
+    	admin.setId(1L);
+    	when(usuarioRepository.existsById(1L)).thenReturn(true);
+    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+        
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setRol(rol);
+        
+        Usuario usuario2 = new Usuario();
+        usuario2.setId(2L);
+        
+        
+        when(usuarioRepository.findAll()).thenReturn(Arrays.asList(usuario1, usuario2));
+        
+        List<Usuario> users = usuarioServicesImpl.getAll(1L);
+        
+        assertEquals(Arrays.asList(usuario1, usuario2), users);
+        
+    }
+    
+    @Test
+    void testDeshabilitar() {
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setEmail("hola@gmail.com");
+        usuario1.setHabilitado(true);
+        
+        when(usuarioRepository.existsByEmail(usuario1.getEmail())).thenReturn(true);
+        when(usuarioRepository.findByEmail(usuario1.getEmail())).thenReturn(usuario1);
+        
+        usuarioServicesImpl.deshabilitarUsuario(usuario1.getEmail());
+        
+        usuario1.setHabilitado(false);
+        
+        verify(usuarioRepository, times(1)).save(usuario1);
+    }
+    
+    @Test
+    void testDeshabilitarYaDeshabilitado() {
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setEmail("hola@gmail.com");
+        usuario1.setHabilitado(false);
+        
+        when(usuarioRepository.existsByEmail(usuario1.getEmail())).thenReturn(true);
+        when(usuarioRepository.findByEmail(usuario1.getEmail())).thenReturn(usuario1);
+        
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.deshabilitarUsuario(usuario1.getEmail()));
+    }
+    
+    @Test
+    void testDeshabilitarNoExistente() {
+        Usuario usuario1 = new Usuario();
+        usuario1.setId(1L);
+        usuario1.setEmail("hola@gmail.com");
+        usuario1.setHabilitado(true);
+        
+        when(usuarioRepository.existsByEmail(usuario1.getEmail())).thenReturn(false);
+        
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.deshabilitarUsuario(usuario1.getEmail()));
+    }
 }

@@ -28,8 +28,6 @@ public class CourseServicesImpl implements CourseServices {
 
 	@Override
 	public Long create(Course course, Long idAdmin) {
-		System.out.println(course.getFechaInicio());
-		System.out.println(course.getFechaFin());
 		
 		if(!isAdmin(idAdmin))
 			throw new IllegalStateException("No eres administrador");
@@ -80,8 +78,13 @@ public class CourseServicesImpl implements CourseServices {
 			throw new IllegalStateException("El curso con ID [" + id + "] no existe.");
 		}
 		
-		cursoRepository.deleteById(id);
+		Course curso = cursoRepository.findById(id).get();
 		
+		if(curso.getHabilitado()) {
+			curso.setHabilitado(false);
+			cursoRepository.save(curso);
+		}else
+			throw new IllegalStateException("El curso ya está deshabilitado");	
 	}
 
 	@Override
@@ -92,13 +95,63 @@ public class CourseServicesImpl implements CourseServices {
 	private boolean isAdmin(Long idAdmin) {
 		if(!usuarioRepository.existsById(idAdmin))
 			throw new IllegalStateException("No existe el usuario admin");
-		
-		Usuario usuario = usuarioRepository.findById(idAdmin).get();
-		if(usuario.getRol().getNombreRol().equals(RolEnum.ADMIN))
-			return true;
-		
-		return false;
+		return usuarioRepository.isAdmin(idAdmin);
 	}
+
+	@Override
+	public void inscribir(Long idUsuario, Long idCurso) {
+		
+		Course curso = getCursoById(idCurso);
+		Usuario user = getUsuarioById(idUsuario);
+		
+		if(curso.getUsuarios().contains(user))
+			throw new IllegalStateException("El usuario dado ya esta inscrito en el curso.");
+		
+		curso.getUsuarios().add(user);
+		
+		cursoRepository.save(curso);
+	}
+
+	@Override
+	public void deleteUsuario(Long idUsuario, Long idCurso) {
+				
+		Course curso = getCursoById(idCurso);
+		
+		if(!usuarioRepository.existsById(idUsuario))
+			throw new IllegalStateException("No existe el usuario con id "+ idUsuario);
+		
+		Boolean borrado = curso.getUsuarios().removeIf(u -> u.getId().equals(idUsuario));
+		
+		if(!borrado)
+			throw new IllegalStateException("El usuario dado no esta inscrito en el curso.");
+		
+		cursoRepository.save(curso);
+	}
+	
+	private Course getCursoById(Long idCurso) {
+		boolean existe = cursoRepository.existsById(idCurso);
+		
+		if(!existe) {
+			throw new IllegalStateException("El curso con ID [" + idCurso + "] no existe.");
+		}
+		
+		Optional <Course> cursoOptional = cursoRepository.findById(idCurso);
+		
+		return cursoOptional.get();
+	}
+	
+	private Usuario getUsuarioById(Long idUsuario) {
+		
+		if(!usuarioRepository.existsById(idUsuario))
+			throw new IllegalStateException("No existe el usuario con id "+ idUsuario);
+		
+		Optional <Usuario> userOptional = usuarioRepository.findById(idUsuario);
+		
+		return userOptional.get();
+	}
+	
+	
+
 	
 	
 }

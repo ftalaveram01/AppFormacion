@@ -27,6 +27,11 @@ public class LoginServicesImpl implements LoginServices{
 	 */
 	@Override
 	public Optional<Usuario> login(String email, String password) {
+		Usuario usu = loginRepository.findByEmailAndPassword(email, password);
+		
+		if(usu != null && !usu.getHabilitado())
+			throw new IllegalStateException("El usuario está deshabilitado");
+		
 		return Optional.ofNullable(loginRepository.findByEmailAndPassword(email, password));
 	}
 

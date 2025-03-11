@@ -1,6 +1,7 @@
 package com.viewnext.course.business.services.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -159,13 +161,20 @@ class CourseServicesImplTest {
     	rol.setNombreRol(RolEnum.ADMIN);
     	admin.setRol(rol);
     	
-    	when(courseRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
+    	Course curso = new Course();
+    	curso.setId(2L);
+    	curso.setHabilitado(true);
+    	
+    	when(usuarioRepository.existsById(5L)).thenReturn(true);
     	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
+    	when(courseRepository.existsById(2L)).thenReturn(true);
+    	when(courseRepository.findById(2L)).thenReturn(Optional.of(curso));
     	
     	courseServices.delete(2L, 5L);
     	
-    	verify(courseRepository, times(1)).deleteById(2L);
+    	curso.setHabilitado(false);
+    	
+    	verify(courseRepository, times(1)).save(curso);
     }
     
     @Test
@@ -222,5 +231,183 @@ class CourseServicesImplTest {
     	assertThrows(IllegalStateException.class, () -> courseServices.create(new Course(), 5L));
     	
     }
+    
+    @Test
+    void testAddUserToCourse() {
+    	
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ALUMNO);
+    	
+    	Usuario user = new Usuario();
+    	user.setId(1L);
+    	user.setRol(rol);
+    	
+    	Usuario user1 = new Usuario();
+    	user1.setId(2L);
+    	user1.setRol(rol);
+    	
+    	Usuario user2 = new Usuario();
+    	user2.setId(3L);
+    	user2.setRol(rol);
+    	
+    	List<Usuario> list = new ArrayList<Usuario>();
+    	list.add(user);
+    	list.add(user1);
+    	
+    	Course curso = new Course();
+    	
+    	curso.setId(2L);
+    	curso.setNombre("Curso Testing 2");
+    	curso.setUsuarios(list);
+    	
+    	when(usuarioRepository.existsById(user2.getId())).thenReturn(true);
+    	when(courseRepository.existsById(curso.getId())).thenReturn(true);
+    	when(courseRepository.findById(curso.getId())).thenReturn(Optional.of(curso));
+    	when(usuarioRepository.findById(user2.getId())).thenReturn(Optional.of(user2));
+    	
+    	courseServices.inscribir(user2.getId(),curso.getId());
+    	
+    	assertEquals(3,curso.getUsuarios().size());
+    }
+    
+    @Test
+    void testAddAlreadyInscribedUserToCourse() {
+    	
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ALUMNO);
+    	
+    	Usuario user = new Usuario();
+    	user.setId(1L);
+    	user.setRol(rol);
+    	
+    	Usuario user1 = new Usuario();
+    	user1.setId(2L);
+    	user1.setRol(rol);
+    	
+    	Course curso = new Course();
+    	
+    	curso.setId(2L);
+    	curso.setNombre("Curso Testing 2");
+    	curso.setUsuarios(Arrays.asList(user, user1));
+    	
+    	when(usuarioRepository.existsById(user1.getId())).thenReturn(true);
+    	when(courseRepository.existsById(curso.getId())).thenReturn(true);
+    	when(courseRepository.findById(curso.getId())).thenReturn(Optional.of(curso));
+    	when(usuarioRepository.findById(user1.getId())).thenReturn(Optional.of(user1));
+    	
+    	assertThrows(IllegalStateException.class, () -> courseServices.inscribir(user1.getId(), curso.getId()));
+    }
+    
+    @Test
+    void testGetAllUsersByCourse() {
+    	
+    	Course curso = new Course();
+    	curso.setId(1L);
+    	
+    	Rol rol = new Rol();
+    	rol.setNombreRol(RolEnum.ALUMNO);
+    	
+    	Usuario user = new Usuario();
+    	user.setId(1L);
+    	user.setRol(rol);
+    	
+    	Usuario user1 = new Usuario();
+    	user1.setId(1L);
+    	user1.setRol(rol);
+    	
+    	Usuario user2 = new Usuario();
+    	user2.setId(1L);
+    	user2.setRol(rol);
+    	
+    	List<Usuario> list = new ArrayList<Usuario>();
+    	list.add(user);
+    	list.add(user1);
+    	
+    	curso.setUsuarios(list);
+    	
+    	when(courseRepository.findById(curso.getId())).thenReturn(Optional.of(curso));
+    	
+    	Optional<Course> optional = courseServices.read(curso.getId());
+    	
+        assertTrue(optional.isPresent());
+        
+        assertEquals(2, optional.get().getUsuarios().size());
+        assertTrue(optional.get().getUsuarios().contains(user));
+        assertTrue(optional.get().getUsuarios().contains(user1));
+    }
+    
+    @Test	
+    void deleteAlumnoCourseIdExiste() {
+    	
+
+        Long idUsuario = 1L;
+        Long idCurso = 2L;
+
+        Usuario user = new Usuario();
+        user.setId(idUsuario);
+
+        Course curso = new Course();
+        curso.setId(idCurso);
+        curso.setUsuarios(new ArrayList<>(List.of(user)));
+
+    	
+    	when(usuarioRepository.existsById(user.getId())).thenReturn(true);
+    	when(courseRepository.existsById(curso.getId())).thenReturn(true);
+
+        when(courseRepository.findById(idCurso)).thenReturn(Optional.of(curso));
+
+        courseServices.deleteUsuario(user.getId(), curso.getId());
+
+        assertFalse(curso.getUsuarios().contains(user));
+
+       }
+    
+    @Test	
+    void testDeleteNonExistentUserFromCourse() {
+    	
+
+        Long idUsuario = 1L;
+        Long idCurso = 2L;
+
+        Usuario user = new Usuario();
+        user.setId(idUsuario);
+
+        Course curso = new Course();
+        curso.setId(idCurso);
+        curso.setUsuarios(new ArrayList<>());
+
+    	
+    	when(usuarioRepository.existsById(user.getId())).thenReturn(false);
+    	when(courseRepository.existsById(curso.getId())).thenReturn(true);
+
+        when(courseRepository.findById(idCurso)).thenReturn(Optional.of(curso));
+
+        assertThrows(IllegalStateException.class, () -> courseServices.deleteUsuario(idUsuario, idCurso));
+
+       }
+    
+    @Test	
+    void testDeleteUserNotInCourse() {
+    	
+
+        Long idUsuario = 1L;
+        Long idCurso = 2L;
+
+        Usuario user = new Usuario();
+        user.setId(idUsuario);
+
+        Course curso = new Course();
+        curso.setId(idCurso);
+        curso.setUsuarios(new ArrayList<>());
+
+    	
+    	when(usuarioRepository.existsById(user.getId())).thenReturn(true);
+    	when(courseRepository.existsById(curso.getId())).thenReturn(true);
+
+        when(courseRepository.findById(idCurso)).thenReturn(Optional.of(curso));
+
+        assertThrows(IllegalStateException.class, () -> courseServices.deleteUsuario(idUsuario, idCurso));
+
+       }
 
 }

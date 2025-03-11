@@ -56,6 +56,12 @@ public class UsuarioController {
 		return usuarioServices.read(id, idAdmin);
 	}
 	
+	@DeleteMapping("/deshabilitar")
+	public ResponseEntity<Void> deshabilitar(@RequestParam String email){
+		usuarioServices.deshabilitarUsuario(email);
+		return ResponseEntity.noContent().build();
+	}
+	
 	
 
 }
