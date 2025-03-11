@@ -9,11 +9,17 @@
         <input type="password" formControlName="password" required>
       </label>
       <label>
+        Confirm Password:
+        <input type="password" formControlName="confirmPassword" required>
+        <div *ngIf="confirmPassword?.hasError('noMatch') && confirmPassword?.touched" class="error">
+          Las contraseñas no coinciden.
+        </div>
+      </label>
+      <label>
         Rol:
-        <select formControlName="rol" required>
-          <option value="1">Alumno</option>
-          <option value="0">Admin</option>
-        </select>
+        <select formControlName="rol" required >
+          <option *ngFor="let r of roles" [value]="r.id" [selected]="r.id === userForm.value.rol">{{r.nombreRol}}</option>
+        </select>              
       </label>
       <button type="submit">{{ isUpdate ? 'Actualizar' : 'Crear' }} Usuario</button>
       <p *ngIf="usuarioActualizadoConExito">Usuario actualizado con éxito</p>

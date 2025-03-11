@@ -30,6 +30,7 @@ export class AuthService {
       .set('email', email)
       .set('password', password);
 
+
     this.http.get("http://localhost:8080/autentificacion/login",
      {params}).subscribe((users :any) => {
       if(users){
@@ -38,25 +39,30 @@ export class AuthService {
     },
     (error) => {
       if(error.status === 400){
-        onLogin(false, undefined)
+        onLogin(false, error.error)
       }
     });
 
   }
 
-  registerUser(user: any, onRegister: (succes: boolean)=> void){
-    
+  registerUser(user: any, onRegister: (succes: boolean) => void) {
     const numRol: number = 1;
-
+  
     const objetoRol: any = {
       id: numRol
     }
     user.rol = objetoRol
-    
-    this.http.post("http://localhost:8081/autentificacion/registrar", user).subscribe(() => {
-      onRegister(true)
-    })
-
+    user.habilitado = 1
+  
+    this.http.post("http://localhost:8081/autentificacion/registrar", user).subscribe(
+      () => {
+        onRegister(true)
+      },
+      (error) => {
+        onRegister(false)
+      }
+    )
   }
+  
 
 }

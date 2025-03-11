@@ -1,0 +1,42 @@
+.formulario-roles {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.formulario-roles form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario-roles label {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.formulario-roles input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.formulario-roles button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.formulario-roles button:hover {
+  background-color: #0056b3;
+}

@@ -4,7 +4,7 @@ USE gestionformacion;
 
 CREATE TABLE rol (
 	
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre_rol VARCHAR(200) NOT NULL UNIQUE,
     descripcion VARCHAR(200)
     
@@ -12,11 +12,12 @@ CREATE TABLE rol (
 
 CREATE TABLE usuario (
 
-	id INT AUTO_INCREMENT PRIMARY KEY,
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
 	email VARCHAR(100) UNIQUE NOT NULL,
 	password VARCHAR(20) NOT NULL,
-    id_rol BIGINT NOT NULL,
-    FOREIGN KEY(id_rol) REFERENCES rol(id)
+    id_rol BIGINT,
+	habilitado BOOLEAN NOT NULL DEFAULT TRUE,
+    FOREIGN KEY(id_rol) REFERENCES rol(id) ON DELETE RESTRICT
     
 );
 
@@ -26,12 +27,23 @@ CREATE TABLE curso (
 	nombre VARCHAR(100) NOT NULL,
 	descripcion VARCHAR(500) ,
 	fecha_inicio TIMESTAMP NOT NULL,
-	fecha_fin TIMESTAMP NOT NULL
+	fecha_fin TIMESTAMP NOT NULL,
+	habilitado BOOLEAN NOT NULL DEFAULT TRUE
+
+);
+
+CREATE TABLE curso_usuario (
+
+	id_usuario BIGINT NOT NULL,
+	id_curso BIGINT NOT NULL,
+	PRIMARY KEY (id_usuario, id_curso),
+	FOREIGN KEY(id_usuario) REFERENCES usuario(id) ON DELETE CASCADE,
+	FOREIGN KEY(id_curso) REFERENCES curso(id) ON DELETE CASCADE
 
 );
 
 INSERT INTO rol (id, nombre_rol, descripcion) VALUES (0, 'ADMIN', 'Usuario con todos los permisos'),
 (1, 'ALUMNO', 'Usuario normal');
 
-INSERT INTO usuario (id, email, password, id_rol)
- VALUES (1, 'admin@gmail.com', '1234', 0);
+INSERT INTO usuario (id, email, password, id_rol, habilitado)
+ VALUES (1, 'admin@gmail.com', '1234', 0, TRUE);

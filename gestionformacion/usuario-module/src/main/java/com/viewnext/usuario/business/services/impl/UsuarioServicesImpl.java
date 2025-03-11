@@ -64,7 +64,13 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		if(!usuarioRepository.existsById(id))
 			throw new IllegalStateException("No existe el usuario a borrar.");
 		
-		usuarioRepository.deleteById(id);
+		Usuario usu = usuarioRepository.findById(id).get();
+		
+		if(usu.getHabilitado()) {
+			usu.setHabilitado(false);
+			usuarioRepository.save(usu);
+		}else
+			throw new IllegalStateException("El usuario ya está deshabilitado");
 	}
 
 	@Transactional
@@ -78,6 +84,23 @@ public class UsuarioServicesImpl implements UsuarioServices{
 			throw new IllegalStateException("No existe el usuario a actualizar.");
 		
 		usuarioRepository.save(usuario);
+	}
+	
+	@Transactional
+	@Override
+	public void deshabilitarUsuario(String email) {
+		
+		if(!usuarioRepository.existsByEmail(email))
+			throw new IllegalStateException("No existe el usuario.");
+		
+		Usuario usu = usuarioRepository.findByEmail(email);
+		
+		if(!usu.getHabilitado())
+			throw new IllegalStateException("El usuario ya está deshabilitado");
+		usu.setHabilitado(false);
+		
+		usuarioRepository.save(usu);
+		
 	}
 
 	@Override
@@ -106,10 +129,9 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	public boolean isAdmin(Long idAdmin) {
 		if(!usuarioRepository.existsById(idAdmin))
 			throw new IllegalStateException("No existe el usuario admin");
-		Usuario usuario = usuarioRepository.findById(idAdmin).get();
-		if(usuario.getRol().getNombreRol().equals(RolEnum.ADMIN))
-			return true;
-		return false;
+		return usuarioRepository.isAdmin(idAdmin);
 	}
+
+
 
 }

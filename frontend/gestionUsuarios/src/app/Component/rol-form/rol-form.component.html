@@ -1,0 +1,13 @@
+<div class="formulario-roles">
+  <form [formGroup]="rolForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="isCreate">
+      <label id="nombreRol">Nombre del Rol:</label>
+      <input id="nombreRol" formControlName="nombreRol">
+    </div>
+
+    <label id="descripcion">Descripción:</label>
+    <input id="descripcion" formControlName="descripcion">
+
+    <button type="submit">{{!isUpdate ? 'Crear Rol' : 'Actualizar Rol'}}</button>
+  </form>
+</div>
