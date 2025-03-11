@@ -1,0 +1,72 @@
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn-inicio, .cerrar-sesion, .btn-CrearConvocatoria {
+  margin: 10px;
+  display: inline-block;
+}
+
+.btn-inicio button, .cerrar-sesion button, .btn-CrearConvocatoria button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-inicio button:hover, .cerrar-sesion button:hover, .btn-CrearConvocatoria button:hover {
+  background-color: #0056b3;
+}
+
+.lista-convocatorias {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.lista-convocatorias h3 {
+  margin-top: 0;
+}
+
+.btn-ActualizarConvocatoria, .btn-deleteConvocatoria {
+  margin-top: 10px;
+}
+
+.btn-ActualizarConvocatoria button, .btn-deleteConvocatoria button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-ActualizarConvocatoria button:hover, .btn-deleteConvocatoria button:hover {
+  background-color: #0056b3;
+}
+
+.btn-deleteConvocatoria button {
+  background-color: #dc3545;
+}
+
+.btn-deleteConvocatoria button:hover {
+  background-color: #c82333;
+}
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

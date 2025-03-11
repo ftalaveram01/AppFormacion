@@ -36,6 +36,8 @@ export class CursoService {
     const params = new HttpParams().set('idAdmin', Number(idAdmin))
 
     curso.usuarios = usuariosSeleccionados;
+    curso.habilitado = 1
+    curso.convocatorias = []
 
     return this.http.post(this.cursoApiUrl, curso, {params});
   }
@@ -48,6 +50,7 @@ export class CursoService {
     const params = new HttpParams().set('idAdmin', Number(idAdmin))
 
     curso.usuarios = usuariosSeleccionados;
+    curso.habilitado = 1
 
     return this.http.put(`${this.cursoApiUrl}/${id}`,curso, {params})
   }

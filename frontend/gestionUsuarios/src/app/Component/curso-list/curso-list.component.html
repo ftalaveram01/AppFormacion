@@ -22,34 +22,28 @@
     </div>
   
     <div class="lista-cursos" *ngFor="let c of cursos">
-      
-        <p>Nombre: {{c.nombre}}</p>
-        <p>Descripcion: {{c.descripcion}}</p>
-        <p>Fecha Inicio: {{c.fechaInicio}}</p>
-        <p>Fecha Fin: {{c.fechaFin}}</p>
 
-        <div *ngIf="idAdmin==0">
-          <p>Usuarios inscritos: {{c.usuarios.length}} </p>
-
-          <div *ngFor="let u of c.usuarios">
-
-            <table>
-              <th>
-                {{u.email}}
-              </th>
-              <td *ngIf="idAdmin == 0">
-                <button id="btn-EliminarUsuario" (click)="btnDeleteUserCourse(u.id, c.id)">X</button>
-              </td>
-            </table>
-
-          </div>
-
+      <p>Nombre: {{c.nombre}}</p>
+      <p>Descripcion: {{c.descripcion}}</p>
+      <p>Numero de horas: {{c.numeroHoras}}</p>
+  
+      <div *ngIf="idAdmin==0">
+        <p>Usuarios inscritos: {{c.usuarios.length}} </p>
+        <div *ngFor="let u of c.usuarios">
+          <table>
+            <th>
+              {{u.email}}
+            </th>
+            <td *ngIf="idAdmin == 0">
+              <button id="btn-EliminarUsuario" (click)="btnDeleteUserCourse(u.id, c.id)">X</button>
+            </td>
+          </table>
         </div>
-
-        <div *ngIf="idAdmin == 0" class="botones">
-          <button id="btn-Eliminar" (click)="deleteCurso(c.id, c.nombre)">Eliminar -> {{c.nombre}}</button>
-          <button id="btn-Update" (click)="btnUpdateCurso(true,c.id)"> Actualizar -> {{c.nombre}}</button>
-        </div>
+      </div>
+      <div *ngIf="idAdmin == 0" class="botones">
+        <button id="btn-Eliminar" (click)="deleteCurso(c.id)">Eliminar -> {{c.nombre}}</button>
+        <button id="btn-Update" (click)="btnUpdateCurso(true,c.id)"> Actualizar -> {{c.nombre}}</button>
+      </div>
         
         <div *ngIf="idAdmin == 1" class="botones">
           <button id="btn-Incripcion" (click)="btnMatricularse(c.id)" [disabled]="isInscrito(c.id)" [ngClass]="{'disabled': isInscrito(c.id)}">Matricularse</button>

@@ -36,6 +36,10 @@
             <div class="btn-ActualizarRol">
               <button id="btn-Actualizar" (click)="btnUpdateRol(true, false,r.id)">Actualizar -></button>
             </div>
+
+            <div class="btn-deleteRol">
+                <button id="btn-Delete" (click)="btnDeleteRol(r.id)">Eliminar -></button>
+            </div>
           
         </div>
     </div>
@@ -46,6 +50,15 @@
             <p>id: {{r.id}}</p>
             <p>nombre: {{r.nombreRol}}</p>
             <p>descripcion: {{r.descripcion}}</p>
+
+            <div class="btn-ActualizarRol">
+                <button id="btn-Actualizar" (click)="btnUpdateRol(true, false,r.id)">Actualizar -></button>
+            </div>
+
+            <div class="btn-deleteRol">
+                <button id="btn-Delete" (click)="btnDeleteRol(r.id)">Eliminar -></button>
+            </div>
+
         </div>
     </div>
 </div>
