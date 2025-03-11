@@ -1,5 +1,7 @@
 package com.viewnext.convocatoria.business.services.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -16,9 +18,12 @@ import org.springframework.stereotype.Service;
 import com.viewnext.convocatoria.business.services.ConvocatoriaScheduler;
 import com.viewnext.convocatoria.business.services.ConvocatoriaServices;
 import com.viewnext.convocatoria.integration.repositories.ConvocatoriaRepository;
+import com.viewnext.convocatoria.integration.repositories.CursoRepository;
 import com.viewnext.convocatoria.model.ConvocatoriaRequest;
 import com.viewnext.convocatoria.model.UpdateRequest;
 import com.viewnext.core.business.model.Convocatoria;
+import com.viewnext.core.business.model.ConvocatoriaEnum;
+import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Usuario;
 
 @Service
@@ -26,22 +31,48 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 	
 	private ConvocatoriaRepository convocatoriaRepository;
 	
+	private CursoRepository cursoRepository;
+	
 	private ConvocatoriaScheduler convocatoriaScheduler;
 	
 	public ConvocatoriaServicesImpl(ConvocatoriaRepository convocatoriaRepository,
-			ConvocatoriaScheduler convocatoriaScheduler) {
+			ConvocatoriaScheduler convocatoriaScheduler, CursoRepository cursoRepository) {
 		this.convocatoriaRepository = convocatoriaRepository;
 		this.convocatoriaScheduler = convocatoriaScheduler;
+		this.cursoRepository = cursoRepository;
 	}
 
 	@Override
 	public Convocatoria create(Long idAdmin, ConvocatoriaRequest request) {
-		// TODO Auto-generated method stub
+		
+		if(request.getFechaFin().before(request.getFechaInicio()))
+			throw new IllegalStateException("La fecha de inicio no puede ser despues de la de fin.");
+		
+		if(request.getFechaInicio().before(new Date()))
+			throw new IllegalStateException("La fecha de inicio no puede ser antes de la actual.");
+		
+		if(!cursoRepository.existsById(request.getIdCurso()))
+			throw new IllegalStateException("No existe el curso de la convocatoria");
+		
+		Course curso = cursoRepository.findById(request.getIdCurso()).get();
+		
+		if(curso.getUsuarios().size()<10)
+			throw new IllegalStateException("No hay suficientes alumnos inscritos al curso.");
+		
+		Convocatoria conv = new Convocatoria();
+		conv.setFechaInicio(request.getFechaInicio());
+		conv.setFechaFin(request.getFechaFin());
+		conv.setCurso(curso);
+		conv.setEstado(ConvocatoriaEnum.EN_PREPARACION);
+		conv.setUsuarios(new ArrayList<Usuario>());
+		
+		Convocatoria guardada = convocatoriaRepository.save(conv);
+		convocatoriaScheduler.programarTarea(guardada, true, false);
 		
 		
-		enviarCorreo(null);
+		//enviarCorreo(null);
 		
-		return null;
+		return guardada;
 	}
 
 	@Override
@@ -86,7 +117,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
 	}
 	
-	private void enviarCorreo(Convocatoria convocatoria) {
+private void enviarCorreo(Convocatoria convocatoria) {
 		
 		//email = appformacion3@gmail.com
 		//password = pecera77
@@ -125,5 +156,4 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
             System.out.println("ERROR AL ENVIAR CORREO");
         }
 	}
-
 }
