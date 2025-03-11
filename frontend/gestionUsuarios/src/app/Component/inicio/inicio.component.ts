@@ -20,7 +20,7 @@ export class InicioComponent implements OnInit{
   ngOnInit(): void {
 
     this.router.queryParams.subscribe(params => {
-      this.idUser = +params['id']
+      this.idUser = Number(localStorage.getItem('idUsuario'))
       this.idAdmin = Number(localStorage.getItem("idAdmin"))
       localStorage.setItem('idAdmin', Number(this.idAdmin).toString());
       this.userService.getUser(this.idUser, this.idUser).subscribe(data=>{
