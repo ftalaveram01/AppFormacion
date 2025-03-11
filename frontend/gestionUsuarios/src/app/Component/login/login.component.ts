@@ -25,18 +25,22 @@ export class LoginComponent {
 
   ngOnInit(): void{}
 
-  onSubmit(){
+  onSubmit() {
 
-    if(this.userEmail.localeCompare(this.email) != 0){
-      this.userEmail = this.email
-      this.contadorClick = 0
+    if (this.userEmail.localeCompare(this.email) != 0) {
+      this.userEmail = this.email;
+      this.contadorClick = 0;
     }
-
-    if(this.contadorClick>=5){
-
-      this.userService.deshabilitar(this.userEmail)
-    
-    }else{
+  
+    if (this.contadorClick >= 5) {
+      this.userService.deshabilitar(this.userEmail, (ok: boolean, error?: any) => {
+        if (ok) {
+          this.mensajeError = error;
+        } else {
+          this.mensajeError = error;
+        }
+      });
+    } else{
 
       this.authService.loginUser(this.email, this.password, (ok: boolean, user?:any) =>{
         if(ok){

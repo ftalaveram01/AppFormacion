@@ -36,9 +36,7 @@ export class CursoFormComponent implements OnInit{
     this.cursoForm = this.fb.group({
       nombre: [''],
       descripcion: [''],
-      fechaInicio: [''],
-      fechaFin: [''],
-      router:['']
+      numeroHoras: ['']
     });
 
     this.searchForm = this.fb.group({
@@ -58,16 +56,6 @@ export class CursoFormComponent implements OnInit{
         this.idCurso = +params['id'];
         this.cursoService.getCurso(this.idCurso).subscribe(curso => {
           this.cursoForm.patchValue(curso)
-  
-          const fechaInicio = new Date(curso.fechaInicio);
-          const fechaFin = new Date(curso.fechaFin)
-   
-          this.cursoForm.patchValue({
-            fechaInicio: this.formatearFecha(fechaInicio)
-          });
-          this.cursoForm.patchValue({
-            fechaFin: this.formatearFecha(fechaFin)
-          });
           this.getUsuarios(curso);
 
         })
