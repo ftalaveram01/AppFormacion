@@ -20,6 +20,21 @@ export class ConvocatoriaComponent {
   constructor(private convocatoriaService: ConvocatoriaService, private router: Router) {
   }
 
+  ngOnInit(): void {
+    this.convocatoriaService.getConvocatorias().subscribe((data) => {
+      this.convocatorias = data;
+    })
+    this.formulario = new FormGroup({
+      idCurso: new FormControl('')
+    })
+    this.idAdmin = Number(localStorage.getItem('idAdmin'))
+    if(!this.isAdmin){
+      this.convocatorias.filter((convocatoria) => {
+        return convocatoria.estado === 'CONVOCADA'
+      })
+    }
+  }
+
   btnCreateConvocatoria(isUpdate: boolean, isCreate: boolean): void {
     console.log(isCreate)
     console.log(isUpdate)
@@ -40,15 +55,6 @@ export class ConvocatoriaComponent {
     this.convocatoriaService.deleteConvocatoria(id).subscribe(() => {
       this.convocatorias = this.convocatorias.filter(c => c.id !== id);
     });
-  }
-
-  ngOnInit(): void {
-    this.convocatoriaService.getConvocatorias().subscribe((data) => {
-      this.convocatorias = data;
-    })
-    this.formulario = new FormGroup({
-      idCurso: new FormControl('')
-    })
   }
 
   borrarCache(): void {
