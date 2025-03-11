@@ -28,8 +28,6 @@ public class CourseServicesImpl implements CourseServices {
 
 	@Override
 	public Long create(Course course, Long idAdmin) {
-		System.out.println(course.getFechaInicio());
-		System.out.println(course.getFechaFin());
 		
 		if(!isAdmin(idAdmin))
 			throw new IllegalStateException("No eres administrador");
