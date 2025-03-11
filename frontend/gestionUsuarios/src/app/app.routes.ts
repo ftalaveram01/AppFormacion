@@ -8,6 +8,7 @@ import { UserComponent } from './Component/user/user.component';
 import { UserFormComponent } from './Component/user-form/user-form.component';
 import { RolComponent } from './Component/rol/rol.component';
 import { RolFormComponent } from './Component/rol-form/rol-form.component';
+import { ConvocatoriaComponent } from './Component/convocatoria/convocatoria.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent},
@@ -19,5 +20,6 @@ export const routes: Routes = [
     { path: `users`, component: UserComponent},
     { path: `user/form`, component: UserFormComponent},
     { path: `rols`, component: RolComponent},
-    { path : `rols/form`, component: RolFormComponent}
+    { path: `rols/form`, component: RolFormComponent},
+    { path: `convocatorias`, component: ConvocatoriaComponent}
 ];
