@@ -29,6 +29,8 @@ public class CourseServicesImpl implements CourseServices {
 	@Override
 	public Long create(Course course, Long idAdmin) {
 		
+		course.setHabilitado(true);
+		
 		if(!isAdmin(idAdmin))
 			throw new IllegalStateException("No eres administrador");
 
@@ -62,6 +64,7 @@ public class CourseServicesImpl implements CourseServices {
 			throw new IllegalStateException("El curso con ID [" + id + "] no existe.");
 		}
 		
+		course.setHabilitado(true);		
 		cursoRepository.save(course);
 	}
 
