@@ -24,8 +24,7 @@
     <div class="lista-cursos" *ngFor="let c of cursos">
       <p>Nombre: {{c.nombre}}</p>
       <p>Descripcion: {{c.descripcion}}</p>
-      <p>Fecha Inicio: {{c.fechaInicio}}</p>
-      <p>Fecha Fin: {{c.fechaFin}}</p>
+      <p>Numero de horas: {{c.numeroHoras}}</p>
   
       <div *ngIf="idAdmin==0">
         <p>Usuarios inscritos: {{c.usuarios.length}} </p>

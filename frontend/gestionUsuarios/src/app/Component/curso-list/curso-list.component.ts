@@ -29,14 +29,13 @@ export class CursoListComponent implements OnInit{
   ngOnInit(): void {
     this.cursoService.getCursos().subscribe(data => {
       this.cursos = data.map((curso: any) => {
-        const fechaInicio = new Date(curso.fechaInicio);
-        const fechaFin = new Date(curso.fechaFin);
         return {
           ...curso,
-          fechaInicio: this.formatearFecha(fechaInicio),
-          fechaFin: this.formatearFecha(fechaFin)
         };
       });
+      this.cursos = this.cursos.filter((curso) => {
+        return curso.habilitado === true
+      })
     });
 
     this.idAdmin = Number(localStorage.getItem('idAdmin'))

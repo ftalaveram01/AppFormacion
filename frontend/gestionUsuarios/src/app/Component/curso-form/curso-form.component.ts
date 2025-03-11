@@ -29,9 +29,7 @@ export class CursoFormComponent implements OnInit{
     this.cursoForm = this.fb.group({
       nombre: [''],
       descripcion: [''],
-      fechaInicio: [''],
-      fechaFin: [''],
-      router:['']
+      numeroHoras: ['']
     });
     this.seleccionadosForm = this.fb.group({});
 
@@ -44,16 +42,6 @@ export class CursoFormComponent implements OnInit{
         this.idCurso = +params['id'];
         this.cursoService.getCurso(this.idCurso).subscribe(curso => {
           this.cursoForm.patchValue(curso)
-  
-          const fechaInicio = new Date(curso.fechaInicio);
-          const fechaFin = new Date(curso.fechaFin)
-   
-          this.cursoForm.patchValue({
-            fechaInicio: this.formatearFecha(fechaInicio)
-          });
-          this.cursoForm.patchValue({
-            fechaFin: this.formatearFecha(fechaFin)
-          });
           this.getUsuarios(curso);
         })
       } else {
@@ -125,15 +113,4 @@ export class CursoFormComponent implements OnInit{
     },)
   }
 
-  private formatearFecha(fechaInicio: Date) : String{
-    const anio = fechaInicio.getFullYear();
-    const mes = (fechaInicio.getMonth() + 1).toString().padStart(2, '0');
-    const dia = fechaInicio.getDate().toString().padStart(2, '0');
-    const hora = fechaInicio.getHours().toString().padStart(2, '0');
-    const minutos = fechaInicio.getMinutes().toString().padStart(2, '0');
-   
-    const fechaFormateada = `${anio}-${mes}-${dia}T${hora}:${minutos}`;
-   
-    return fechaFormateada
-  }
 }
