@@ -1,7 +1,0 @@
-com\viewnext\login\LoginApp.class
-com\viewnext\login\business\model\Usuario.class
-com\viewnext\login\presentation\controller\LoginController.class
-com\viewnext\login\integration\repository\LoginRepository.class
-com\viewnext\login\presentation\config\CentralizedExceptionHandler.class
-com\viewnext\login\business\services\impl\LoginServicesImpl.class
-com\viewnext\login\business\services\LoginServices.class
