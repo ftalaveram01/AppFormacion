@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,8 @@ import com.viewnext.core.business.model.ConvocatoriaEnum;
 import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Usuario;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 	
@@ -55,8 +58,12 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		this.usuarioRepository = usuarioRepository;
 	}
 
+    @Transactional
 	@Override
 	public Convocatoria create(Long idAdmin, ConvocatoriaRequest request) {
+		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No tienes permisos para realizar esta accion");
 		
 		if(request.getFechaFin().before(request.getFechaInicio()))
 			throw new IllegalStateException("La fecha de inicio no puede ser despues de la de fin.");
@@ -83,7 +90,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		convocatoriaScheduler.programarTarea(guardada, true, false);
 		
 		
-		//enviarCorreo(null);
+		enviarCorreo(guardada);
 		
 		return guardada;
 	}
@@ -111,15 +118,56 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 											   .toList();
 	}
 
+    @Transactional
 	@Override
 	public void update(Long id, Long idAdmin, UpdateRequest request) {
-		// TODO Auto-generated method stub
 		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No tienes permisos para realizar esta accion");
+		
+		if(request.getFechaFin().before(request.getFechaInicio()))
+			throw new IllegalStateException("La fecha de inicio no puede ser despues de la de fin.");
+		
+		if(request.getFechaInicio().before(new Date()))
+			throw new IllegalStateException("La fecha de inicio no puede ser antes de la actual.");
+		
+		if(!convocatoriaRepository.existsById(id))
+			throw new IllegalStateException("No existe la convocatoria.");
+		
+		Convocatoria conv = convocatoriaRepository.findById(id).get();
+		if(conv.getEstado().equals(ConvocatoriaEnum.TERMINADA) || conv.getEstado().equals(ConvocatoriaEnum.DESIERTA))
+			throw new IllegalStateException("La convocatoria no está activa");
+		conv.setFechaInicio(request.getFechaInicio());
+		conv.setFechaFin(request.getFechaFin());
+		conv.setUsuarios(new ArrayList<Usuario>());
+		
+		convocatoriaRepository.save(conv);
+		
+		convocatoriaScheduler.programarTarea(conv, true, false);
+		
+		this.enviarCorreo(conv);
 	}
 
+    @Transactional
 	@Override
 	public void delete(Long id, Long idAdmin) {
-		// TODO Auto-generated method stub
+		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No tienes permisos para realizar esta accion");
+		
+		if(!convocatoriaRepository.existsById(id))
+			throw new IllegalStateException("No existe la convocatoria.");
+		
+		Convocatoria conv = convocatoriaRepository.findById(id).get();
+		
+		if(conv.getEstado().equals(ConvocatoriaEnum.TERMINADA) || conv.getEstado().equals(ConvocatoriaEnum.DESIERTA))
+			throw new IllegalStateException("La convocatoria ya está cancelada o está terminada");
+		
+		conv.setEstado(ConvocatoriaEnum.DESIERTA);
+		
+		convocatoriaRepository.save(conv);
+		
+		convocatoriaScheduler.cancelarTareas(conv);
 		
 	}
 
@@ -137,10 +185,60 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 
 	@Override
 	public void generarCertificado(Long idConvocatoria, Long idUsuario) {
-		// TODO Auto-generated method stub
+		
+		//email = appformacion3@gmail.com
+		//password = pecera77
+		
+		if(!convocatoriaRepository.existsById(idConvocatoria)) {
+			throw new IllegalStateException("La convocatoria con id ["+idConvocatoria+"], NO EXISTE");
+		}
+		
+		if(!usuarioRepository.existsById(idUsuario)) {
+			throw new IllegalStateException("El usuario con id ["+idUsuario+"], NO EXISTE");
+		}
+		
+		Optional <Convocatoria> convocatoria = convocatoriaRepository.findById(idConvocatoria);
+		Optional <Usuario> usuario = usuarioRepository.findById(idUsuario);
+		
+        String host = "smtp.gmail.com"; //servidor SMTP
+        final String user = "appformacion3@gmail.com"; //tu correo
+        final String password = "pecera77"; //tu contraseña
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(user, password);
+            }
+        });
+        
+        try {
+			
+        	MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(user));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(usuario.get().getEmail()));
+            message.setSubject("ENHORABUENA, AQUI TIENES TU CERTIFICADO ");
+            message.setText("Has completado el curso de "+convocatoria.get().getCurso().getNombre());
+            message.setText("Fecha Inicio: "+convocatoria.get().getFechaInicio());
+            message.setText("Fecha Fin: "+convocatoria.get().getFechaFin());
+            
+            Transport.send(message);
+            
+            System.out.println("CERTIFICADO ENVIADO CORRECTAMENTEs");
+        	
+		} catch (MessagingException e) {
+            e.printStackTrace();
+            System.out.println("ERROR AL ENVIAR CERTIFICADO");
+        }
+		        
 		
 	}
 
+    @Transactional
 	@Override
 	public void inscribirUsuario(Long idConvocatoria, Long idUsuario) {
 		
@@ -154,7 +252,14 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 			throw new IllegalStateException("ERROR: El usuario ya está inscrito en la convocatoria");
 		}
 		
+		if(convocatoria.getUsuarios().size()==15)
+			throw new IllegalStateException("No quedan plazas en la convocatoria.");
+		
 		convocatoria.getUsuarios().add(user);
+		
+		if(convocatoria.getUsuarios().size()==15)
+			convocatoria.setEstado(ConvocatoriaEnum.CONVOCADA);
+		
 		convocatoriaRepository.save(convocatoria);
 		
 	}
@@ -165,7 +270,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		return usuarioRepository.isAdmin(idAdmin);
 	}
 	
-private void enviarCorreo(Convocatoria convocatoria) {
+	private void enviarCorreo(Convocatoria convocatoria) {
 		
 		//email = appformacion3@gmail.com
 		//password = pecera77
