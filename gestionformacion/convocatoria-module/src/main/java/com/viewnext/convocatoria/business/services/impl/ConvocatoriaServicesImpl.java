@@ -145,7 +145,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
 		convocatoriaScheduler.programarTarea(conv, true, false);
 		
-		//mandar correo de nuevo a todos los usuarios del curso
+		this.enviarCorreo(conv);
 	}
 
     @Transactional
