@@ -41,7 +41,7 @@
         </div>
       </div>
       <div *ngIf="idAdmin == 0" class="botones">
-        <button id="btn-Eliminar" (click)="deleteCurso(c.id)">Eliminar -> {{c.nombre}}</button>
+        <button id="btn-Eliminar" (click)="deleteCurso(c.id,c.nombre)">Eliminar -> {{c.nombre}}</button>
         <button id="btn-Update" (click)="btnUpdateCurso(true,c.id)"> Actualizar -> {{c.nombre}}</button>
       </div>
         
