@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -83,7 +84,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		convocatoriaScheduler.programarTarea(guardada, true, false);
 		
 		
-		//enviarCorreo(null);
+		enviarCorreo(guardada);
 		
 		return guardada;
 	}
@@ -137,7 +138,56 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 
 	@Override
 	public void generarCertificado(Long idConvocatoria, Long idUsuario) {
-		// TODO Auto-generated method stub
+		
+		//email = appformacion3@gmail.com
+		//password = pecera77
+		
+		if(!convocatoriaRepository.existsById(idConvocatoria)) {
+			throw new IllegalStateException("La convocatoria con id ["+idConvocatoria+"], NO EXISTE");
+		}
+		
+		if(!usuarioRepository.existsById(idUsuario)) {
+			throw new IllegalStateException("El usuario con id ["+idUsuario+"], NO EXISTE");
+		}
+		
+		Optional <Convocatoria> convocatoria = convocatoriaRepository.findById(idConvocatoria);
+		Optional <Usuario> usuario = usuarioRepository.findById(idUsuario);
+		
+        String host = "smtp.gmail.com"; //servidor SMTP
+        final String user = "appformacion3@gmail.com"; //tu correo
+        final String password = "pecera77"; //tu contraseña
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(user, password);
+            }
+        });
+        
+        try {
+			
+        	MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(user));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(usuario.get().getEmail()));
+            message.setSubject("ENHORABUENA, AQUI TIENES TU CERTIFICADO ");
+            message.setText("Has completado el curso de "+convocatoria.get().getCurso().getNombre());
+            message.setText("Fecha Inicio: "+convocatoria.get().getFechaInicio());
+            message.setText("Fecha Fin: "+convocatoria.get().getFechaFin());
+            
+            Transport.send(message);
+            
+            System.out.println("CERTIFICADO ENVIADO CORRECTAMENTEs");
+        	
+		} catch (MessagingException e) {
+            e.printStackTrace();
+            System.out.println("ERROR AL ENVIAR CERTIFICADO");
+        }
+		        
 		
 	}
 
@@ -165,7 +215,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		return usuarioRepository.isAdmin(idAdmin);
 	}
 	
-private void enviarCorreo(Convocatoria convocatoria) {
+	private void enviarCorreo(Convocatoria convocatoria) {
 		
 		//email = appformacion3@gmail.com
 		//password = pecera77
