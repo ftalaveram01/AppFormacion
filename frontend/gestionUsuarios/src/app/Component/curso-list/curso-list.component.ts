@@ -3,6 +3,7 @@ import { CursoService } from '../../Services/curso.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ConvocatoriaService } from '../../Services/convocatoria.service';
 
 @Component({
   selector: 'app-curso-list',
@@ -16,7 +17,7 @@ export class CursoListComponent implements OnInit{
   idAdmin!: number;
   cursoForm: FormGroup;
 
-  constructor(private cursoService: CursoService, private fb: FormBuilder,private router: Router) {
+  constructor(private cursoService: CursoService, private fb: FormBuilder,private router: Router, private convocatoriaServices: ConvocatoriaService) {
     this.cursoForm = this.fb.group({
       nombre: [''],
       descripcion: [''],
@@ -122,12 +123,9 @@ export class CursoListComponent implements OnInit{
     localStorage.clear();
   }
 
-  btnCreateConvocatoria(isUpdate: boolean, isCreate: boolean): void {
-    console.log(isCreate)
-    console.log(isUpdate)
-    this.router.navigate(['convocatorias/form'], {
-      queryParams: { isUpdate: isUpdate, isCreate: isCreate }
-    })
+  btnCreateConvocatoria(curso: any): void {
+    this.convocatoriaServices.createConvocatoria()
+    
   }
 
   private formatearFecha(fecha: Date): string {
