@@ -18,6 +18,7 @@
       <h3>Convocatoria:</h3>
       
       <p *ngIf="isAdmin()">id: {{c.id}}</p>
+      <p *ngIf="isUsuarioOnCurso()">ASISTENCIA CONFIRMADA</p>
       <p>Fecha inicio: {{c.fechaInicio}}</p>
       <p>Fecha fin: {{c.fechaFin}}</p>
       <p>Estado: {{c.estado}}</p>
