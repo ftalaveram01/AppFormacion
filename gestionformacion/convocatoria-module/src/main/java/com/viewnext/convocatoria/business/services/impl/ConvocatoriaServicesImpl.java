@@ -37,6 +37,8 @@ import com.viewnext.core.business.model.ConvocatoriaEnum;
 import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Usuario;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 	
@@ -56,8 +58,12 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		this.usuarioRepository = usuarioRepository;
 	}
 
+    @Transactional
 	@Override
 	public Convocatoria create(Long idAdmin, ConvocatoriaRequest request) {
+		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No tienes permisos para realizar esta accion");
 		
 		if(request.getFechaFin().before(request.getFechaInicio()))
 			throw new IllegalStateException("La fecha de inicio no puede ser despues de la de fin.");
@@ -112,15 +118,56 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 											   .toList();
 	}
 
+    @Transactional
 	@Override
 	public void update(Long id, Long idAdmin, UpdateRequest request) {
-		// TODO Auto-generated method stub
 		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No tienes permisos para realizar esta accion");
+		
+		if(request.getFechaFin().before(request.getFechaInicio()))
+			throw new IllegalStateException("La fecha de inicio no puede ser despues de la de fin.");
+		
+		if(request.getFechaInicio().before(new Date()))
+			throw new IllegalStateException("La fecha de inicio no puede ser antes de la actual.");
+		
+		if(!convocatoriaRepository.existsById(id))
+			throw new IllegalStateException("No existe la convocatoria.");
+		
+		Convocatoria conv = convocatoriaRepository.findById(id).get();
+		if(conv.getEstado().equals(ConvocatoriaEnum.TERMINADA) || conv.getEstado().equals(ConvocatoriaEnum.DESIERTA))
+			throw new IllegalStateException("La convocatoria no está activa");
+		conv.setFechaInicio(request.getFechaInicio());
+		conv.setFechaFin(request.getFechaFin());
+		conv.setUsuarios(new ArrayList<Usuario>());
+		
+		convocatoriaRepository.save(conv);
+		
+		convocatoriaScheduler.programarTarea(conv, true, false);
+		
+		this.enviarCorreo(conv);
 	}
 
+    @Transactional
 	@Override
 	public void delete(Long id, Long idAdmin) {
-		// TODO Auto-generated method stub
+		
+		if(!isAdmin(idAdmin))
+			throw new IllegalStateException("No tienes permisos para realizar esta accion");
+		
+		if(!convocatoriaRepository.existsById(id))
+			throw new IllegalStateException("No existe la convocatoria.");
+		
+		Convocatoria conv = convocatoriaRepository.findById(id).get();
+		
+		if(conv.getEstado().equals(ConvocatoriaEnum.TERMINADA) || conv.getEstado().equals(ConvocatoriaEnum.DESIERTA))
+			throw new IllegalStateException("La convocatoria ya está cancelada o está terminada");
+		
+		conv.setEstado(ConvocatoriaEnum.DESIERTA);
+		
+		convocatoriaRepository.save(conv);
+		
+		convocatoriaScheduler.cancelarTareas(conv);
 		
 	}
 
@@ -191,6 +238,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
 	}
 
+    @Transactional
 	@Override
 	public void inscribirUsuario(Long idConvocatoria, Long idUsuario) {
 		
@@ -204,7 +252,14 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 			throw new IllegalStateException("ERROR: El usuario ya está inscrito en la convocatoria");
 		}
 		
+		if(convocatoria.getUsuarios().size()==15)
+			throw new IllegalStateException("No quedan plazas en la convocatoria.");
+		
 		convocatoria.getUsuarios().add(user);
+		
+		if(convocatoria.getUsuarios().size()==15)
+			convocatoria.setEstado(ConvocatoriaEnum.CONVOCADA);
+		
 		convocatoriaRepository.save(convocatoria);
 		
 	}
