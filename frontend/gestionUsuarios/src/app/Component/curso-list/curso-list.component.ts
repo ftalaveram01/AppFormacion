@@ -122,6 +122,14 @@ export class CursoListComponent implements OnInit{
     localStorage.clear();
   }
 
+  btnCreateConvocatoria(isUpdate: boolean, isCreate: boolean): void {
+    console.log(isCreate)
+    console.log(isUpdate)
+    this.router.navigate(['convocatorias/form'], {
+      queryParams: { isUpdate: isUpdate, isCreate: isCreate }
+    })
+  }
+
   private formatearFecha(fecha: Date): string {
     const anio = fecha.getFullYear();
     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');

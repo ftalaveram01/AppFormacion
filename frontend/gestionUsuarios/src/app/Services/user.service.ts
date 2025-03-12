@@ -59,6 +59,7 @@ export class UserService {
       id: Number(user.rol)
     }
     user.rol = objetoRol
+    user.habilitado = 1
 
     console.log(idAdmin)
 
