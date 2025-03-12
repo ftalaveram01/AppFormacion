@@ -41,12 +41,12 @@ public class RolControllerTest {
 	void testGetAll() throws Exception{
     	Rol rol = new Rol();
     	rol.setId(5L);
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	rol.setDescripcion("Prueba");
     	
     	Rol rol2 = new Rol();
     	rol2.setId(5L);
-    	rol2.setNombreRol(RolEnum.ALUMNO);
+    	rol2.setNombreRol("ALUMNO");
     	rol2.setDescripcion("Prueba2");
     	
     	when(rolServices.getAll()).thenReturn(Arrays.asList(rol, rol2));
@@ -65,7 +65,7 @@ public class RolControllerTest {
 	void testCreate() throws Exception{
     	Rol rol = new Rol();
     	rol.setId(5L);
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	rol.setDescripcion("Prueba");
     	
     	String json = mapper.writeValueAsString(rol);
@@ -87,7 +87,7 @@ public class RolControllerTest {
 	void testCreateError() throws Exception{
     	Rol rol = new Rol();
     	rol.setId(5L);
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	rol.setDescripcion("Prueba");
     	
     	String json = mapper.writeValueAsString(rol);
@@ -109,7 +109,7 @@ public class RolControllerTest {
 	void testRead() throws Exception{
     	Rol rol = new Rol();
     	rol.setId(5L);
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	rol.setDescripcion("Prueba");
     	
     	when(rolServices.read(5L)).thenReturn(rol);
@@ -141,16 +141,16 @@ public class RolControllerTest {
 	void testUpdate() throws Exception{
     	Rol rol = new Rol();
     	rol.setId(5L);
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	rol.setDescripcion("Prueba");
     	
-		when(rolServices.update(rol, 5L, 0L)).thenReturn(rol);
+		when(rolServices.update(rol.getDescripcion(), 5L, 0L)).thenReturn(rol);
 		
 		String json = mapper.writeValueAsString(rol);
 		
-		MvcResult response = mockMvc.perform(put("/roles/5").contentType("application/json")
+		MvcResult response = mockMvc.perform(put("/roles/5").contentType("text/plain")
 				.param("idAdmin", "0")
-				.content(json))
+				.content("Prueba"))
 				.andExpect(status().isOk())
 				.andReturn();
 		
@@ -163,16 +163,16 @@ public class RolControllerTest {
 	void testUpdateError() throws Exception{
     	Rol rol = new Rol();
     	rol.setId(5L);
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	rol.setDescripcion("Prueba");
     	
-		when(rolServices.update(rol, 5L, 0L)).thenThrow(new IllegalStateException("Excepcion de update"));
+		when(rolServices.update(rol.getDescripcion(), 5L, 0L)).thenThrow(new IllegalStateException("Excepcion de update"));
 		
 		String json = mapper.writeValueAsString(rol);
 		
-		MvcResult response = mockMvc.perform(put("/roles/5").contentType("application/json")
+		MvcResult response = mockMvc.perform(put("/roles/5").contentType("text/plain")
 				.param("idAdmin", "0")
-				.content(json))
+				.content("Prueba"))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		
