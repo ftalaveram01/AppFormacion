@@ -28,7 +28,7 @@ export class ConvocatoriaComponent {
       idCurso: new FormControl('')
     })
     this.idAdmin = Number(localStorage.getItem('idAdmin'))
-    if(!this.isAdmin){
+    if(!this.isAdmin()){
       this.convocatorias.filter((convocatoria) => {
         return convocatoria.estado === 'CONVOCADA'
       })
@@ -63,6 +63,10 @@ export class ConvocatoriaComponent {
 
   isAdmin(): boolean {
     return this.idAdmin == 0;
+  }
+
+  isUsuarioOnCurso(){
+    return this.convocatorias.find(convocatoria => convocatoria.usuarios.id === Number(localStorage.getItem('idUsuario')))
   }
 
 }
