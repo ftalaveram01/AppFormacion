@@ -37,6 +37,8 @@ import com.viewnext.core.business.model.ConvocatoriaEnum;
 import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Usuario;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 	
@@ -56,6 +58,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		this.usuarioRepository = usuarioRepository;
 	}
 
+    @Transactional
 	@Override
 	public Convocatoria create(Long idAdmin, ConvocatoriaRequest request) {
 		
@@ -115,6 +118,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 											   .toList();
 	}
 
+    @Transactional
 	@Override
 	public void update(Long id, Long idAdmin, UpdateRequest request) {
 		
@@ -144,6 +148,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		//mandar correo de nuevo a todos los usuarios del curso
 	}
 
+    @Transactional
 	@Override
 	public void delete(Long id, Long idAdmin) {
 		
@@ -233,6 +238,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
 	}
 
+    @Transactional
 	@Override
 	public void inscribirUsuario(Long idConvocatoria, Long idUsuario) {
 		
