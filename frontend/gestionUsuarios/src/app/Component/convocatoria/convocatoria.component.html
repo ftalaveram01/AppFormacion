@@ -12,10 +12,7 @@
         <button (click)="borrarCache()">CERRAR SESION</button>
       </a>
     </div>
-  
-    <div *ngIf="isAdmin()" class="btn-CrearConvocatoria">
-      <button id="btn-Crear" (click)="btnCreateConvocatoria(false, true)">Crear -></button>
-    </div>
+
   
     <div class="lista-convocatorias" *ngFor="let c of convocatorias">
       <h3>Convocatoria:</h3>
