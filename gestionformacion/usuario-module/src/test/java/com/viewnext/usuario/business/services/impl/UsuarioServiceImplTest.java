@@ -47,11 +47,11 @@ class UsuarioServiceImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
          
         Usuario usuario = new Usuario();
         usuario.setId(null);
@@ -76,11 +76,11 @@ class UsuarioServiceImplTest {
     void testDarAltaUserExistente() {
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
     	
         Usuario usuario = new Usuario();
         usuario.setId(null);
@@ -96,11 +96,11 @@ class UsuarioServiceImplTest {
     void testDarAltaUserNotNull() {
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
 
         Usuario usuario = new Usuario();
         usuario.setId(2L);
@@ -114,17 +114,16 @@ class UsuarioServiceImplTest {
     void testDarAltaUserRolNoExistente() {
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
-        
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);        
         Usuario usuario = new Usuario();
         usuario.setId(null);
         usuario.setEmail("test@gmail.com");
         Rol rolv2 = new Rol();
-        rolv2.setNombreRol(RolEnum.ADMIN);
+        rolv2.setNombreRol("ADMIN");
         usuario.setRol(rolv2);
         
         when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
@@ -140,17 +139,17 @@ class UsuarioServiceImplTest {
     void testDarAltaUserRolSinId() {
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario usuario = new Usuario();
         usuario.setId(null);
         usuario.setEmail("test@gmail.com");
         Rol rolv2 = new Rol();
-        rolv2.setNombreRol(RolEnum.ADMIN);
+        rolv2.setNombreRol("ADMIN");
         usuario.setRol(rolv2);
         
         when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
@@ -176,11 +175,11 @@ class UsuarioServiceImplTest {
     void testDelete() {
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario usuario = new Usuario();
         usuario.setId(2L);
@@ -200,12 +199,11 @@ class UsuarioServiceImplTest {
     void testDeleteDeshabilitado() {
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
-        
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);        
         Usuario usuario = new Usuario();
         usuario.setId(2L);
         usuario.setHabilitado(false);
@@ -220,11 +218,11 @@ class UsuarioServiceImplTest {
     void testDeleteIdNoExistente() {
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario usuario = new Usuario();
         usuario.setId(2L);
@@ -239,11 +237,11 @@ class UsuarioServiceImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario user = new Usuario();
         user.setId(2L);
@@ -262,12 +260,11 @@ class UsuarioServiceImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
-        
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);        
         Usuario user = new Usuario();
         user.setId(2L);
         user.setRol(rol);
@@ -283,11 +280,11 @@ class UsuarioServiceImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
 
         Usuario usuario = new Usuario();
         usuario.setId(2L);
@@ -297,7 +294,7 @@ class UsuarioServiceImplTest {
 
         Usuario resultado = usuarioServicesImpl.read(2L, 1L);
 
-        verify(usuarioRepository, times(1)).findById(1L);
+        verify(usuarioRepository, times(1)).findById(2L);
         assertEquals(usuario, resultado);
         
     }
@@ -307,11 +304,11 @@ class UsuarioServiceImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
 
         Usuario usuario = new Usuario();
         usuario.setId(2L);
@@ -327,11 +324,11 @@ class UsuarioServiceImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	admin.setId(1L);
     	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario usuario1 = new Usuario();
         usuario1.setId(1L);
