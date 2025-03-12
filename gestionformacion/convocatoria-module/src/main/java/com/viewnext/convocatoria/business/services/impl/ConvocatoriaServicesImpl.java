@@ -162,6 +162,8 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
 		convocatoriaRepository.save(conv);
 		
+		convocatoriaScheduler.cancelarTareas(conv);
+		
 	}
 
 	@Override
