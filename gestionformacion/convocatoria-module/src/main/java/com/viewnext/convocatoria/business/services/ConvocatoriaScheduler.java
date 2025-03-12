@@ -70,20 +70,26 @@ public class ConvocatoriaScheduler {
         		programarTarea(convocatoria, true, false);
         	else {
         		
-        		if(convocatoria.getEstado().equals(ConvocatoriaEnum.EN_PREPARACION) || convocatoria.getEstado().equals(ConvocatoriaEnum.CONVOCADA))
-        				tareaFechaInicio(convocatoria);
-        		if(fechaFin.before(new Date()))
-        			tareaFechaFin(convocatoria);
-        		else {
-        			
-                    ScheduledFuture<?> tareaFin = scheduledExecutorService.schedule(() -> {
-                        tareaFechaFin(convocatoria);
-                    }, fechaFin.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
-                    tareasProgramadas.put(convocatoria, new ArrayList<>());
-                    List<ScheduledFuture<?>> tareas = tareasProgramadas.get(convocatoria);
-                    tareas.add(tareaFin);
-                    
+        		if(convocatoria.getEstado().equals(ConvocatoriaEnum.EN_PREPARACION) || convocatoria.getEstado().equals(ConvocatoriaEnum.CONVOCADA)) {
+        			tareaFechaInicio(convocatoria);
         		}
+        		
+        		if(!convocatoria.getEstado().equals(ConvocatoriaEnum.DESIERTA)) {
+        			
+            		if(fechaFin.before(new Date()))
+            			tareaFechaFin(convocatoria);
+            		else {
+            			
+                        ScheduledFuture<?> tareaFin = scheduledExecutorService.schedule(() -> {
+                            tareaFechaFin(convocatoria);
+                        }, fechaFin.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+                        tareasProgramadas.put(convocatoria, new ArrayList<>());
+                        List<ScheduledFuture<?>> tareas = tareasProgramadas.get(convocatoria);
+                        tareas.add(tareaFin);
+                        
+            		}
+        		}
+
         	}
         }
     }
@@ -100,20 +106,21 @@ public class ConvocatoriaScheduler {
     
     @Transactional
     public void tareaFechaInicio(Convocatoria convocatoria) {
-    	System.out.println("Hola");
         Convocatoria actualizada = convocatoriaRepository.findById(convocatoria.getId()).get();
         if(actualizada.getUsuarios().size()>9) {
         	actualizada.setEstado(ConvocatoriaEnum.EN_CURSO);
+        	convocatoria.setEstado(ConvocatoriaEnum.EN_CURSO);
         }else {
             actualizada.setEstado(ConvocatoriaEnum.DESIERTA);
+            convocatoria.setEstado(ConvocatoriaEnum.DESIERTA);
             cancelarTareas(convocatoria);
         }
-        System.out.println(actualizada.getEstado().name());
         convocatoriaRepository.save(actualizada);
+        
     }
     
+    @Transactional
     public void tareaFechaFin(Convocatoria convocatoria) {
-    	System.out.println("Adios");
     	Convocatoria actualizada = convocatoriaRepository.findById(convocatoria.getId()).get();
     	actualizada.setEstado(ConvocatoriaEnum.TERMINADA);
     	convocatoriaRepository.save(actualizada);
