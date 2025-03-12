@@ -36,11 +36,7 @@ public class ConvocatoriaScheduler {
     
     @PostConstruct
     public void init() {
-        List<Convocatoria> convocatorias = convocatoriaRepository.findAll();
-        for (Convocatoria convocatoria : convocatorias) {
-        	if(!convocatoria.getEstado().equals(ConvocatoriaEnum.DESIERTA) && !convocatoria.getEstado().equals(ConvocatoriaEnum.TERMINADA))
-        		programarTarea(convocatoria, true, true);
-        }
+        reiniciarScheduler();
     }
 
     public void programarTarea(Convocatoria convocatoria, boolean crearModificar, boolean postConstruct) {
@@ -125,5 +121,16 @@ public class ConvocatoriaScheduler {
     	actualizada.setEstado(ConvocatoriaEnum.TERMINADA);
     	convocatoriaRepository.save(actualizada);
     }
+    
+    public void reiniciarScheduler() {
+        tareasProgramadas.clear();
+        List<Convocatoria> convocatorias = convocatoriaRepository.findAll();
+        for (Convocatoria convocatoria : convocatorias) {
+            if (!convocatoria.getEstado().equals(ConvocatoriaEnum.DESIERTA) && !convocatoria.getEstado().equals(ConvocatoriaEnum.TERMINADA)) {
+                programarTarea(convocatoria, true, true);
+            }
+        }
+    }
+
 
 }
