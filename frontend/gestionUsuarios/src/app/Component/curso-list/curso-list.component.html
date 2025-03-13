@@ -1,55 +1,60 @@
 <div class="header">
   <h1>LISTADO DE CURSOS</h1>
 
-    <div class="btn-inicio">
-        <a href="inicio">
+  <div class="btn-inicio">
+    <a href="inicio">
       <button>INICIO</button>
-        </a>
-    </div>
-
-    <div class="cerrar-sesion">
-      <a href="login">
-        <button (click)="borrarCache()">CERRAR SESION</button>
-      </a>
-    </div>
+    </a>
   </div>
-  
-  <div class="container">
-    <div *ngIf="idAdmin == 0" class="btn-CrearCurso">
-      <a href="cursos/form">
-        <button>Crear Nuevo Curso</button>
-      </a>
-    </div>
-  
-    <div class="lista-cursos" *ngFor="let c of cursos">
 
-      <p>Nombre: {{c.nombre}}</p>
-      <p>Descripcion: {{c.descripcion}}</p>
-      <p>Numero de horas: {{c.numeroHoras}}</p>
-  
-      <div *ngIf="idAdmin==0">
-        <p>Usuarios inscritos: {{c.usuarios.length}} </p>
-        <div *ngFor="let u of c.usuarios">
-          <table>
-            <th>
-              {{u.email}}
-            </th>
-            <td *ngIf="idAdmin == 0">
-              <button id="btn-EliminarUsuario" (click)="btnDeleteUserCourse(u.id, c.id)">X</button>
-            </td>
-          </table>
-        </div>
-      </div>
-      <div *ngIf="idAdmin == 0" class="botones">
-        <button id="btn-Eliminar" (click)="deleteCurso(c.id, c.nombre)">Eliminar -> {{c.nombre}}</button>
-        <button id="btn-Update" (click)="btnUpdateCurso(true,c.id)"> Actualizar -> {{c.nombre}}</button>
-        <button id="btn-Crear" (click)="btnCreateConvocatoria(c)" [disabled]="c.usuarios.length < 10" [ngClass]="{'disabled': c.usuarios.length < 10}" [title]="c.usuarios.length < 10 ? 'No hay suficientes alumnos ({{c.usuarios.length}}/10)' : ''">Crear Convocatoria -></button>
-      </div>
-        
-        <div *ngIf="idAdmin == 1" class="botones">
-          <button id="btn-Incripcion" (click)="btnMatricularse(c.id)" [disabled]="isInscrito(c.id)" [ngClass]="{'disabled': isInscrito(c.id)}">Matricularse</button>
-          <button id="btn-Desincripcion" (click)="btnDesmatricularse(c.id)" [disabled]="!isInscrito(c.id)" [ngClass]="{'disabled': !isInscrito(c.id)}">Desmatricularse</button>
-        </div>
+  <div class="cerrar-sesion">
+    <a href="login">
+      <button (click)="borrarCache()">CERRAR SESION</button>
+    </a>
+  </div>
+</div>
 
+<div class="container">
+  <div *ngIf="idAdmin == 0" class="btn-CrearCurso">
+    <a href="cursos/form">
+      <button>Crear Nuevo Curso</button>
+    </a>
+  </div>
+
+  <div class="lista-cursos" *ngFor="let c of cursos">
+
+    <p>Nombre: {{c.nombre}}</p>
+    <p>Descripcion: {{c.descripcion}}</p>
+    <p>Numero de horas: {{c.numeroHoras}}</p>
+
+    <div *ngIf="idAdmin==0">
+      <p>Usuarios inscritos: {{c.usuarios.length}} </p>
+      <div *ngFor="let u of c.usuarios">
+        <table>
+          <th>
+            {{u.email}}
+          </th>
+          <td *ngIf="idAdmin == 0">
+            <button id="btn-EliminarUsuario" (click)="btnDeleteUserCourse(u.id, c.id)">X</button>
+          </td>
+        </table>
+      </div>
     </div>
+    <div *ngIf="idAdmin == 0" class="botones">
+      <button id="btn-Eliminar" (click)="deleteCurso(c.id, c.nombre)">Eliminar -> {{c.nombre}}</button>
+      <button id="btn-Update" (click)="btnUpdateCurso(true,c.id)"> Actualizar -> {{c.nombre}}</button>
+      <button id="btn-Crear" (click)="btnCreateConvocatoria(false, true, c)" [disabled]="c.usuarios.length < 10"
+        [ngClass]="{'disabled': c.usuarios.length < 10}"
+        [title]="c.usuarios.length < 10 ? 'No hay suficientes alumnos ({{c.usuarios.length}}/10)' : ''">Crear
+        Convocatoria -></button>
+    </div>
+
+    <div *ngIf="idAdmin == 1" class="botones">
+      <button id="btn-Incripcion" (click)="btnMatricularse(c.id)" [disabled]="isInscrito(c.id)"
+        [ngClass]="{'disabled': isInscrito(c.id)}">Matricularse</button>
+      <button id="btn-Desincripcion" (click)="btnDesmatricularse(c.id)" [disabled]="!isInscrito(c.id)"
+        [ngClass]="{'disabled': !isInscrito(c.id)}">Desmatricularse</button>
+    </div>
+
+  </div>
 </div>

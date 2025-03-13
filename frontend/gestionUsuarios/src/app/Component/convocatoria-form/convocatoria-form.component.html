@@ -6,6 +6,13 @@
     <label for="fechaFin">Fecha fin: </label>
     <input type="datetime-local" name="fechaFin" id="fechaFin" formControlName="fechaFin">
 
-    <button type="submit">Confirmar fechas</button>
+    <div *ngIf="isUpdate">
+        <tr *ngFor="let usuario of usuariosMostrados; let i = index">
+            <td>{{ usuario.email }}</td>
+            <td><input type="checkbox" formControlName="seleccionado{{usuario.id}}"></td>
+        </tr>
+    </div>
+
+    <button type="submit">{{isCreate ? 'Crear': 'Actualizar'}} Convocatoria</button>
 
 </form>

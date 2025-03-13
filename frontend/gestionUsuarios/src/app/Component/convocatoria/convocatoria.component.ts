@@ -16,39 +16,30 @@ export class ConvocatoriaComponent {
 
   convocatorias: any[] = [];
   idAdmin!: number;
-  formulario!: FormGroup
 
   constructor(private convocatoriaService: ConvocatoriaService, private router: Router, private usuariosSerivices: UserService) {
   }
 
   ngOnInit(): void {
-    this.convocatoriaService.getConvocatorias().subscribe((data) => {
-      this.convocatorias = data;
-    })
-    this.formulario = new FormGroup({
-      idCurso: new FormControl('')
-    })
     this.idAdmin = Number(localStorage.getItem('idAdmin'))
-    if(!this.isAdmin()){
-      this.convocatorias.filter((convocatoria) => {
-        return convocatoria.estado === 'CONVOCADA'
-      })
-    }
-  }
 
-  btnCreateConvocatoria(isUpdate: boolean, isCreate: boolean): void {
-    console.log(isCreate)
-    console.log(isUpdate)
-    this.router.navigate(['convocatorias/form'], {
-      queryParams: { isUpdate: isUpdate, isCreate: isCreate }
-    })
+    if (this.isAdmin()) {
+      this.convocatoriaService.getConvocatorias().subscribe((data) =>
+        this.convocatorias = data
+      )
+
+    } else {
+      this.convocatoriaService.getConvocatoriasActivas().subscribe(data =>
+        this.convocatorias = data
+      )
+    }
   }
 
   btnUpdateConvocatoria(isUpdate: boolean, isCreate: boolean, id: number): void {
     console.log(isCreate)
     console.log(isUpdate)
-    this.router.navigate(['Convocatoria/form'], {
-      queryParams: { isUpdate: isUpdate, isCreate: isCreate, id: id }
+    this.router.navigate(['convocatorias/form'], {
+      queryParams: { idConvocatoria: id, isUpdate: isUpdate, isCreate: isCreate }
     });
   }
 
@@ -80,8 +71,13 @@ export class ConvocatoriaComponent {
     return this.idAdmin == 0;
   }
 
-  isUsuarioOnCurso(){
-    return this.convocatorias.find(convocatoria => convocatoria.usuarios.id === Number(localStorage.getItem('idUsuario')))
+  isUsuarioOnCurso(idConvocatoria: Number): boolean {
+    const convocatoria = this.convocatorias.find(convocatoria => convocatoria.id === idConvocatoria)
+    return convocatoria.usuarios.find((usuario: { id: number; }) => usuario.id === Number(localStorage.getItem('idUsuario')))
+  }
+
+  isUsuariosConvocatoriaVacio(idConvocatoria: Number): boolean {
+    return this.convocatorias.find(convocatoria => convocatoria.id === idConvocatoria)?.usuarios.length == 0
   }
 
 }

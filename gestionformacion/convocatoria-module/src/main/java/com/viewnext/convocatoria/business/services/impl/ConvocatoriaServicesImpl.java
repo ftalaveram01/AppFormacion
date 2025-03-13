@@ -140,6 +140,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		conv.setFechaInicio(request.getFechaInicio());
 		conv.setFechaFin(request.getFechaFin());
 		conv.setUsuarios(new ArrayList<Usuario>());
+		conv.setEstado(ConvocatoriaEnum.EN_PREPARACION);
 		
 		convocatoriaRepository.save(conv);
 		
