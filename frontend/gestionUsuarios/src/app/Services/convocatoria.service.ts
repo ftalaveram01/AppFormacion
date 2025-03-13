@@ -20,6 +20,11 @@ export class ConvocatoriaService {
     return this.http.get(`${this.convocatoriaApiUrl}/activas`)
   }
 
+  getConvocatoriasUsuario(): Observable<any>{
+    const idUsuario = localStorage.getItem('idUsuario');
+    return this.http.get(`${this.convocatoriaApiUrl}/usuario/${idUsuario}`)
+  }
+
   createConvocatoria(convocatoria: any): Observable<any> {
     const params = new HttpParams().set('idAdmin', Number(localStorage.getItem('idUsuario')))
 
@@ -44,4 +49,20 @@ export class ConvocatoriaService {
     
     return this.http.delete(`${this.convocatoriaApiUrl}/${id}`, {params}) 
   }
+
+  inscribirEnConvocatoria(idConvocatoria: Number): Observable<any>{
+    const params = new HttpParams()
+                   .set('idAdmin',Number(localStorage.getItem('idUsuario')));
+    
+    return this.http.put(`${this.convocatoriaApiUrl}/${idConvocatoria}/inscribir`, params)          
+  }
+
+  enviarCertificado(idConvocatoria: Number): Observable<any>{
+    const idUsuario = localStorage.getItem('idUsuario')
+    const params = new HttpParams()
+                   .set('idAdmin',Number(localStorage.getItem('idUsuario')));
+
+    return this.http.post(`${this.convocatoriaApiUrl}/${idConvocatoria}/usuarios/certificado`, {params})
+  }
+
 }

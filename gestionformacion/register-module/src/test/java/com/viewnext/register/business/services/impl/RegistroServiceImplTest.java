@@ -52,7 +52,7 @@ class RegistroServiceImplTest {
         Long idRegistro = registroServiceImpl.register(usuario);
 
         assertEquals(usuariov2.getId(), idRegistro);
-        verify(rolRepository, times(0)).findByNombreRol(any(RolEnum.class));
+        verify(rolRepository, times(0)).findByNombreRol(any(String.class));
 
     }
 
@@ -84,7 +84,7 @@ class RegistroServiceImplTest {
     	usuario.setId(null);
     	usuario.setEmail("test@gmail.com");
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	usuario.setRol(rol);
     	
     	Usuario usuariov2 = new Usuario();
@@ -94,7 +94,7 @@ class RegistroServiceImplTest {
     	
         when(usuarioRepository.existsByEmail(any(String.class))).thenReturn(false);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuariov2);
-        when(rolRepository.findByNombreRol(any(RolEnum.class))).thenReturn(rol);
+        when(rolRepository.findByNombreRol(any(String.class))).thenReturn(rol);
 
         Long idRegistro = registroServiceImpl.register(usuario);
         
@@ -109,11 +109,11 @@ class RegistroServiceImplTest {
     	usuario.setId(null);
     	usuario.setEmail("test@gmail.com");
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	usuario.setRol(rol);
     	
         when(usuarioRepository.existsByEmail(any(String.class))).thenReturn(false);
-        when(rolRepository.findByNombreRol(any(RolEnum.class))).thenReturn(null);
+        when(rolRepository.findByNombreRol(any(String.class))).thenReturn(null);
 
         assertThrows(IllegalStateException.class,() ->  registroServiceImpl.register(usuario));
         

@@ -48,12 +48,12 @@ class CourseServicesImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	
     	when(courseRepository.save(any(Course.class))).thenReturn(course);
     	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	
     	Long id = courseServices.create(new Course(), 5L);
     	
@@ -67,12 +67,11 @@ class CourseServicesImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	
     	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
-    	
+    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);    	
     	assertThrows(IllegalStateException.class, () -> courseServices.create(course, 5L));
     }
     
@@ -93,12 +92,12 @@ class CourseServicesImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	
     	when(courseRepository.existsById(any(Long.class))).thenReturn(true);
     	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	
     	courseServices.update(course, 2L, 5L);
     	
@@ -112,12 +111,12 @@ class CourseServicesImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	
     	when(courseRepository.existsById(any(Long.class))).thenReturn(false);
     	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	
     	assertThrows(IllegalStateException.class, () -> courseServices.update(course, 2L, 5L));
     }
@@ -129,12 +128,11 @@ class CourseServicesImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	
     	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
-    	
+    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);    	
     	assertThrows(IllegalStateException.class, () -> courseServices.update(course, 2L, 5L));
     }
     
@@ -145,12 +143,11 @@ class CourseServicesImplTest {
     	
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	
     	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
-    	
+    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);    	
     	assertThrows(IllegalStateException.class, () -> courseServices.update(course, 3L, 5L));
     }
     
@@ -158,7 +155,7 @@ class CourseServicesImplTest {
     void deleteIdExistenteTest() {
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	
     	Course curso = new Course();
@@ -166,7 +163,7 @@ class CourseServicesImplTest {
     	curso.setHabilitado(true);
     	
     	when(usuarioRepository.existsById(5L)).thenReturn(true);
-    	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	when(courseRepository.existsById(2L)).thenReturn(true);
     	when(courseRepository.findById(2L)).thenReturn(Optional.of(curso));
     	
@@ -181,12 +178,12 @@ class CourseServicesImplTest {
     void deleteIdNoExistenteTest() {
     	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ADMIN);
+    	rol.setNombreRol("ADMIN");
     	admin.setRol(rol);
     	
     	when(courseRepository.existsById(any(Long.class))).thenReturn(false);
     	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(admin));
+    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	
     	assertThrows(IllegalStateException.class, () -> courseServices.delete(2L, 5L));
     }
@@ -209,11 +206,11 @@ class CourseServicesImplTest {
     void testIsNotAdmin() {
     	Usuario noAdmin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ALUMNO);
+    	rol.setNombreRol("ALUMNO");
     	noAdmin.setRol(rol);
     	
     	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(noAdmin));
+    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(false);
     	
     	assertThrows(IllegalStateException.class, () -> courseServices.delete(2L, 5L));
     	assertThrows(IllegalStateException.class, () -> courseServices.update(new Course(), 2L, 5L));
@@ -236,7 +233,7 @@ class CourseServicesImplTest {
     void testAddUserToCourse() {
     	
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ALUMNO);
+    	rol.setNombreRol("ALUMNO");
     	
     	Usuario user = new Usuario();
     	user.setId(1L);
@@ -274,7 +271,7 @@ class CourseServicesImplTest {
     void testAddAlreadyInscribedUserToCourse() {
     	
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ALUMNO);
+    	rol.setNombreRol("ALUMNO");
     	
     	Usuario user = new Usuario();
     	user.setId(1L);
@@ -305,7 +302,7 @@ class CourseServicesImplTest {
     	curso.setId(1L);
     	
     	Rol rol = new Rol();
-    	rol.setNombreRol(RolEnum.ALUMNO);
+    	rol.setNombreRol("ALUMNO");
     	
     	Usuario user = new Usuario();
     	user.setId(1L);

@@ -73,8 +73,8 @@ public class ConvocatoriaController {
 	    return ResponseEntity.ok().build();
 	}
 	
-	@PostMapping("/{idConvocatoria}/usuarios/{idUsuario}/certificado")
-	public ResponseEntity<String> enviarCertificado(@PathVariable(required = true) Long idConvocatoria, @PathVariable(required = true) Long idUsuario){
+	@PostMapping("/{idConvocatoria}/usuarios/certificado")
+	public ResponseEntity<String> enviarCertificado(@PathVariable(required = true) Long idConvocatoria, @RequestParam(required = true) Long idUsuario){
 		convocatoriaServices.generarCertificado(idConvocatoria, idUsuario);
 		return ResponseEntity.ok().build();
 	}
