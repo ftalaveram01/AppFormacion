@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ConvocatoriaService } from '../../Services/convocatoria.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -15,7 +15,7 @@ export class ConvocatoriaFormComponent {
   convocatoriaForm: FormGroup;
   idCurso!: Number;
 
-  constructor(private convocatoriaService: ConvocatoriaService, private fb: FormBuilder, private router: ActivatedRoute) {
+  constructor(private convocatoriaService: ConvocatoriaService, private fb: FormBuilder, private router: ActivatedRoute, private routerNav: Router) {
     this.convocatoriaForm = this.fb.group({
       fechaInicio: [''],
       fechaFin: ['']
@@ -35,6 +35,8 @@ export class ConvocatoriaFormComponent {
     }
     
     this.convocatoriaService.createConvocatoria(convocatoria).subscribe();
+
+    this.routerNav.navigate(['cursos'])
   }
 
   get fechaInicio(){
