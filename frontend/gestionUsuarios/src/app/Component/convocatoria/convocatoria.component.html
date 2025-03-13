@@ -70,7 +70,7 @@
         </div>
       </div>
 
-      <div class="btn-inscribirse" *ngIf="puedeInscribirse(c.estado,c.usuarios.size()); else noInscribirse">
+      <div class="btn-inscribirse" *ngIf="puedeInscribirse(c.estado,c.usuarios.length); else noInscribirse">
         <button id="btn-inscr" (click)="btnInscribirseConvocatoria(c.id)"></button>
       </div>
 

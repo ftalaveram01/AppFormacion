@@ -65,7 +65,7 @@ export class ConvocatoriaComponent {
   }
 
   puedeInscribirse(estado: string, size: number):boolean{
-    if(estado == "EN PREPARACION" && size<15){
+    if(estado == "EN_PREPARACION" && size<15){
       return true;
     }
     return false;

@@ -90,7 +90,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		convocatoriaScheduler.programarTarea(guardada, true, false);
 		
 		
-		enviarCorreo(guardada);
+		//enviarCorreo(guardada);
 		
 		return guardada;
 	}
@@ -145,7 +145,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
 		convocatoriaScheduler.programarTarea(conv, true, false);
 		
-		this.enviarCorreo(conv);
+		//this.enviarCorreo(conv);
 	}
 
     @Transactional
@@ -185,10 +185,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 
 	@Override
 	public void generarCertificado(Long idConvocatoria, Long idUsuario) {
-		
-		//email = appformacion3@gmail.com
-		//password = pecera77
-		
+				
 		if(!convocatoriaRepository.existsById(idConvocatoria)) {
 			throw new IllegalStateException("La convocatoria con id ["+idConvocatoria+"], NO EXISTE");
 		}
@@ -202,7 +199,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
         String host = "smtp.gmail.com"; //servidor SMTP
         final String user = "appformacion3@gmail.com"; //tu correo
-        final String password = "pecera77"; //tu contraseña
+        final String password = "gestionformacion"; //tu contraseña
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
@@ -273,17 +270,18 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 	private void enviarCorreo(Convocatoria convocatoria) {
 		
 		//email = appformacion3@gmail.com
-		//password = pecera77
+		//password = wasx goao szjt uiwd
 		
         String host = "smtp.gmail.com"; //servidor SMTP
         final String user = "appformacion3@gmail.com"; //tu correo
-        final String password = "pecera77"; //tu contraseña
+        final String password = "gestionformacion"; //tu contraseña
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.port", "465");
         properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.ssl.enable", "true");
+
         
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -300,7 +298,9 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
                 message.setSubject("Convocatoria para el curso "+convocatoria.getCurso().getNombre());
                 message.setText("Acepta la convocatoria en el siguiente apartado.");
 
+                System.out.println("AQUI PETA !");
                 Transport.send(message);
+                
             }
             System.out.println("Correos enviados exitosamente");
 
