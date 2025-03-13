@@ -3,7 +3,18 @@ h2 {
   margin-bottom: 20px;
 }
 
-.btn-inicio, .cerrar-sesion {
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+
+.btn-inicio,
+.cerrar-sesion {
   margin: 10px;
   display: inline-block;
 }
@@ -12,7 +23,8 @@ h2 {
   float: right;
 }
 
-.btn-inicio button, .cerrar-sesion button {
+.btn-inicio button,
+.cerrar-sesion button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -22,7 +34,8 @@ h2 {
   cursor: pointer;
 }
 
-.btn-inicio button:hover, .cerrar-sesion button:hover {
+.btn-inicio button:hover,
+.cerrar-sesion button:hover {
   background-color: #0056b3;
 }
 
@@ -39,11 +52,13 @@ h2 {
   margin-top: 0;
 }
 
-.btn-ActualizarConvocatoria, .btn-deleteConvocatoria {
+.btn-ActualizarConvocatoria,
+.btn-deleteConvocatoria {
   margin-top: 10px;
 }
 
-.btn-ActualizarConvocatoria button, .btn-deleteConvocatoria button {
+.btn-ActualizarConvocatoria button,
+.btn-deleteConvocatoria button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -53,7 +68,8 @@ h2 {
   cursor: pointer;
 }
 
-.btn-ActualizarConvocatoria button:hover, .btn-deleteConvocatoria button:hover {
+.btn-ActualizarConvocatoria button:hover,
+.btn-deleteConvocatoria button:hover {
   background-color: #0056b3;
 }
 
@@ -67,7 +83,7 @@ h2 {
 
 .container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 20px;
   background-color: #f3eded;
@@ -94,4 +110,8 @@ li {
 
 p {
   margin-bottom: 10px;
+}
+
+#confirmacionAsistencia {
+  color: green;
 }
