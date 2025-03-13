@@ -11,19 +11,19 @@ import { ConvocatoriaService } from '../../Services/convocatoria.service';
   templateUrl: './curso-list.component.html',
   styleUrls: ['./curso-list.component.css']
 })
-export class CursoListComponent implements OnInit{
+export class CursoListComponent implements OnInit {
 
   cursos: any[] = [];
   idAdmin!: number;
   cursoForm: FormGroup;
 
-  constructor(private cursoService: CursoService, private fb: FormBuilder,private router: Router, private convocatoriaServices: ConvocatoriaService) {
+  constructor(private cursoService: CursoService, private fb: FormBuilder, private router: Router, private convocatoriaServices: ConvocatoriaService) {
     this.cursoForm = this.fb.group({
       nombre: [''],
       descripcion: [''],
       fechaInicio: [''],
       fechaFin: [''],
-      router:['']
+      router: ['']
     });
   }
 
@@ -42,22 +42,22 @@ export class CursoListComponent implements OnInit{
     this.idAdmin = Number(localStorage.getItem('idAdmin'))
   }
 
-  deleteCurso(id: number, nombreCurso: string): void{
-    const ok = confirm("¿Estas seguro que deseas eliminar el curso "+nombreCurso.toUpperCase()+" ?")
-    if(ok){
+  deleteCurso(id: number, nombreCurso: string): void {
+    const ok = confirm("¿Estas seguro que deseas eliminar el curso " + nombreCurso.toUpperCase() + " ?")
+    if (ok) {
       this.cursoService.deleteCurso(id).subscribe(() => {
         this.cursos = this.cursos.filter(c => c.id !== id);
-      })  
+      })
     }
   }
 
-  btnUpdateCurso(isUpdate: boolean, id: number): void{
+  btnUpdateCurso(isUpdate: boolean, id: number): void {
     this.router.navigate(['cursos/form'], {
-      queryParams: {isUpdate: isUpdate, id: id}
+      queryParams: { isUpdate: isUpdate, id: id }
     });
   }
-  
-  btnMatricularse(idCurso: number): void{
+
+  btnMatricularse(idCurso: number): void {
     const idUsuario = Number(localStorage.getItem('idUsuario'))
     this.cursoService.addUsuarioToCurso(idCurso, idUsuario).subscribe(() => {
       this.cursoService.getCursos().subscribe(data => {
@@ -75,7 +75,7 @@ export class CursoListComponent implements OnInit{
     })
   }
 
-  btnDesmatricularse(idCurso: number): void{
+  btnDesmatricularse(idCurso: number): void {
     const idUsuario = Number(localStorage.getItem('idUsuario'))
     this.cursoService.deleteUsuarioFromCurso(idUsuario, idCurso).subscribe(() => {
       this.cursoService.getCursos().subscribe(data => {
@@ -92,11 +92,11 @@ export class CursoListComponent implements OnInit{
       });
     })
   }
-  
 
-  btnDeleteUserCourse(id: number, idCurso: number): void{
+
+  btnDeleteUserCourse(id: number, idCurso: number): void {
     this.cursoService.deleteUsuarioFromCurso(id, idCurso).subscribe(() => {
-      this.cursos = this.cursos.filter( u => u.id !== id)
+      this.cursos = this.cursos.filter(u => u.id !== id)
       this.cursoService.getCursos().subscribe(data => {
         this.cursos = data.map((curso: any) => {
           const fechaInicio = new Date(curso.fechaInicio);
@@ -111,11 +111,11 @@ export class CursoListComponent implements OnInit{
       });
     })
   }
-  
 
-  isInscrito(idCurso: number): boolean{
+
+  isInscrito(idCurso: number): boolean {
     const curso = this.cursos.find(c => c.id === idCurso);
-    if(!curso)
+    if (!curso)
       return false;
     const idUsuario = Number(localStorage.getItem('idUsuario'));
 
@@ -126,12 +126,12 @@ export class CursoListComponent implements OnInit{
     localStorage.clear();
   }
 
-  btnCreateConvocatoria(curso: any): void {
+  btnCreateConvocatoria(isUpdate: boolean, isCreate: boolean, curso: any): void {
 
     this.router.navigate(['convocatorias/form'], {
-      queryParams: {idCurso: curso.id}
+      queryParams: { idCurso: curso.id, isUpdate: isUpdate, isCreate: isCreate }
     })
-    
+
   }
 
   private formatearFecha(fecha: Date): string {
@@ -140,9 +140,9 @@ export class CursoListComponent implements OnInit{
     const dia = fecha.getDate().toString().padStart(2, '0');
     const hora = fecha.getHours().toString().padStart(2, '0');
     const minutos = fecha.getMinutes().toString().padStart(2, '0');
- 
+
     const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
- 
+
     return fechaFormateada
   }
 }
