@@ -9,6 +9,7 @@ import { UserFormComponent } from './Component/user-form/user-form.component';
 import { RolComponent } from './Component/rol/rol.component';
 import { RolFormComponent } from './Component/rol-form/rol-form.component';
 import { ConvocatoriaComponent } from './Component/convocatoria/convocatoria.component';
+import { ConvocatoriaFormComponent } from './Component/convocatoria-form/convocatoria-form.component';
 
 
 export const routes: Routes = [
@@ -22,5 +23,6 @@ export const routes: Routes = [
     { path: `user/form`, component: UserFormComponent},
     { path: `rols`, component: RolComponent},
     { path: `rols/form`, component: RolFormComponent},
-    { path: `convocatorias`, component: ConvocatoriaComponent}
+    { path: `convocatorias`, component: ConvocatoriaComponent},
+    { path: `convocatorias/form`, component: ConvocatoriaFormComponent}
 ];

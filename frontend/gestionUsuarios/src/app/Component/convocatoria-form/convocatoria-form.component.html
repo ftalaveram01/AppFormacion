@@ -1,0 +1,11 @@
+<form [formGroup]="convocatoriaForm" (ngSubmit)="btnConfirmarFechas()">
+
+    <label for="fechaInicio">Fecha inicio: </label>
+    <input type="datetime-local" name="fechaInicio" id="fechaInicio" formControlName="fechaInicio">
+
+    <label for="fechaFin">Fecha fin: </label>
+    <input type="datetime-local" name="fechaFin" id="fechaFin" formControlName="fechaFin">
+
+    <button type="submit">Confirmar fechas</button>
+
+</form>
