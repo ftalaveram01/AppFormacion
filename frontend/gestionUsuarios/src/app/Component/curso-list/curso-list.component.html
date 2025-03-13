@@ -41,8 +41,9 @@
         </div>
       </div>
       <div *ngIf="idAdmin == 0" class="botones">
-        <button id="btn-Eliminar" (click)="deleteCurso(c.id,c.nombre)">Eliminar -> {{c.nombre}}</button>
+        <button id="btn-Eliminar" (click)="deleteCurso(c.id, c.nombre)">Eliminar -> {{c.nombre}}</button>
         <button id="btn-Update" (click)="btnUpdateCurso(true,c.id)"> Actualizar -> {{c.nombre}}</button>
+        <button id="btn-Crear" (click)="btnCreateConvocatoria(c)" [disabled]="c.usuarios.length < 10" [ngClass]="{'disabled': c.usuarios.length < 10}" [title]="c.usuarios.length < 10 ? 'No hay suficientes alumnos ({{c.usuarios.length}}/10)' : ''">Crear Convocatoria -></button>
       </div>
         
         <div *ngIf="idAdmin == 1" class="botones">

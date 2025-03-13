@@ -1,11 +1,47 @@
 import { Component } from '@angular/core';
+import { ConvocatoriaService } from '../../Services/convocatoria.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-convocatoria-form',
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './convocatoria-form.component.html',
   styleUrl: './convocatoria-form.component.css'
 })
 export class ConvocatoriaFormComponent {
 
+  convocatoriaForm: FormGroup;
+  idCurso!: Number;
+
+  constructor(private convocatoriaService: ConvocatoriaService, private fb: FormBuilder, private router: ActivatedRoute) {
+    this.convocatoriaForm = this.fb.group({
+      fechaInicio: [''],
+      fechaFin: ['']
+    });
+  }
+
+  ngOnInit(){
+    this.idCurso = Number(this.router.snapshot.queryParamMap.get('idCurso')); 
+  }
+
+  btnConfirmarFechas(): any{
+    
+    const convocatoria = {
+      "fechaInicio": this.fechaInicio?.value.split('T')[0],
+      "fechaFin": this.fechaFin?.value.split('T')[0],
+      "idCurso": this.idCurso
+    }
+    
+    this.convocatoriaService.createConvocatoria(convocatoria).subscribe();
+  }
+
+  get fechaInicio(){
+    return this.convocatoriaForm.get('fechaInicio')
+  }
+
+  get fechaFin(){
+    return this.convocatoriaForm.get('fechaFin')
+  }
 }

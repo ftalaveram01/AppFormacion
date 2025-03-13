@@ -29,7 +29,7 @@ export class ConvocatoriaComponent {
       idCurso: new FormControl('')
     })
     this.idAdmin = Number(localStorage.getItem('idAdmin'))
-    if(!this.isAdmin){
+    if(!this.isAdmin()){
       this.convocatorias.filter((convocatoria) => {
         return convocatoria.estado === 'CONVOCADA'
       })
@@ -37,7 +37,11 @@ export class ConvocatoriaComponent {
   }
 
   btnCreateConvocatoria(isUpdate: boolean, isCreate: boolean): void {
-   
+    console.log(isCreate)
+    console.log(isUpdate)
+    this.router.navigate(['convocatorias/form'], {
+      queryParams: { isUpdate: isUpdate, isCreate: isCreate }
+    })
   }
 
   btnUpdateConvocatoria(isUpdate: boolean, isCreate: boolean, id: number): void {
@@ -74,6 +78,10 @@ export class ConvocatoriaComponent {
 
   isAdmin(): boolean {
     return this.idAdmin == 0;
+  }
+
+  isUsuarioOnCurso(){
+    return this.convocatorias.find(convocatoria => convocatoria.usuarios.id === Number(localStorage.getItem('idUsuario')))
   }
 
 }

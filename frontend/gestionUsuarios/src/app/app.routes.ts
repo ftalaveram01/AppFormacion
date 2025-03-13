@@ -24,5 +24,5 @@ export const routes: Routes = [
     { path: `rols`, component: RolComponent},
     { path: `rols/form`, component: RolFormComponent},
     { path: `convocatorias`, component: ConvocatoriaComponent},
-    { path: `convocatorias/form`, component: ConvocatoriaFormComponent},
+    { path: `convocatorias/form`, component: ConvocatoriaFormComponent}
 ];
