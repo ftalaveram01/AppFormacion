@@ -3,12 +3,28 @@ h2 {
   margin-bottom: 20px;
 }
 
-.btn-inicio, .cerrar-sesion, .btn-CrearConvocatoria {
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+
+.btn-inicio,
+.cerrar-sesion {
   margin: 10px;
   display: inline-block;
 }
 
-.btn-inicio button, .cerrar-sesion button, .btn-CrearConvocatoria button {
+.cerrar-sesion {
+  float: right;
+}
+
+.btn-inicio button,
+.cerrar-sesion button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -18,7 +34,8 @@ h2 {
   cursor: pointer;
 }
 
-.btn-inicio button:hover, .cerrar-sesion button:hover, .btn-CrearConvocatoria button:hover {
+.btn-inicio button:hover,
+.cerrar-sesion button:hover {
   background-color: #0056b3;
 }
 
@@ -35,11 +52,13 @@ h2 {
   margin-top: 0;
 }
 
-.btn-ActualizarConvocatoria, .btn-deleteConvocatoria {
+.btn-ActualizarConvocatoria,
+.btn-deleteConvocatoria {
   margin-top: 10px;
 }
 
-.btn-ActualizarConvocatoria button, .btn-deleteConvocatoria button {
+.btn-ActualizarConvocatoria button,
+.btn-deleteConvocatoria button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -49,7 +68,8 @@ h2 {
   cursor: pointer;
 }
 
-.btn-ActualizarConvocatoria button:hover, .btn-deleteConvocatoria button:hover {
+.btn-ActualizarConvocatoria button:hover,
+.btn-deleteConvocatoria button:hover {
   background-color: #0056b3;
 }
 
@@ -62,11 +82,36 @@ h2 {
 }
 
 .container {
-  max-width: 800px;
-  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: #f3eded;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+#confirmacionAsistencia {
+  color: green;
 }

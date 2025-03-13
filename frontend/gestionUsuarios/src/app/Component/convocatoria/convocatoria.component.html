@@ -1,18 +1,66 @@
-<div class="container">
-    <h2>Convocatorias</h2>
-    
-    <div class="btn-inicio">
-      <a href="inicio">
-        <button>INICIO</button>
-      </a>
-    </div>
-    
-    <div class="cerrar-sesion">
-      <a href="login">
-        <button (click)="borrarCache()">CERRAR SESION</button>
-      </a>
-    </div>
+<div class="header">
+  <h2>Convocatorias</h2>
 
+  <div class="btn-inicio">
+    <a href="inicio">
+      <button>INICIO</button>
+    </a>
+  </div>
+
+  <div class="cerrar-sesion">
+    <a href="login">
+      <button (click)="borrarCache()">CERRAR SESION</button>
+    </a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="lista-convocatorias" *ngFor="let c of convocatorias">
+    <h3>Convocatoria:</h3>
+
+    <p *ngIf="isAdmin()">id: {{c.id}}</p>
+    <p id="confirmacionAsistencia" *ngIf="isUsuarioOnCurso(c.id)">ASISTENCIA CONFIRMADA</p>
+    <p>Fecha inicio: {{c.fechaInicio}}</p>
+    <p>Fecha fin: {{c.fechaFin}}</p>
+    <p>Estado: {{c.estado}}</p>
+
+    <div *ngIf="isAdmin()">
+      <h4>Usuarios:</h4>
+      <ul>
+        <li *ngIf="c.usuarios.length === 0">
+          <p>No hay usuarios todavía</p>
+        </li>
+        <li *ngFor="let u of c.usuarios">
+          <p>id: {{u.id}}</p>
+          <p>email: {{u.email}}</p>
+          <p>password: {{u.password}}</p>
+          <p>habilitado: {{u.habilitado}}</p>
+          <p>rol: {{u.rol.nombreRol}} ({{u.rol.descripcion}})</p>
+        </li>
+      </ul>
+
+      <h4>Curso:</h4>
+      <p>id: {{c.curso.id}}</p>
+      <p>nombre: {{c.curso.nombre}}</p>
+      <p>descripcion: {{c.curso.descripcion}}</p>
+      <p>numeroHoras: {{c.curso.numeroHoras}}</p>
+      <p>habilitado: {{c.curso.habilitado}}</p>
+
+      <h5>Usuarios del curso:</h5>
+      <ul>
+        <li *ngFor="let u of c.curso.usuarios">
+          <p>id: {{u.id}}</p>
+          <p>email: {{u.email}}</p>
+        </li>
+      </ul>
+
+      <h5>Convocatorias del curso:</h5>
+      <ul>
+        <li *ngFor="let conv of c.curso.convocatorias">
+          <p>{{conv}}</p>
+        </li>
+      </ul>
+    </div>
   
     <div class="lista-convocatorias" *ngFor="let c of convocatorias">
       <h3>Convocatoria:</h3>
@@ -79,4 +127,4 @@
       </ng-template>
     </div>
   </div>
-  
+</div>
