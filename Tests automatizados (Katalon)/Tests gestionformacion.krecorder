@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+<title>Tests gestionformacion</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3" data-tags="">Test registro</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:4200/login<datalist><option>http://localhost:4200/login</option></datalist></td><td></td></tr>
+<tr><td>click</td><td>link=exact:¿No tienes cuenta? Registrate<datalist><option>link=exact:¿No tienes cuenta? Registrate</option><option>xpath=//a[contains(text(),'¿No tienes cuenta? Registrate')]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Login'])[1]/following::a[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Password:'])[1]/following::a[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Katalon Recorder is recording ...'])[1]/preceding::a[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Stop'])[1]/preceding::a[1]</option><option>xpath=//*/text()[normalize-space(.)='¿No tienes cuenta? Registrate']/parent::*</option><option>xpath=//a[@href='http://localhost:4200/register']</option><option>xpath=//a</option><option>css=a</option></datalist></td><td></td></tr>
+<tr><td>open</td><td>http://localhost:4200/register<datalist><option>http://localhost:4200/register</option></datalist></td><td></td></tr>
+<tr><td>click</td><td>xpath=//input[@type='email']<datalist><option>xpath=//input[@type='email']</option><option>xpath=//input</option><option>css=input.ng-untouched.ng-pristine.ng-invalid</option></datalist></td><td></td></tr>
+<tr><td>type</td><td>xpath=//input[@type='email']<datalist><option>xpath=//input[@type='email']</option><option>xpath=//input</option><option>css=input.ng-untouched.ng-dirty.ng-valid</option></datalist></td><td>registrokatalon@gmail.com</td></tr>
+<tr><td>click</td><td>xpath=//app-register/body<datalist><option>xpath=//app-register/body</option><option>css=app-register > body</option></datalist></td><td></td></tr>
+<tr><td>click</td><td>xpath=//input[@type='email']<datalist><option>xpath=//input[@type='email']</option><option>xpath=//input</option><option>css=input.ng-dirty.ng-valid.ng-touched</option></datalist></td><td></td></tr>
+<tr><td>type</td><td>xpath=//input[@type='email']<datalist><option>xpath=//input[@type='email']</option><option>xpath=//input</option><option>css=input.ng-dirty.ng-touched.ng-invalid</option></datalist></td><td>registrokatalongmail.com</td></tr>
+<tr><td>click</td><td>xpath=//app-register/body<datalist><option>xpath=//app-register/body</option><option>css=app-register > body</option></datalist></td><td></td></tr>
+<tr><td>click</td><td>xpath=//input[@type='email']<datalist><option>xpath=//input[@type='email']</option><option>xpath=//input</option><option>css=input.ng-dirty.ng-touched.ng-invalid</option></datalist></td><td></td></tr>
+<tr><td>type</td><td>xpath=//input[@type='email']<datalist><option>xpath=//input[@type='email']</option><option>xpath=//input</option><option>css=input.ng-dirty.ng-touched.ng-valid</option></datalist></td><td>registrokatalon@gmail.com</td></tr>
+<tr><td>click</td><td>xpath=//input[@type='password']<datalist><option>xpath=//input[@type='password']</option><option>xpath=//label[2]/input</option><option>css=input.ng-untouched.ng-pristine.ng-invalid</option></datalist></td><td></td></tr>
+<tr><td>type</td><td>xpath=//input[@type='password']<datalist><option>xpath=//input[@type='password']</option><option>xpath=//label[2]/input</option><option>css=input.ng-untouched.ng-dirty.ng-valid</option></datalist></td><td>katalonuno</td></tr>
+<tr><td>click</td><td>xpath=//label[3]/input<datalist><option>xpath=//label[3]/input</option><option>css=input.ng-untouched.ng-pristine.ng-invalid</option></datalist></td><td></td></tr>
+<tr><td>type</td><td>xpath=//label[3]/input<datalist><option>xpath=//label[3]/input</option><option>css=input.ng-untouched.ng-invalid.ng-dirty</option></datalist></td><td>katalonun</td></tr>
+<tr><td>click</td><td>xpath=//app-register/body<datalist><option>xpath=//app-register/body</option><option>css=app-register > body</option></datalist></td><td></td></tr>
+<tr><td>click</td><td>xpath=//label[3]/input<datalist><option>xpath=//label[3]/input</option><option>css=input.ng-invalid.ng-dirty.ng-touched</option></datalist></td><td></td></tr>
+<tr><td>type</td><td>xpath=//label[3]/input<datalist><option>xpath=//label[3]/input</option><option>css=input.ng-invalid.ng-dirty.ng-touched</option></datalist></td><td>katalonuna</td></tr>
+<tr><td>click</td><td>xpath=//app-register/body<datalist><option>xpath=//app-register/body</option><option>css=app-register > body</option></datalist></td><td></td></tr>
+<tr><td>click</td><td>xpath=//label[3]/input<datalist><option>xpath=//label[3]/input</option><option>css=input.ng-invalid.ng-dirty.ng-touched</option></datalist></td><td></td></tr>
+<tr><td>type</td><td>xpath=//label[3]/input<datalist><option>xpath=//label[3]/input</option></datalist></td><td>katalonuno</td></tr>
+<tr><td>click</td><td>xpath=//app-register/body<datalist><option>xpath=//app-register/body</option><option>css=app-register > body</option></datalist></td><td></td></tr>
+<tr><td>click</td><td>xpath=//button[@type='submit']<datalist><option>xpath=//button[@type='submit']</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Confirm Password:'])[1]/following::button[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Password:'])[1]/following::button[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='¿Ya tienes cuenta? Login'])[1]/preceding::button[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Katalon Recorder is recording ...'])[1]/preceding::button[1]</option><option>xpath=//*/text()[normalize-space(.)='Register']/parent::*</option><option>xpath=//button</option><option>css=button[type="submit"]</option></datalist></td><td></td></tr>
+<tr><td>click</td><td>xpath=//input[@type='email']<datalist><option>xpath=//input[@type='email']</option><option>xpath=//input</option><option>css=input.ng-dirty.ng-touched.ng-valid</option></datalist></td><td></td></tr>
+<tr><td>click</td><td>xpath=//button[@type='submit']<datalist><option>xpath=//button[@type='submit']</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Confirm Password:'])[1]/following::button[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Password:'])[1]/following::button[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='¿Ya tienes cuenta? Login'])[1]/preceding::button[1]</option><option>xpath=(.//*[normalize-space(text()) and normalize-space(.)='Katalon Recorder is recording ...'])[1]/preceding::button[1]</option><option>xpath=//*/text()[normalize-space(.)='Register']/parent::*</option><option>xpath=//button</option><option>css=button[type="submit"]</option></datalist></td><td></td></tr>
+</tbody></table>
+</body>
+</html>
