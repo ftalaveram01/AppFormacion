@@ -61,15 +61,24 @@
             <p>{{conv}}</p>
           </li>
         </ul>
+      
+
+        <div class="btn-ActualizarConvocatoria">
+          <button id="btn-Actualizar" (click)="btnUpdateConvocatoria(true, false,c.id)">Actualizar -></button>
+        </div>
+    
+        <div class="btn-deleteConvocatoria">
+          <button id="btn-Delete" (click)="btnDeleteConvocatoria(c.id)">Eliminar -></button>
+        </div>
       </div>
 
-      <div class="btn-ActualizarConvocatoria">
-        <button id="btn-Actualizar" (click)="btnUpdateConvocatoria(true, false,c.id)">Actualizar -></button>
+      <div class="btn-inscribirse" *ngIf="puedeInscribirse(c.estado,c.usuarios.size()); else noInscribirse">
+        <button id="btn-inscr" (click)="btnInscribirseConvocatoria(c.id)"></button>
       </div>
-    
-      <div class="btn-deleteConvocatoria">
-        <button id="btn-Delete" (click)="btnDeleteConvocatoria(c.id)">Eliminar -></button>
-      </div>
+
+      <ng-template #noInscribirse id="noInscribirse">
+        <p>Aun no hay suficientes miembros para inscribirte en esta convocatoria</p>
+      </ng-template>
     </div>
   </div>
   
