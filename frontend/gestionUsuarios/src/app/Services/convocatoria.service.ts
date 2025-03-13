@@ -23,6 +23,8 @@ export class ConvocatoriaService {
   createConvocatoria(convocatoria: any): Observable<any> {
     const params = new HttpParams().set('idAdmin', Number(localStorage.getItem('idUsuario')))
 
+    console.log(convocatoria)
+
     return this.http.post(`${this.convocatoriaApiUrl}`, convocatoria, {params})
   }
 

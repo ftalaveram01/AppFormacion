@@ -125,18 +125,9 @@ export class CursoListComponent implements OnInit{
 
   btnCreateConvocatoria(curso: any): void {
 
-    const convocatoria = {
-      "fechaInicio": curso.fechaInicio,
-      "fechaFin": curso.fechaFin,
-      "estado": "EN_PREPARACION",
-      "usuarios": [
-
-      ],
-      "curso": curso
-    }
-
-
-    this.convocatoriaServices.createConvocatoria(convocatoria);
+    this.router.navigate(['convocatorias/form'], {
+      queryParams: {idCurso: curso.id}
+    })
     
   }
 
