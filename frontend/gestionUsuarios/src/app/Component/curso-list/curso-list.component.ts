@@ -70,6 +70,7 @@ export class CursoListComponent implements OnInit{
             fechaFin: this.formatearFecha(fechaFin)
           };
         });
+        this.cursos = this.cursos.filter(curso => curso.habilitado === true)
       });
     })
   }
@@ -87,6 +88,7 @@ export class CursoListComponent implements OnInit{
             fechaFin: this.formatearFecha(fechaFin)
           };
         });
+        this.cursos = this.cursos.filter(curso => curso.habilitado === true)
       });
     })
   }
@@ -105,6 +107,7 @@ export class CursoListComponent implements OnInit{
             fechaFin: this.formatearFecha(fechaFin)
           };
         });
+        this.cursos = this.cursos.filter(curso => curso.habilitado === true)
       });
     })
   }
