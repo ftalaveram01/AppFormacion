@@ -35,18 +35,10 @@ export class ConvocatoriaComponent {
     }
   }
 
-  btnCreateConvocatoria(isUpdate: boolean, isCreate: boolean): void {
-    console.log(isCreate)
-    console.log(isUpdate)
-    this.router.navigate(['convocatorias/form'], {
-      queryParams: { isUpdate: isUpdate, isCreate: isCreate }
-    })
-  }
-
   btnUpdateConvocatoria(isUpdate: boolean, isCreate: boolean, id: number): void {
     console.log(isCreate)
     console.log(isUpdate)
-    this.router.navigate(['Convocatoria/form'], {
+    this.router.navigate(['convocatorias/form'], {
       queryParams: { isUpdate: isUpdate, isCreate: isCreate, id: id }
     });
   }
