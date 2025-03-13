@@ -3,6 +3,7 @@ import { CursoService } from '../../Services/curso.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ConvocatoriaService } from '../../Services/convocatoria.service';
 
 @Component({
   selector: 'app-curso-list',
@@ -16,7 +17,7 @@ export class CursoListComponent implements OnInit{
   idAdmin!: number;
   cursoForm: FormGroup;
 
-  constructor(private cursoService: CursoService, private fb: FormBuilder,private router: Router) {
+  constructor(private cursoService: CursoService, private fb: FormBuilder,private router: Router, private convocatoriaServices: ConvocatoriaService) {
     this.cursoForm = this.fb.group({
       nombre: [''],
       descripcion: [''],
@@ -69,6 +70,7 @@ export class CursoListComponent implements OnInit{
             fechaFin: this.formatearFecha(fechaFin)
           };
         });
+        this.cursos = this.cursos.filter(curso => curso.habilitado === true)
       });
     })
   }
@@ -86,6 +88,7 @@ export class CursoListComponent implements OnInit{
             fechaFin: this.formatearFecha(fechaFin)
           };
         });
+        this.cursos = this.cursos.filter(curso => curso.habilitado === true)
       });
     })
   }
@@ -104,6 +107,7 @@ export class CursoListComponent implements OnInit{
             fechaFin: this.formatearFecha(fechaFin)
           };
         });
+        this.cursos = this.cursos.filter(curso => curso.habilitado === true)
       });
     })
   }
@@ -120,6 +124,14 @@ export class CursoListComponent implements OnInit{
 
   borrarCache(): void {
     localStorage.clear();
+  }
+
+  btnCreateConvocatoria(curso: any): void {
+
+    this.router.navigate(['convocatorias/form'], {
+      queryParams: {idCurso: curso.id}
+    })
+    
   }
 
   private formatearFecha(fecha: Date): string {
