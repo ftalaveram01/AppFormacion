@@ -43,7 +43,10 @@ export class ConvocatoriaFormComponent {
     this.getUsersPage(this.idConvocatoria);
   }
 
-  btnConfirmarFechas(): any {
+  btnConfirmarFechas(): any{
+
+    const fechaInicio = this.convocatoriaForm.get('fechaInicio')?.value;
+    const fechaFin = this.convocatoriaForm.get('fechaFin')?.value;
 
     const convocatoria = {
       "fechaInicio": this.fechaInicio?.value.split('T')[0],
@@ -53,7 +56,14 @@ export class ConvocatoriaFormComponent {
 
     this.convocatoriaService.createConvocatoria(convocatoria).subscribe();
 
-    this.routerNav.navigate(['cursos'])
+    if (fechaFin < fechaInicio) {
+      alert('La fecha fin debe ser posterior a la fecha inicio');
+      return;
+    }else{
+      this.convocatoriaService.createConvocatoria(convocatoria).subscribe();
+      alert('Convocatoria creada correctamente')
+      this.routerNav.navigate(['cursos'])
+    }
   }
 
   get fechaInicio() {
