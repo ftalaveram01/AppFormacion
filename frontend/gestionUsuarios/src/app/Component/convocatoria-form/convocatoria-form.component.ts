@@ -42,6 +42,7 @@ export class ConvocatoriaFormComponent {
       }
 
       this.convocatoriaService.createConvocatoria(convocatoria).subscribe();
+      this.routerNav.navigate(['cursos'])
     } else {
       const convocatoria = {
         "fechaInicio": this.fechaInicio?.value.split('T')[0],
@@ -49,11 +50,8 @@ export class ConvocatoriaFormComponent {
       }
 
       this.convocatoriaService.updateConvocatoria(this.idConvocatoria, convocatoria).subscribe();
+      this.routerNav.navigate(['convocatorias'])
     }
-
-
-
-    this.routerNav.navigate(['cursos'])
   }
 
   get fechaInicio() {
