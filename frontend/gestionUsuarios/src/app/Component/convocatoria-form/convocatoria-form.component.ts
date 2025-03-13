@@ -32,7 +32,10 @@ export class ConvocatoriaFormComponent {
     this.isCreate = (this.router.snapshot.queryParamMap.get('isCreate')) === 'true'
   }
 
-  btnConfirmarFechas(): any {
+  btnConfirmarFechas(): any{
+
+    const fechaInicio = this.convocatoriaForm.get('fechaInicio')?.value;
+    const fechaFin = this.convocatoriaForm.get('fechaFin')?.value;
 
     if (this.isCreate) {
       const convocatoria = {
@@ -42,7 +45,15 @@ export class ConvocatoriaFormComponent {
       }
 
       this.convocatoriaService.createConvocatoria(convocatoria).subscribe();
-      this.routerNav.navigate(['cursos'])
+
+      if (fechaFin < fechaInicio) {
+        alert('La fecha fin debe ser posterior a la fecha inicio');
+        return;
+      }else{
+        this.convocatoriaService.createConvocatoria(convocatoria).subscribe();
+        alert('Convocatoria creada correctamente')
+        this.routerNav.navigate(['cursos'])
+      }
     } else {
       const convocatoria = {
         "fechaInicio": this.fechaInicio?.value.split('T')[0],

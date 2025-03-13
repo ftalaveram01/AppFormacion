@@ -64,13 +64,70 @@
         </li>
       </ul>
     </div>
+  
+    <div class="lista-convocatorias" *ngFor="let c of convocatorias">
+      <h3>Convocatoria:</h3>
+      
+      <p *ngIf="isAdmin()">id: {{c.id}}</p>
+      <p *ngIf="isUsuarioOnCurso()">ASISTENCIA CONFIRMADA</p>
+      <p>Fecha inicio: {{c.fechaInicio}}</p>
+      <p>Fecha fin: {{c.fechaFin}}</p>
+      <p>Estado: {{c.estado}}</p>
+     
+      <div *ngIf="isAdmin()">
+        <h4>Usuarios:</h4>
+        <ul>
+          <li *ngFor="let u of c.usuarios">
+            <p>id: {{u.id}}</p>
+            <p>email: {{u.email}}</p>
+            <p>password: {{u.password}}</p>
+            <p>habilitado: {{u.habilitado}}</p>
+            <p>rol: {{u.rol.nombreRol}} ({{u.rol.descripcion}})</p>
+          </li>
+        </ul>
+        
+        <h4>Curso:</h4>
+        <p>id: {{c.curso.id}}</p>
+        <p>nombre: {{c.curso.nombre}}</p>
+        <p>descripcion: {{c.curso.descripcion}}</p>
+        <p>numeroHoras: {{c.curso.numeroHoras}}</p>
+        <p>habilitado: {{c.curso.habilitado}}</p>
+        
+        <h5>Usuarios del curso:</h5>
+        <ul>
+          <li *ngFor="let u of c.curso.usuarios">
+            <p>id: {{u.id}}</p>
+            <p>email: {{u.email}}</p>
+            <p>password: {{u.password}}</p>
+            <p>habilitado: {{u.habilitado}}</p>
+            <p>rol: {{u.rol.nombreRol}} ({{u.rol.descripcion}})</p>
+          </li>
+        </ul>
+        
+        <h5>Convocatorias del curso:</h5>
+        <ul>
+          <li *ngFor="let conv of c.curso.convocatorias">
+            <p>{{conv}}</p>
+          </li>
+        </ul>
+      
 
-    <div class="btn-ActualizarConvocatoria" *ngIf="isAdmin()">
-      <button id="btn-Actualizar" (click)="btnUpdateConvocatoria(true, false,c.id)">Actualizar -></button>
-    </div>
+        <div class="btn-ActualizarConvocatoria">
+          <button id="btn-Actualizar" (click)="btnUpdateConvocatoria(true, false,c.id)">Actualizar -></button>
+        </div>
+    
+        <div class="btn-deleteConvocatoria">
+          <button id="btn-Delete" (click)="btnDeleteConvocatoria(c.id)">Eliminar -></button>
+        </div>
+      </div>
 
-    <div class="btn-deleteConvocatoria" *ngIf="isAdmin()">
-      <button id="btn-Delete" (click)="btnDeleteConvocatoria(c.id)">Eliminar -></button>
+      <div class="btn-inscribirse" *ngIf="puedeInscribirse(c.estado,c.usuarios.length); else noInscribirse">
+        <button id="btn-inscr" (click)="btnInscribirseConvocatoria(c.id)"></button>
+      </div>
+
+      <ng-template #noInscribirse id="noInscribirse">
+        <p>Aun no hay suficientes miembros para inscribirte en esta convocatoria</p>
+      </ng-template>
     </div>
   </div>
 </div>

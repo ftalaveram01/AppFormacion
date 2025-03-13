@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ConvocatoriaService } from '../../Services/convocatoria.service';
+import { UserService } from '../../Services/user.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class ConvocatoriaComponent {
   convocatorias: any[] = [];
   idAdmin!: number;
 
-  constructor(private convocatoriaService: ConvocatoriaService, private router: Router) {
+  constructor(private convocatoriaService: ConvocatoriaService, private router: Router, private usuariosSerivices: UserService) {
   }
 
   ngOnInit(): void {
@@ -47,6 +48,20 @@ export class ConvocatoriaComponent {
       this.convocatorias = this.convocatorias.filter(c => c.id !== id);
     });
   }
+
+  btnInscribirseConvocatoria(idConvocatoria: number):void {
+    this.convocatoriaService.inscribirEnConvocatoria(idConvocatoria).subscribe(response =>{
+      this.convocatorias = response;
+    })
+  }
+
+  puedeInscribirse(estado: string, size: number):boolean{
+    if(estado == "EN_PREPARACION" && size<15){
+      return true;
+    }
+    return false;
+  }
+
 
   borrarCache(): void {
     localStorage.clear();
