@@ -1,13 +1,15 @@
 <div class="formulario-roles">
   <form [formGroup]="rolForm" (ngSubmit)="onSubmit()">
-    <div *ngIf="isCreate">
-      <label id="nombreRol">Nombre del Rol:</label>
-      <input id="nombreRol" formControlName="nombreRol">
+    <div *ngIf="isCreate" class="form-group">
+      <label for="nombreRol">Nombre del Rol:</label>
+      <input id="nombreRol" formControlName="nombreRol" type="text" placeholder="Introduce el nombre del rol">
     </div>
 
-    <label id="descripcion">Descripción:</label>
-    <input id="descripcion" formControlName="descripcion">
+    <div class="form-group">
+      <label for="descripcion">Descripción:</label>
+      <input id="descripcion" formControlName="descripcion" type="text" placeholder="Introduce una descripción">
+    </div>
 
-    <button type="submit">{{!isUpdate ? 'Crear Rol' : 'Actualizar Rol'}}</button>
+    <button type="submit" class="btn-submit">{{!isUpdate ? 'Crear Rol' : 'Actualizar Rol'}}</button>
   </form>
 </div>
