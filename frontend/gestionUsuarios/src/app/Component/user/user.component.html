@@ -1,33 +1,52 @@
 <div class="header">
   <h2>Lista de Usuarios</h2>
+  <div class="nav-buttons">
+    <a href="inicio">
+      <button>INICIO</button>
+    </a>
+    <a href="login">
+      <button (click)="borrarCache()">CERRAR SESIÓN</button>
+    </a>
+    <button id="btn-Crear" (click)="btnCreateUser(false, true)">Crear Usuario</button>
+  </div>
+</div>
 
-    <div class="btn-inicio">
-      <a href="inicio">
-        <button>INICIO</button>
-      </a>
-    </div>
-
-    <div class="cerrar-sesion">
-      <a href="login">
-        <button (click)="borrarCache()">CERRAR SESION</button>
-      </a>
-    </div>
+<div class="container">
+  <div class="table-container">
+    <table class="users-tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Contraseña</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of users">
+          <td>{{u.id}}</td>
+          <td>{{u.email}}</td>
+          <td>{{u.password}}</td>
+          <td>{{u.rol.nombreRol}}</td>
+          <td>
+            <span [ngClass]="u.habilitado ? 'estado-habilitado' : 'estado-deshabilitado'">
+              {{ u.habilitado ? 'Habilitado' : 'Deshabilitado' }}
+            </span>
+          </td>
+          <td>
+            <button id="btn-Update" (click)="btnUpdateUser(true, false, u.id)">Actualizar</button>
+            <button
+              id="btn-Eliminar"
+              (click)="deleteUser(u.id)"
+              [disabled]="!u.habilitado"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  
-  
-  <div class="btn-CrearUser">
-    <button id="btn-Crear" (click)="btnCreateUser(false, true)">Crear -></button>
-  </div>
-  
-  <div class="lista-users" *ngFor="let u of users">
-    <h3>Usuario: {{u.id}}</h3>
-    <p>email: {{u.email}}</p>
-    <p>contraseña: {{u.password}}</p>
-    <p>ROL: {{u.rol.nombreRol}}</p>
-  
-    <div class="botones">
-      <button id="btn-Eliminar" (click)="deleteUser(u.id)">Eliminar -> {{u.idUser}}</button>
-      <button id="btn-Update" (click)="btnUpdateUser(true, false,u.id)"> Actualizar -> {{u.idUser}}</button>
-    </div>
-  </div>
-  
+</div>

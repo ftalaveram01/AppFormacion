@@ -1,71 +1,103 @@
+/* General */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
-}
-
-.container {
+    color: #212529;
+  }
+  
+  .container {
     max-width: 400px;
     margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-form {
+    padding: 20px 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+  }
+  
+  form {
     display: flex;
     flex-direction: column;
-}
-
-label {
-    margin-bottom: 15px;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
     font-size: 14px;
-    color: #333;
-}
-
-input[type="email"],
-input[type="password"] {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-top: 5px;
+    color: #333333;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input,
+  select {
+    width: 100%; /* Asegura que todos los elementos ocupen el mismo ancho */
+    max-width: 100%; /* Previene que los campos se salgan del contenedor */
+    padding: 10px 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    padding: 10px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-a {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
+    border-radius: 5px;
     font-size: 14px;
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-p {
+    box-sizing: border-box; /* Incluye el padding y el borde en el tamaño total */
+    transition: border-color 0.3s ease;
+  }
+  
+  input:focus,
+  select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  button {
+    padding: 12px 20px;
+    border: none;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  .error {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  p {
     color: green;
     font-size: 14px;
-}
-
-small {
-    color:red;
-}
+    margin-top: 10px;
+  }
+  
+  .btn-listado {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .btn-listado-usuarios {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-listado-usuarios:hover {
+    background-color: #218838;
+  }
+  
