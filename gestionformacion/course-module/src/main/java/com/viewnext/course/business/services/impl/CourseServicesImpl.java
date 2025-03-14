@@ -1,5 +1,6 @@
 package com.viewnext.course.business.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,6 +86,7 @@ public class CourseServicesImpl implements CourseServices {
 		
 		if(curso.getHabilitado()) {
 			curso.setHabilitado(false);
+			curso.setUsuarios(new ArrayList<Usuario>());
 			cursoRepository.save(curso);
 		}else
 			throw new IllegalStateException("El curso ya está deshabilitado");	

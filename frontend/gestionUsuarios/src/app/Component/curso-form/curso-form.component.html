@@ -1,45 +1,47 @@
-<div class="FormularioCursos">
+<div class="formulario-cursos">
 
   <form [formGroup]="cursoForm" (ngSubmit)="onSubmit()">
-    <div class="apartadoFormulario">
+    <div class="form-group">
       <label for="nombre">Nombre del Curso:</label>
-      <input id="nombre" formControlName="nombre">
+      <input id="nombre" formControlName="nombre" type="text" placeholder="Introduce el nombre del curso">
     </div>
-    <div class="apartadoFormulario">
+    <div class="form-group">
       <label for="descripcion">Descripción:</label>
-      <input id="descripcion" formControlName="descripcion">
+      <textarea id="descripcion" formControlName="descripcion" placeholder="Introduce la descripción"></textarea>
     </div>
-    <div class="apartadoFormulario">
-      <label for="numeroHoras">Numero de horas:</label>
-      <input id="numeroHoras" type="number" formControlName="numeroHoras">
+    <div class="form-group">
+      <label for="numeroHoras">Número de horas:</label>
+      <input id="numeroHoras" type="number" formControlName="numeroHoras" placeholder="Introduce el número de horas">
     </div>
 
-
-    <label>
-      <div class="apartadoFormulario">
-        <h3>Añadir Usuarios:</h3>
-        <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-          <input type="text" formControlName="userSearch" placeholder="Buscar por email">
-          <button type="submit">Buscar</button>
-        </form>
-      </div>
+    <div class="usuarios-section">
+      <h3>Añadir Usuarios</h3>
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
+        <input type="text" formControlName="userSearch" placeholder="Buscar por email">
+        <button type="submit">Buscar</button>
+      </form>
       <table class="lista-usuarios" [formGroup]="seleccionadosForm">
-        <tr>
-          <th>Email</th>
-          <th>Añadir</th>
-        </tr>
-        <tr *ngFor="let usuario of usuariosMostrados; let i = index">
-          <td>{{ usuario.email }}</td>
-          <td><input type="checkbox" formControlName="seleccionado{{usuario.id}}"></td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Añadir</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuariosMostrados; let i = index">
+            <td>{{ usuario.email }}</td>
+            <td><input type="checkbox" formControlName="seleccionado{{usuario.id}}"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination-buttons">
         <button type="button" (click)="prevPage(usuariosMostrados)" [disabled]="page === 1">Anterior</button>
         <button type="button" (click)="nextPage(usuariosMostrados)" [disabled]="page === totalPages">Siguiente</button>
-        <p>Página {{ page }} de {{ totalPages }}</p>
-      </table>
-    </label>
+      </div>
+      <p class="page-info">Página {{ page }} de {{ totalPages }}</p>
+    </div>
 
-    <button type="submit">{{ isUpdate ? 'Actualizar Curso ' : 'Crear Curso'}}</button>
+    <button type="submit" class="submit-button">{{ isUpdate ? 'Actualizar Curso' : 'Crear Curso' }}</button>
   </form>
-
 
 </div>

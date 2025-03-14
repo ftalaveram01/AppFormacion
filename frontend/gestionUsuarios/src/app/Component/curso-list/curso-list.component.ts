@@ -34,9 +34,14 @@ export class CursoListComponent implements OnInit {
           ...curso,
         };
       });
-      this.cursos = this.cursos.filter((curso) => {
-        return curso.habilitado === true
-      })
+      if(this.isAdmin()){
+
+      }else{
+        this.cursos = this.cursos.filter((curso) => {
+          return curso.habilitado === true
+        })
+      }
+
     });
 
     this.idAdmin = Number(localStorage.getItem('idAdmin'))
@@ -46,7 +51,7 @@ export class CursoListComponent implements OnInit {
     const ok = confirm("¿Estas seguro que deseas eliminar el curso " + nombreCurso.toUpperCase() + " ?")
     if (ok) {
       this.cursoService.deleteCurso(id).subscribe(() => {
-        this.cursos = this.cursos.filter(c => c.id !== id);
+        this.ngOnInit();
       })
     }
   }
@@ -107,7 +112,6 @@ export class CursoListComponent implements OnInit {
             fechaFin: this.formatearFecha(fechaFin)
           };
         });
-        this.cursos = this.cursos.filter(curso => curso.habilitado === true)
       });
     })
   }
@@ -144,5 +148,9 @@ export class CursoListComponent implements OnInit {
     const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
 
     return fechaFormateada
+  }
+
+  isAdmin(): boolean {
+    return this.idAdmin == 0;
   }
 }

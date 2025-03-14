@@ -1,5 +1,15 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  color: #212529;
+}
+
 h2 {
   text-align: center;
+  font-size: 28px;
+  color: #0056b3;
   margin-bottom: 20px;
 }
 
@@ -7,111 +17,215 @@ h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #ccc;
-}
-
-
-.btn-inicio,
-.cerrar-sesion {
-  margin: 10px;
-  display: inline-block;
-}
-
-.cerrar-sesion {
-  float: right;
-}
-
-.btn-inicio button,
-.cerrar-sesion button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
   padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-inicio button:hover,
-.cerrar-sesion button:hover {
   background-color: #0056b3;
+  color: white;
 }
 
-.lista-convocatorias {
-  background-color: #fff;
-  padding: 20px;
-  margin: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.lista-convocatorias h3 {
-  margin-top: 0;
-}
-
-.btn-ActualizarConvocatoria,
-.btn-deleteConvocatoria {
-  margin-top: 10px;
-}
-
-.btn-ActualizarConvocatoria button,
-.btn-deleteConvocatoria button {
-  background-color: #007bff;
-  color: #fff;
+.nav-buttons a button {
+  margin-left: 10px;
+  background-color: #004494;
+  color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 4px;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 14px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
-.btn-ActualizarConvocatoria button:hover,
-.btn-deleteConvocatoria button:hover {
-  background-color: #0056b3;
-}
-
-.btn-deleteConvocatoria button {
-  background-color: #dc3545;
-}
-
-.btn-deleteConvocatoria button:hover {
-  background-color: #c82333;
+.nav-buttons a button:hover {
+  background-color: #003366;
 }
 
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
   padding: 20px;
-  background-color: #f3eded;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  margin: 0 auto;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
+.lista-convocatorias {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
+.lista-convocatorias h3 {
+  font-size: 20px;
+  color: #0056b3;
   margin-bottom: 10px;
+  border-bottom: 2px solid #0056b3;
+  padding-bottom: 5px;
 }
 
-p {
-  margin-bottom: 10px;
+.status-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
 }
 
-#confirmacionAsistencia {
-  color: green;
+.status-badge.en-preparacion {
+  background-color: #ffc107;
 }
+
+.status-badge.en-curso {
+  background-color: #28a745;
+}
+
+.status-badge.terminada {
+  background-color: #6c757d;
+}
+
+.status-badge.desierta {
+  background-color: #dc3545;
+}
+
+.course-status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  margin-top: -20px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.course-status-badge.habilitado {
+  background-color: #28a745;
+}
+
+.course-status-badge.deshabilitado {
+  background-color: #dc3545;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.usuarios-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: left;
+  min-width: 600px;
+}
+
+.usuarios-tabla thead {
+  background-color: #0056b3;
+  color: white;
+}
+
+.usuarios-tabla th,
+.usuarios-tabla td {
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.usuarios-tabla tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.usuarios-tabla tbody tr:hover {
+  background-color: #e6f7ff;
+}
+
+.action-buttons button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#btn-Actualizar {
+  background-color: #0056b3;
+  color: white;
+}
+
+#btn-Actualizar:hover {
+  background-color: #004494;
+}
+
+#btn-Actualizar.disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+#btn-Delete {
+  background-color: #e63946;
+  color: white;
+}
+
+#btn-Delete:hover {
+  background-color: #c82333;
+}
+
+#btn-Delete:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.filter-container {
+  margin: 10px auto;
+  text-align: center;
+}
+
+.filter-section {
+  display: inline-block;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #0056b3;
+  margin-right: 10px;
+}
+
+.filter-section select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+.filter-section select:hover {
+  border-color: #0056b3;
+}
+
+.no-convocatorias {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #666666;
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
