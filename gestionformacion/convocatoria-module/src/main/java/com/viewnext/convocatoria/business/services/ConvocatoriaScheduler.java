@@ -17,6 +17,7 @@ import com.viewnext.core.business.model.Convocatoria;
 import com.viewnext.core.business.model.ConvocatoriaEnum;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -37,6 +38,16 @@ public class ConvocatoriaScheduler {
     @PostConstruct
     public void init() {
         reiniciarScheduler();
+    }
+    
+    @PreDestroy
+    public void destroy() {
+        for (List<ScheduledFuture<?>> tareas : tareasProgramadas.values()) {
+            for (ScheduledFuture<?> tarea : tareas) {
+                tarea.cancel(true);
+            }
+        }
+        tareasProgramadas.clear();
     }
 
     public void programarTarea(Convocatoria convocatoria, boolean crearModificar, boolean postConstruct) {

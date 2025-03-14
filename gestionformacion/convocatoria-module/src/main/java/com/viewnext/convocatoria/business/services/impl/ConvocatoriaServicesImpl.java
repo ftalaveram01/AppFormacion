@@ -77,7 +77,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		Course curso = cursoRepository.findById(request.getIdCurso()).get();
 		
 		if(!curso.getHabilitado())
-			throw new IllegalStateException("No puedes crear una convocatoria de un curso deshabilitado.");
+			throw new IllegalStateException("El curso está deshabilitado");
 		
 		if(curso.getUsuarios().size()<10)
 			throw new IllegalStateException("No hay suficientes alumnos inscritos al curso.");
