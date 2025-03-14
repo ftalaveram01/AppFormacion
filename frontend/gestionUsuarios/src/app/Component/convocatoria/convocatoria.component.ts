@@ -49,14 +49,8 @@ export class ConvocatoriaComponent {
     });
   }
 
-  btnInscribirseConvocatoria(idConvocatoria: number):void {
-    this.convocatoriaService.inscribirEnConvocatoria(idConvocatoria).subscribe(response =>{
-      this.convocatorias = response;
-    })
-  }
-
-  puedeInscribirse(estado: string, size: number):boolean{
-    if(estado == "EN_PREPARACION" && size<15){
+  puedeInscribirse(estado: string, size: number): boolean {
+    if (estado == "EN_PREPARACION" && size < 15) {
       return true;
     }
     return false;
