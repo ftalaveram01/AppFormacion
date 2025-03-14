@@ -10,19 +10,21 @@ import { RolComponent } from './Component/rol/rol.component';
 import { RolFormComponent } from './Component/rol-form/rol-form.component';
 import { ConvocatoriaComponent } from './Component/convocatoria/convocatoria.component';
 import { ConvocatoriaFormComponent } from './Component/convocatoria-form/convocatoria-form.component';
+import { ConfirmacionComponent } from './Component/confirmacion/confirmacion.component';
 
 
 export const routes: Routes = [
-    { path: '', component: LoginComponent},
-    { path: 'login', component: LoginComponent},
-    { path: 'register', component: RegisterComponent},
-    { path: 'inicio', component: InicioComponent},
+    { path: '', component: LoginComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'inicio', component: InicioComponent },
     { path: 'cursos', component: CursoListComponent },
     { path: 'cursos/form', component: CursoFormComponent },
-    { path: `users`, component: UserComponent},
-    { path: `user/form`, component: UserFormComponent},
-    { path: `rols`, component: RolComponent},
-    { path: `rols/form`, component: RolFormComponent},
-    { path: `convocatorias`, component: ConvocatoriaComponent},
-    { path: `convocatorias/form`, component: ConvocatoriaFormComponent}
+    { path: `users`, component: UserComponent },
+    { path: `user/form`, component: UserFormComponent },
+    { path: `rols`, component: RolComponent },
+    { path: `rols/form`, component: RolFormComponent },
+    { path: `convocatorias`, component: ConvocatoriaComponent },
+    { path: `convocatorias/form`, component: ConvocatoriaFormComponent },
+    { path: `confirmacion`, component: ConfirmacionComponent }
 ];
