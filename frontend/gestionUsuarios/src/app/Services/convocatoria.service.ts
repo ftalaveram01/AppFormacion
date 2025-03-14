@@ -45,9 +45,8 @@ export class ConvocatoriaService {
     return this.http.delete(`${this.convocatoriaApiUrl}/${id}`, { params })
   }
 
-  inscribirEnConvocatoria(idConvocatoria: Number): Observable<any> {
-    const params = new HttpParams()
-      .set('idAdmin', Number(localStorage.getItem('idUsuario')));
+  inscribirEnConvocatoria(idConvocatoria: Number, idUsuario: Number): Observable<any> {
+    const params = new HttpParams().set('idUsuario', String(idUsuario))
 
     return this.http.put(`${this.convocatoriaApiUrl}/${idConvocatoria}/inscribir`, params)
   }
