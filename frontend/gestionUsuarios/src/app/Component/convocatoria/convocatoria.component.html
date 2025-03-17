@@ -35,9 +35,9 @@
     <p *ngIf="isAdmin()">ID: {{c.id}}</p>
     <p id="confirmacionAsistencia" *ngIf="isUsuarioOnCurso(c.id)">ASISTENCIA CONFIRMADA</p>
     <p>Fecha Inicio: {{c.fechaInicio | date:'yyyy-MM-dd'}}</p>
-    <p>Hora Inicio: {{c.fechaInicio | date:'HH:mm:ss'}}</p>
+    <p>Hora Inicio: {{c.fechaInicio | date:'HH:mm:ss':'UTC'}}</p>
     <p>Fecha Fin: {{c.fechaFin | date:'yyyy-MM-dd'}}</p>
-    <p>Hora Fin: {{c.fechaFin | date:'HH:mm:ss'}}</p>
+    <p>Hora Fin: {{c.fechaFin | date:'HH:mm:ss':'UTC'}}</p>
     <p>Estado: {{c.estado.replace('_', ' ')}}</p>
 
     <h4>Información del Curso:</h4>
@@ -77,22 +77,14 @@
     </div>
 
     <div class="action-buttons">
-      <button
-        id="btn-Actualizar"
-        *ngIf="isAdmin()"
-        (click)="btnUpdateConvocatoria(true, false, c.id)"
+      <button id="btn-Actualizar" *ngIf="isAdmin()" (click)="btnUpdateConvocatoria(true, false, c.id)"
         [disabled]="c.estado === 'TERMINADA' || c.estado === 'DESIERTA'"
         [ngClass]="{'disabled': c.estado === 'TERMINADA' || c.estado === 'DESIERTA'}"
-        title="No se puede actualizar una convocatoria terminada o desierta"
-      >
+        title="No se puede actualizar una convocatoria terminada o desierta">
         Actualizar
       </button>
-      <button
-        id="btn-Delete"
-        *ngIf="isAdmin()"
-        (click)="btnDeleteConvocatoria(c.id)"
-        [disabled]="c.estado === 'TERMINADA' || c.estado === 'DESIERTA'"
-      >
+      <button id="btn-Delete" *ngIf="isAdmin()" (click)="btnDeleteConvocatoria(c.id)"
+        [disabled]="c.estado === 'TERMINADA' || c.estado === 'DESIERTA'">
         Eliminar
       </button>
     </div>
