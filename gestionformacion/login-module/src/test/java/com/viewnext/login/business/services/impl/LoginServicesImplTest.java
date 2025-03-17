@@ -15,13 +15,13 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.core.business.model.Usuario;
-import com.viewnext.login.integration.repository.LoginRepository;
+import com.viewnext.core.repositories.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
  class LoginServicesImplTest {
 	
 	@Mock
-    private LoginRepository loginRepository;
+    private UsuarioRepository loginRepository;
 
     @InjectMocks
     private LoginServicesImpl loginServicesImpl;

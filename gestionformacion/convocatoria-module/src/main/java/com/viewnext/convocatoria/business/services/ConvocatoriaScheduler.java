@@ -1,6 +1,7 @@
 package com.viewnext.convocatoria.business.services;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.viewnext.convocatoria.integration.repositories.ConvocatoriaRepository;
 import com.viewnext.core.business.model.Convocatoria;
 import com.viewnext.core.business.model.ConvocatoriaEnum;
+import com.viewnext.core.repositories.ConvocatoriaRepository;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;

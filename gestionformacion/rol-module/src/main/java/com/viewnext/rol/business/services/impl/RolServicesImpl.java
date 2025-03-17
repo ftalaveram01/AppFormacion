@@ -1,15 +1,16 @@
 package com.viewnext.rol.business.services.impl;
 
 import java.sql.SQLException;
+
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Rol;
+import com.viewnext.core.repositories.RolRepository;
+import com.viewnext.core.repositories.UsuarioRepository;
 import com.viewnext.rol.business.services.RolServices;
-import com.viewnext.rol.integration.repositories.RolRepository;
-import com.viewnext.rol.integration.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 

@@ -2,6 +2,7 @@ package com.viewnext.convocatoria.business.services.impl;
 
 import org.junit.jupiter.api.Test;
 
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -25,15 +26,15 @@ import java.util.List;
 import java.util.Optional;
 
 import com.viewnext.convocatoria.business.services.ConvocatoriaScheduler;
-import com.viewnext.convocatoria.integration.repositories.ConvocatoriaRepository;
-import com.viewnext.convocatoria.integration.repositories.CursoRepository;
-import com.viewnext.convocatoria.integration.repositories.UsuarioRepository;
 import com.viewnext.convocatoria.model.ConvocatoriaRequest;
 import com.viewnext.convocatoria.model.UpdateRequest;
 import com.viewnext.core.business.model.Convocatoria;
 import com.viewnext.core.business.model.ConvocatoriaEnum;
 import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.repositories.ConvocatoriaRepository;
+import com.viewnext.core.repositories.CursoRepository;
+import com.viewnext.core.repositories.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class ConvocatoriaServicesImplTest {

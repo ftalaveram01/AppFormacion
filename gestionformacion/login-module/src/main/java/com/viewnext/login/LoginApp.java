@@ -6,11 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.viewnext.core.presentation.config.LogAspect;
 
 @SpringBootApplication
 @EntityScan(basePackages = {"com.viewnext.core.business.model"})
+@EnableJpaRepositories(basePackages = {"com.viewnext.core.repositories"})
 @EnableAspectJAutoProxy 
 @Import(LogAspect.class)
 public class LoginApp {

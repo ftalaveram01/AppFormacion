@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Rol;
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.repositories.RolRepository;
+import com.viewnext.core.repositories.UsuarioRepository;
 import com.viewnext.register.business.services.RegistroService;
-import com.viewnext.register.integration.repository.RolRepository;
-import com.viewnext.register.integration.repository.UsuarioRepository;
 
 /**
  * Implementa los servicios a traves del repository
