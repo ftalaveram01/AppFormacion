@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RolService {
 
-  private rolApiUrl: string = 'http://localhost:8086/roles';
+  private rolApiUrl: string = 'http://localhost:8084/roles';
 
   constructor(private http: HttpClient) { }
 
