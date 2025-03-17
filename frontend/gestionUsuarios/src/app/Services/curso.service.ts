@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class CursoService {
 
-  private cursoApiUrl:string = 'http://localhost:8082/courses';
-  private usuariosApiURl:string = 'http://localhost:8083/usuarios'
+  private cursoApiUrl: string = 'http://localhost:8086/courses';
+  private usuariosApiURl: string = 'http://localhost:8086/usuarios'
 
   constructor(private http: HttpClient) { }
 
-  getCursos(): Observable<any>{
+  getCursos(): Observable<any> {
     this.getToken();
     return this.http.get(this.cursoApiUrl);
   }
@@ -21,15 +21,15 @@ export class CursoService {
     const idAdmin = localStorage.getItem('idUsuario')
     const params = new HttpParams().set('idAdmin', Number(idAdmin))
     this.getToken();
-    return this.http.get(`${this.usuariosApiURl}`, {params});
+    return this.http.get(`${this.usuariosApiURl}`, { params });
   }
 
-  getCurso(id: number): Observable<any>{
+  getCurso(id: number): Observable<any> {
     this.getToken();
     return this.http.get(`${this.cursoApiUrl}/${id}`);
   }
 
-  createCurso(curso: any,  usuariosSeleccionados: any[]): Observable<any>{
+  createCurso(curso: any, usuariosSeleccionados: any[]): Observable<any> {
     this.getToken();
 
     const idAdmin = localStorage.getItem('idUsuario')
@@ -39,10 +39,10 @@ export class CursoService {
     curso.habilitado = 1
     curso.convocatorias = []
 
-    return this.http.post(this.cursoApiUrl, curso, {params});
+    return this.http.post(this.cursoApiUrl, curso, { params });
   }
 
-  updateCurso(id: number, curso: any,  usuariosSeleccionados: any[]): Observable<any>{
+  updateCurso(id: number, curso: any, usuariosSeleccionados: any[]): Observable<any> {
     this.getToken();
     curso.id = id;
 
@@ -52,32 +52,32 @@ export class CursoService {
     curso.usuarios = usuariosSeleccionados;
     curso.habilitado = 1
 
-    return this.http.put(`${this.cursoApiUrl}/${id}`,curso, {params})
+    return this.http.put(`${this.cursoApiUrl}/${id}`, curso, { params })
   }
 
-  deleteCurso(id: number): Observable<any>{
+  deleteCurso(id: number): Observable<any> {
     this.getToken();
 
     const idAdmin = localStorage.getItem('idUsuario')
     const params = new HttpParams().set('idAdmin', Number(idAdmin))
 
-    return this.http.delete(`${this.cursoApiUrl}/${id}`, {params});
+    return this.http.delete(`${this.cursoApiUrl}/${id}`, { params });
   }
 
-  addUsuarioToCurso(idCurso: number, idUsuario:number): Observable<any>{
+  addUsuarioToCurso(idCurso: number, idUsuario: number): Observable<any> {
     const params = new HttpParams().set('idUsuario', idUsuario).set('idCurso', idCurso)
     return this.http.put(`${this.cursoApiUrl}`, params);
   }
 
-  deleteUsuarioFromCurso(idUsuario: number, idCurso: number): Observable<any>{
+  deleteUsuarioFromCurso(idUsuario: number, idCurso: number): Observable<any> {
     const params = new HttpParams()
       .set('idUsuario', idUsuario)
       .set('idCurso', idCurso)
 
-    return this.http.delete(`${this.cursoApiUrl}`, {params});
+    return this.http.delete(`${this.cursoApiUrl}`, { params });
   }
 
-  getToken(): void{
+  getToken(): void {
     const token = localStorage.getItem('token');
 
     const header = {

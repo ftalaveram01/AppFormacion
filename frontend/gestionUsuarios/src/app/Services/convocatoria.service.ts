@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ConvocatoriaService {
 
-  private convocatoriaApiUrl = 'http://localhost:8085/convocatorias'
+  private convocatoriaApiUrl = 'http://localhost:8086/convocatorias'
 
   constructor(private http: HttpClient) { }
 
