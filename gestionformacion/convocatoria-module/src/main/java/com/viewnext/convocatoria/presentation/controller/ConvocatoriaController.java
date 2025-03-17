@@ -69,13 +69,13 @@ public class ConvocatoriaController {
 
 	@PutMapping("/{idConvocatoria}/inscribir")
 	public ResponseEntity<String> inscribir(@RequestParam(required = true) Long idUsuario, @PathVariable(required = true) Long idConvocatoria) {
-	    convocatoriaServices.inscribirUsuario(idUsuario, idConvocatoria);
+	    convocatoriaServices.inscribirUsuario(idConvocatoria, idUsuario);
 	    return ResponseEntity.ok().build();
 	}
 	
 	@PostMapping("/{idConvocatoria}/usuarios/certificado")
 	public ResponseEntity<String> enviarCertificado(@PathVariable(required = true) Long idConvocatoria, @RequestParam(required = true) Long idUsuario){
-		convocatoriaServices.generarCertificado(idConvocatoria, idUsuario);
+		convocatoriaServices.generarCertificado(idUsuario, idConvocatoria);
 		return ResponseEntity.ok().build();
 	}
 }

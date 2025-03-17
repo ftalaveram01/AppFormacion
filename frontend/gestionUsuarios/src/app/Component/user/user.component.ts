@@ -23,7 +23,7 @@ export class UserComponent implements OnInit {
 
   deleteUser(id: number): void{
     this.userService.deleteUser(id).subscribe(() => {
-      this.users = this.users.filter( u => u.id !== id);
+     this.ngOnInit()
     });
 
     if(id===Number(localStorage.getItem("idUsuario"))){

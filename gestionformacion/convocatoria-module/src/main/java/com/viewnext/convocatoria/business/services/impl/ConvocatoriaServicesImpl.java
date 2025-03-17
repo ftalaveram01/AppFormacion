@@ -77,6 +77,9 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
 		Course curso = cursoRepository.findById(request.getIdCurso()).get();
 		
+		if(!curso.getHabilitado())
+			throw new IllegalStateException("El curso está deshabilitado");
+		
 		if(curso.getUsuarios().size()<10)
 			throw new IllegalStateException("No hay suficientes alumnos inscritos al curso.");
 		
@@ -240,12 +243,17 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
     @Transactional
 	@Override
 	public void inscribirUsuario(Long idConvocatoria, Long idUsuario) {
+    	
+    	System.out.println(idConvocatoria);
 		
 		Convocatoria convocatoria = convocatoriaRepository.findById(idConvocatoria)
 				.orElseThrow(() -> new IllegalStateException("ERROR la convocatoria no existe"));
 		
 		Usuario user = usuarioRepository.findById(idUsuario)
 				.orElseThrow(() -> new IllegalStateException("ERROR el usuario a inscribir no existe"));
+		
+		if(convocatoria.getEstado().equals(ConvocatoriaEnum.DESIERTA) || convocatoria.getEstado().equals(ConvocatoriaEnum.TERMINADA))
+			throw new IllegalStateException("No puedes inscribir un usuario en una convocatoria que no esta activa.");
 		
 		if(convocatoria.getUsuarios().contains(user)) {
 			throw new IllegalStateException("ERROR: El usuario ya está inscrito en la convocatoria");
