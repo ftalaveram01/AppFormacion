@@ -21,7 +21,7 @@ export class AuthService {
       })
     };
 
-    return this.http.get("http://localhost:8086/usuarios", header);
+    return this.http.get("http://localhost:8080/usuarios", header);
   }
 
   loginUser(email: string, password: string, onLogin: (succes: boolean, user?: any) => void) {
@@ -31,7 +31,7 @@ export class AuthService {
       .set('password', password);
 
 
-    this.http.get("http://localhost:8086/autentificacion/login",
+    this.http.get("http://localhost:8080/autentificacion/login",
       { params }).subscribe((users: any) => {
         if (users) {
           onLogin(true, users)

@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class CursoService {
 
-  private cursoApiUrl: string = 'http://localhost:8086/courses';
-  private usuariosApiURl: string = 'http://localhost:8086/usuarios'
+  private cursoApiUrl: string = 'http://localhost:8082/courses';
+  private usuariosApiURl: string = 'http://localhost:8083/usuarios'
 
   constructor(private http: HttpClient) { }
 
