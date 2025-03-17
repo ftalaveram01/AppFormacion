@@ -49,6 +49,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 	private ConvocatoriaScheduler convocatoriaScheduler;
 	
 	private UsuarioRepository usuarioRepository;
+
 	
 	public ConvocatoriaServicesImpl(ConvocatoriaRepository convocatoriaRepository,
 			ConvocatoriaScheduler convocatoriaScheduler, CursoRepository cursoRepository, UsuarioRepository usuarioRepository) {
@@ -90,7 +91,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		convocatoriaScheduler.programarTarea(guardada, true, false);
 		
 		
-		//enviarCorreo(guardada);
+		enviarCorreo(guardada);
 		
 		return guardada;
 	}
@@ -273,16 +274,19 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		//email = appformacion3@gmail.com
 		//password = wasx goao szjt uiwd
 		
-        String host = "smtp.gmail.com"; //servidor SMTP
-        final String user = "appformacion3@gmail.com"; //tu correo
-        final String password = "gestionformacion"; //tu contraseña
+		//pass mail pecera@77
+		
+		//recovery code 17JXXBWV8Y8BBHQABQSZMDDM
+		
+        String host = "in-v3.mailjet.com"; //servidor SMTP
+        final String user = "e67210960b6ae86c063ce075e3278616"; //tu correo
+        final String password = "0fcb19625f260cc27c8989260ab97aa0"; //tu contraseña
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.ssl.enable", "true");
-
+        properties.put("mail.smtp.starttls.enable", "true");
         
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -298,10 +302,9 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(usuario.getEmail()));
                 message.setSubject("Convocatoria para el curso "+convocatoria.getCurso().getNombre());
                 message.setText("Acepta la convocatoria en el siguiente apartado.");
-
-                System.out.println("AQUI PETA !");
-                Transport.send(message);
                 
+                Transport.send(message);
+                System.out.println("Correo enviado a: " + usuario.getEmail());
             }
             System.out.println("Correos enviados exitosamente");
 
@@ -310,4 +313,5 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
             System.out.println("ERROR AL ENVIAR CORREO");
         }
 	}
+	
 }

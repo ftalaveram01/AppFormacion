@@ -62,7 +62,7 @@ export class ConvocatoriaFormComponent {
     }else{
       this.convocatoriaService.createConvocatoria(convocatoria).subscribe();
       alert('Convocatoria creada correctamente')
-      this.routerNav.navigate(['cursos'])
+      //this.routerNav.navigate(['cursos'])
     }
   }
 
