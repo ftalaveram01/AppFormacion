@@ -7,21 +7,21 @@ import { Observable } from 'rxjs';
 })
 export class RolService {
 
-  private rolApiUrl:string = 'http://localhost:8084/roles';
+  private rolApiUrl: string = 'http://localhost:8086/roles';
 
   constructor(private http: HttpClient) { }
 
-  getRoles(): Observable<any>{
+  getRoles(): Observable<any> {
     this.getToken();
 
     return this.http.get(`${this.rolApiUrl}`)
   }
 
-  getRolById(idRol: number): Observable<any>{
+  getRolById(idRol: number): Observable<any> {
     return this.http.get(`${this.rolApiUrl}/${idRol}`)
   }
 
-  createRol(rol: any): Observable<any>{
+  createRol(rol: any): Observable<any> {
     this.getToken();
 
     const idAdmin = localStorage.getItem('idUsuario')
@@ -29,10 +29,10 @@ export class RolService {
 
     rol.id = this.generarIdAleatoria()
 
-    return this.http.post(this.rolApiUrl, rol, {params});
+    return this.http.post(this.rolApiUrl, rol, { params });
   }
 
-  updateRol(id: number, rol: any): Observable<any>{
+  updateRol(id: number, rol: any): Observable<any> {
     this.getToken();
 
     rol.id = id
@@ -42,19 +42,19 @@ export class RolService {
 
     console.log(idAdmin)
 
-    return this.http.put(`${this.rolApiUrl}/${id}`, rol.descripcion, {params})
+    return this.http.put(`${this.rolApiUrl}/${id}`, rol.descripcion, { params })
   }
 
-  deleteRol(id: number): Observable<any>{
+  deleteRol(id: number): Observable<any> {
     this.getToken();
 
     const idAdmin = localStorage.getItem('idUsuario')
     const params = new HttpParams().set('idAdmin', Number(idAdmin))
 
-    return this.http.delete(`${this.rolApiUrl}/${id}`, {params});
+    return this.http.delete(`${this.rolApiUrl}/${id}`, { params });
   }
 
-  getToken(): void{
+  getToken(): void {
     const token = localStorage.getItem('token');
 
     const header = {
@@ -64,8 +64,8 @@ export class RolService {
     }
   }
 
-  private generarIdAleatoria(){
+  private generarIdAleatoria() {
     return Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER - 2 + 1)) + 2;
   }
-    
+
 }

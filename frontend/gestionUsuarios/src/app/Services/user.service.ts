@@ -7,31 +7,31 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private userApiUrl = 'http://localhost:8083/usuarios';
+  private userApiUrl = 'http://localhost:8086/usuarios';
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers(): Observable<any>{
+  getAllUsers(): Observable<any> {
     this.getToken();
 
     const idAdmin = localStorage.getItem("idUsuario")
 
     const params = new HttpParams()
-                    .set('idAdmin', Number(idAdmin));
+      .set('idAdmin', Number(idAdmin));
 
-    return this.http.get(`${this.userApiUrl}`, {params})
+    return this.http.get(`${this.userApiUrl}`, { params })
   }
 
-  getUser(id:number, idAdmin:number): Observable<any>{
+  getUser(id: number, idAdmin: number): Observable<any> {
     this.getToken();
 
     const params = new HttpParams()
-    .set('idAdmin', idAdmin)
+      .set('idAdmin', idAdmin)
 
-    return this.http.get(`${this.userApiUrl}/${id}`, {params})
-  } 
+    return this.http.get(`${this.userApiUrl}/${id}`, { params })
+  }
 
-  createUser(user: any): Observable<any>{
+  createUser(user: any): Observable<any> {
     this.getToken();
 
     const idAdmin = localStorage.getItem("idUsuario")
@@ -43,16 +43,16 @@ export class UserService {
 
     const params = new HttpParams().set('idAdmin', Number(idAdmin));
 
-    return this.http.post(`${this.userApiUrl}/crear`, user, {params})
+    return this.http.post(`${this.userApiUrl}/crear`, user, { params })
   }
 
-  updateUser(id:number, user: any): Observable<any>{
+  updateUser(id: number, user: any): Observable<any> {
     this.getToken();
 
     console.log("SE HA METIDO EN UPDATE")
 
     const idAdmin = localStorage.getItem("idUsuario")
-    
+
     user.id = id
 
     const objetoRol: any = {
@@ -64,47 +64,47 @@ export class UserService {
     console.log(idAdmin)
 
     const params = new HttpParams()
-                    .set('idAdmin', Number(idAdmin));
+      .set('idAdmin', Number(idAdmin));
 
-    return this.http.put(`${this.userApiUrl}/actualizar`, user, {params})
+    return this.http.put(`${this.userApiUrl}/actualizar`, user, { params })
   }
 
-  deleteUser(id: number){
+  deleteUser(id: number) {
     this.getToken();
 
     const idAdmin = localStorage.getItem("idUsuario")
 
     const params = new HttpParams()
-                    .set('idAdmin', Number(idAdmin));
+      .set('idAdmin', Number(idAdmin));
 
-    return this.http.delete(`${this.userApiUrl}/borrar/${id}`, {params})
+    return this.http.delete(`${this.userApiUrl}/borrar/${id}`, { params })
   }
 
-  deshabilitar(email: string, callback : (ok : boolean, error?: any) => void){
+  deshabilitar(email: string, callback: (ok: boolean, error?: any) => void) {
     this.getToken();
 
     const params = new HttpParams()
-                    .set('email', email);
+      .set('email', email);
 
-    return this.http.delete(`${this.userApiUrl}/deshabilitar`, {params}).subscribe( 
-                                                              response =>{
-                                                                callback(true, 'El usuario fue bloqueado')
-                                                              },
-                                                              error => {
-                                                                if(error.status == 400){
-                                                                  callback(false, error.error)
-                                                                }
-                                                              });
+    return this.http.delete(`${this.userApiUrl}/deshabilitar`, { params }).subscribe(
+      response => {
+        callback(true, 'El usuario fue bloqueado')
+      },
+      error => {
+        if (error.status == 400) {
+          callback(false, error.error)
+        }
+      });
   }
 
-  getToken(): void{
-      const token = localStorage.getItem('token');
-      
-      const header = {
-        headers: new HttpHeaders({
-          "Authorization": `Bearer ${token}`
-        })
-      }
+  getToken(): void {
+    const token = localStorage.getItem('token');
+
+    const header = {
+      headers: new HttpHeaders({
+        "Authorization": `Bearer ${token}`
+      })
     }
+  }
 
 }
