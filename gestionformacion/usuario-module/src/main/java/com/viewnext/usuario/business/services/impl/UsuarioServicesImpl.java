@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.viewnext.core.business.model.Rol;
 import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.repositories.RolRepository;
+import com.viewnext.core.repositories.UsuarioRepository;
 import com.viewnext.usuario.business.services.UsuarioServices;
-import com.viewnext.usuario.integration.repositories.RolRepository;
-import com.viewnext.usuario.integration.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 

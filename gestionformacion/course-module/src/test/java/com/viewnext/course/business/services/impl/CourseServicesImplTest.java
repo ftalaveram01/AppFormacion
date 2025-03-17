@@ -24,8 +24,8 @@ import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Rol;
 import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
-import com.viewnext.course.integration.repository.CursoRepository;
-import com.viewnext.course.integration.repository.UsuarioRepository;
+import com.viewnext.core.repositories.CursoRepository;
+import com.viewnext.core.repositories.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServicesImplTest {

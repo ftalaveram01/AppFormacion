@@ -7,11 +7,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Course;
-import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.repositories.CursoRepository;
+import com.viewnext.core.repositories.UsuarioRepository;
 import com.viewnext.course.business.services.CourseServices;
-import com.viewnext.course.integration.repository.CursoRepository;
-import com.viewnext.course.integration.repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 
