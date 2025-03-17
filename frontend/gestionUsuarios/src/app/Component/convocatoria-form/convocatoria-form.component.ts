@@ -39,8 +39,8 @@ export class ConvocatoriaFormComponent {
 
     if (this.isCreate) {
       const convocatoria = {
-        "fechaInicio": this.fechaInicio?.value.split('T')[0],
-        "fechaFin": this.fechaFin?.value.split('T')[0],
+        "fechaInicio": this.fechaInicio?.value,
+        "fechaFin": this.fechaFin?.value,
         "idCurso": this.idCurso
       }
 
