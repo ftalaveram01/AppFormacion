@@ -3,7 +3,7 @@ services:
     image: convocatoria-app
     container_name: convocatoria-container
     ports:
-      - "8085:8085"
+      - "8085:8105"
     networks:
       - spring-network
     depends_on:
@@ -13,7 +13,7 @@ services:
     image: course-app
     container_name: course-container
     ports:
-      - "8082:8082"
+      - "8082:8102"
     networks:
       - spring-network
 
@@ -21,7 +21,7 @@ services:
     image: login-app
     container_name: login-container
     ports:
-      - "8080:8080"
+      - "8080:8100"
     networks:
       - spring-network
 
@@ -29,7 +29,7 @@ services:
     image: register-app
     container_name: register-container
     ports:
-      - "8081:8081"
+      - "8081:8101"
     networks:
       - spring-network
 
@@ -37,7 +37,7 @@ services:
     image: rol-app
     container_name: rol-container
     ports:
-      - "8084:8084"
+      - "8084:8104"
     networks:
       - spring-network
 
@@ -45,7 +45,7 @@ services:
     image: usuario-app
     container_name: usuario-container
     ports:
-      - "8083:8083"
+      - "8083:8103"
     networks:
       - spring-network
 
