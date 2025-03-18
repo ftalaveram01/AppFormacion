@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -213,14 +214,32 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 
 	@Override
 	public void generarCertificado(Long idConvocatoria, Long idUsuario) {
-		// TODO Auto-generated method stub
+
+		if(!convocatoriaRepository.existsById(idConvocatoria)) {
+			throw new IllegalStateException("La convocatoria con id ["+idConvocatoria+"], NO EXISTE");
+		}
+
+		if(!usuarioRepository.existsById(idUsuario)) {
+			throw new IllegalStateException("El usuario con id ["+idUsuario+"], NO EXISTE");
+		}
+		
+		Optional <Convocatoria> convocatoria = convocatoriaRepository.findById(idConvocatoria);
+		Optional <Usuario> usuario = usuarioRepository.findById(idUsuario);
+		
+		this.emailService.enviarCorreo(
+				usuario.get().getEmail(), 
+				"ENHORABUENA, AQUI TIENES TU CERTIFICADO", 
+				"Has completado el curso de "+convocatoria.get().getCurso().getNombre() + "\n" + "Fecha Inicio: "+convocatoria.get().getFechaInicio() + "\n" + "Fecha Fin: "+convocatoria.get().getFechaFin());
+
 		
 	}
 	
 	private void enviarCorreo(Convocatoria convocatoria) {
 		
 		for (Usuario usuario: convocatoria.getCurso().getUsuarios()) {
-			this.emailService.enviarCorreo(usuario.getEmail(), "Convocatoria para el curso "+convocatoria.getCurso().getNombre(), "Acepta la convocatoria en el siguiente apartado.");
+			this.emailService.enviarCorreo(usuario.getEmail(), 
+					"Convocatoria para el curso "+convocatoria.getCurso().getNombre(), 
+					"Acepta la convocatoria en el siguiente apartado." + "\n" + "http://localhost:4200/confirmacion?idConvocatoria="+convocatoria.getId().toString()+"&idUsuario="+usuario.getId().toString());
         }
 	}
 	
