@@ -1,0 +1,71 @@
+services:
+  convocatoria-app:
+    image: convocatoria-app
+    container_name: convocatoria-container
+    ports:
+      - "8085:8105"
+    networks:
+      - spring-network
+    depends_on:
+      - mysql
+
+  course-app:
+    image: course-app
+    container_name: course-container
+    ports:
+      - "8082:8102"
+    networks:
+      - spring-network
+
+  login-app:
+    image: login-app
+    container_name: login-container
+    ports:
+      - "8080:8100"
+    networks:
+      - spring-network
+
+  register-app:
+    image: register-app
+    container_name: register-container
+    ports:
+      - "8081:8101"
+    networks:
+      - spring-network
+
+  rol-app:
+    image: rol-app
+    container_name: rol-container
+    ports:
+      - "8084:8104"
+    networks:
+      - spring-network
+
+  usuario-app:
+    image: usuario-app
+    container_name: usuario-container
+    ports:
+      - "8083:8103"
+    networks:
+      - spring-network
+
+  mysql:
+    image: mysql
+    container_name: mysql_database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dockerDB
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "2000:3306"
+    networks:
+      - spring-network
+    volumes:
+      - mysql-volume:/var/lib/mysql
+
+networks:
+  spring-network:
+
+volumes:
+  mysql-volume:
