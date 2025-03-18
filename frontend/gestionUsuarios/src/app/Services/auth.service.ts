@@ -11,7 +11,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers(): Observable<any>{
+  getUsers(): Observable<any> {
 
     const token = localStorage.getItem('token');
 
@@ -21,10 +21,10 @@ export class AuthService {
       })
     };
 
-    return this.http.get("http://localhost:8080/usuarios",header);
+    return this.http.get("http://localhost:8080/usuarios", header);
   }
 
-  loginUser(email: string, password: string, onLogin: (succes: boolean, user?:any) => void){
+  loginUser(email: string, password: string, onLogin: (succes: boolean, user?: any) => void) {
 
     const params = new HttpParams()
       .set('email', email)
@@ -32,28 +32,28 @@ export class AuthService {
 
 
     this.http.get("http://localhost:8080/autentificacion/login",
-     {params}).subscribe((users :any) => {
-      if(users){
-        onLogin(true,users)
-      }
-    },
-    (error) => {
-      if(error.status === 400){
-        onLogin(false, error.error)
-      }
-    });
+      { params }).subscribe((users: any) => {
+        if (users) {
+          onLogin(true, users)
+        }
+      },
+        (error) => {
+          if (error.status === 400) {
+            onLogin(false, error.error)
+          }
+        });
 
   }
 
   registerUser(user: any, onRegister: (succes: boolean) => void) {
     const numRol: number = 1;
-  
+
     const objetoRol: any = {
       id: numRol
     }
     user.rol = objetoRol
     user.habilitado = 1
-  
+
     this.http.post("http://localhost:8081/autentificacion/registrar", user).subscribe(
       () => {
         onRegister(true)
@@ -63,6 +63,6 @@ export class AuthService {
       }
     )
   }
-  
+
 
 }

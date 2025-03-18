@@ -21,7 +21,7 @@ export class ConvocatoriaComponent {
     private convocatoriaService: ConvocatoriaService,
     private router: Router,
     private usuariosSerivices: UserService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idAdmin = Number(localStorage.getItem('idAdmin'));

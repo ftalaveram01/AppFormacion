@@ -12,7 +12,7 @@ import com.viewnext.core.presentation.config.LogAspect;
 
 @ComponentScan(basePackages = {"com.viewnext.core.presentation.config", "com.viewnext.usuario"})
 @EntityScan(basePackages = {"com.viewnext.core.business.model"})
-@EnableJpaRepositories(basePackages = "com.viewnext.usuario.integration.repositories")
+@EnableJpaRepositories(basePackages = {"com.viewnext.core.repositories"})
 @EnableAspectJAutoProxy 
 @Import(LogAspect.class)
 @SpringBootApplication

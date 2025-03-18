@@ -23,11 +23,6 @@ import org.springframework.stereotype.Service;
 
 import com.viewnext.convocatoria.business.services.ConvocatoriaScheduler;
 import com.viewnext.convocatoria.business.services.ConvocatoriaServices;
-import com.viewnext.convocatoria.integration.repositories.ConvocatoriaRepository;
-
-import com.viewnext.convocatoria.integration.repositories.UsuarioRepository;
-
-import com.viewnext.convocatoria.integration.repositories.CursoRepository;
 
 import com.viewnext.convocatoria.model.ConvocatoriaRequest;
 import com.viewnext.convocatoria.model.UpdateRequest;
@@ -36,6 +31,9 @@ import com.viewnext.core.business.model.ConvocatoriaEnum;
 
 import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.repositories.ConvocatoriaRepository;
+import com.viewnext.core.repositories.CursoRepository;
+import com.viewnext.core.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 

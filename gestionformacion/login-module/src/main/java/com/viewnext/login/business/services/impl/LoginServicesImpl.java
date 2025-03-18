@@ -2,11 +2,12 @@ package com.viewnext.login.business.services.impl;
 
 import java.util.Optional;
 
+
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.repositories.UsuarioRepository;
 import com.viewnext.login.business.services.LoginServices;
-import com.viewnext.login.integration.repository.LoginRepository;
 
 /**
  * Implementa los servicios a traves del repository
@@ -14,9 +15,9 @@ import com.viewnext.login.integration.repository.LoginRepository;
 @Service
 public class LoginServicesImpl implements LoginServices{
 
-	private LoginRepository loginRepository;
+	private UsuarioRepository loginRepository;
 	
-	public LoginServicesImpl(LoginRepository loginRepository) {
+	public LoginServicesImpl(UsuarioRepository loginRepository) {
 		this.loginRepository = loginRepository;
 	}
 

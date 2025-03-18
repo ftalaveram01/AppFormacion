@@ -14,10 +14,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.core.business.model.Rol;
-import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
-import com.viewnext.register.integration.repository.RolRepository;
-import com.viewnext.register.integration.repository.UsuarioRepository;
+import com.viewnext.core.repositories.RolRepository;
+import com.viewnext.core.repositories.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
 class RegistroServiceImplTest {
