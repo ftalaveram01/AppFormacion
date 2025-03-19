@@ -130,7 +130,7 @@ Al descomprimirlo, debería aparecer una carpeta llamada **AppFormacion**, que c
  4. Para configurar el network visto antes hemos utilizado el que da por defecto para esto solo define un nombre a la red
 - Una vez ya configurada el docker-compose lo levantaremos con el comando [docker-compose up], si todo va bien le podras dar a la tecla v y te mostrara el contenedor en el docker
 
-### Posibles errores detectados al Dockerizar el proyecto ###
+### - Posibles errores detectados al Dockerizar el proyecto ###
 
 -Error de uso de puerto: Nosotros no conseguimos mapear los puertos por lo tanto lo pusimos en otros, apesar de ello funciona cada endpoint a la base de datos
 -Error de nombre de la tabla: Por lo general tendras los nombres de las tablas en minusculas, Windwos te pide que el nombre de la tabla sea con la primera letra en mayusculas, 
