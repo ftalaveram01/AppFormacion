@@ -12,9 +12,9 @@ CREATE TABLE Usuario (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(20) NOT NULL,
-    id_Rol BIGINT,
+    id_rol BIGINT,
     habilitado BOOLEAN NOT NULL DEFAULT TRUE,
-    FOREIGN KEY(id_Rol) REFERENCES Rol(id) ON DELETE RESTRICT
+    FOREIGN KEY(id_rol) REFERENCES Rol(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE Curso (
@@ -26,11 +26,11 @@ CREATE TABLE Curso (
 );
 
 CREATE TABLE Curso_Usuario (
-    id_Usuario BIGINT NOT NULL,
-    id_Curso BIGINT NOT NULL,
-    PRIMARY KEY (id_Usuario, id_Curso),
-    FOREIGN KEY(id_Usuario) REFERENCES Usuario(id) ON DELETE CASCADE,
-    FOREIGN KEY(id_Curso) REFERENCES Curso(id) ON DELETE CASCADE
+    id_usuario BIGINT NOT NULL,
+    id_curso BIGINT NOT NULL,
+    PRIMARY KEY (id_usuario, id_curso),
+    FOREIGN KEY(id_usuario) REFERENCES Usuario(id) ON DELETE CASCADE,
+    FOREIGN KEY(id_curso) REFERENCES Curso(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Convocatoria (
@@ -38,16 +38,16 @@ CREATE TABLE Convocatoria (
     fecha_inicio TIMESTAMP NOT NULL,
     fecha_fin TIMESTAMP NOT NULL,
     estado VARCHAR(200) NOT NULL,
-    id_Curso BIGINT NOT NULL,
-    FOREIGN KEY(id_Curso) REFERENCES Curso(id)
+    id_curso BIGINT NOT NULL,
+    FOREIGN KEY(id_curso) REFERENCES Curso(id)
 );
 
 CREATE TABLE Convocatoria_Usuario (
-    id_Usuario BIGINT NOT NULL,
-    id_Convocatoria BIGINT NOT NULL,
-    PRIMARY KEY (id_Usuario, id_Convocatoria),
-    FOREIGN KEY(id_Usuario) REFERENCES Usuario(id) ON DELETE CASCADE,
-    FOREIGN KEY(id_Convocatoria) REFERENCES Convocatoria(id) ON DELETE CASCADE
+    id_usuario BIGINT NOT NULL,
+    id_convocatoria BIGINT NOT NULL,
+    PRIMARY KEY (id_usuario, id_convocatoria),
+    FOREIGN KEY(id_usuario) REFERENCES Usuario(id) ON DELETE CASCADE,
+    FOREIGN KEY(id_convocatoria) REFERENCES Convocatoria(id) ON DELETE CASCADE
 );
 
 INSERT INTO Rol (id, nombre_rol, descripcion) VALUES
@@ -61,12 +61,12 @@ INSERT INTO Usuario (id, email, password, id_Rol, habilitado) VALUES
 (4, 'alumno3@example.com', '1234', 1, TRUE),
 (5, 'alumno4@example.com', '1234', 1, FALSE);
 
-INSERT INTO Curso (id, nombre, descripcion, fecha_inicio, fecha_fin) VALUES
-(1, 'Curso de Angular', 'Curso de introducción a Angular', '2023-01-01 00:00:00', '2023-01-31 23:59:59'),
-(2, 'Curso de React', 'Curso de introducción a React', '2023-02-01 00:00:00', '2023-02-28 23:59:59'),
-(3, 'Curso de Vue.js', 'Curso de introducción a Vue.js', '2023-03-01 00:00:00', '2023-03-31 23:59:59');
+INSERT INTO Curso (id, nombre, descripcion, numero_horas, habilitado) VALUES
+(1, 'Curso de Angular', 'Curso de introducción a Angular', 200, true),
+(2, 'Curso de React', 'Curso de introducción a React', 60, true),
+(3, 'Curso de Vue.js', 'Curso de introducción a Vue.js', 100, false);
 
-INSERT INTO Curso_Usuario (id_Usuario, id_Curso) VALUES
+INSERT INTO Curso_Usuario (id_usuario, id_curso) VALUES
 (2, 1),
 (2, 2),
 (3, 1),
