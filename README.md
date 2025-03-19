@@ -82,7 +82,7 @@ Al descomprimirlo, debería aparecer una carpeta llamada **AppFormacion**, que c
 ### Posibles ERRORES ###
 
 - Si pone algun mensaje de **WSL 2** es porque se requiere el WSL es tan sencillo como **wsl --set-default-version 2**
-- En otras ocasiones podria ser simplemente que tengas que reiniciar el **Docker Desktope**
+- En otras ocasiones podria ser simplemente que tengas que reiniciar el **Docker Desktop**
 
 
 ### - Creación del fichero Dockerfile ###
