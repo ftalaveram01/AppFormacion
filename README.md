@@ -132,10 +132,10 @@ Al descomprimirlo, debería aparecer una carpeta llamada **AppFormacion**, que c
 
 ### - Posibles errores detectados al Dockerizar el proyecto ###
 
--Error de uso de puerto: Nosotros no conseguimos mapear los puertos por lo tanto lo pusimos en otros, apesar de ello funciona cada endpoint a la base de datos
--Error de nombre de la tabla: Por lo general tendras los nombres de las tablas en minusculas, Windwos te pide que el nombre de la tabla sea con la primera letra en mayusculas, 
+- Error de uso de puerto: Nosotros no conseguimos mapear los puertos por lo tanto lo pusimos en otros, apesar de ello funciona cada endpoint a la base de datos
+- Error de nombre de la tabla: Por lo general tendras los nombres de las tablas en minusculas, Windwos te pide que el nombre de la tabla sea con la primera letra en mayusculas, 
  tendras que cambiar la base de datos completa unicamente el nombre de las tablas
--No da conexión con Docker: Es posible que ya tengas el **Mysql Workbench** si es asi este interceptara todas las peticiones enviadas al docker para que se ejecuten en el Workbench,
+- No da conexión con Docker: Es posible que ya tengas el **Mysql Workbench** si es asi este interceptara todas las peticiones enviadas al docker para que se ejecuten en el Workbench,
  para arreglar este error y comprobar que es asi ponemos en la cmd como administrador [netstat -nabo > (ruta en la que queramos copiar todo el comando en un fichero)], 
  esto te generara un fichero con todos los puertos en uso y sus servicio, buscamos "3306" y si vemos que es el **Workbench**
  quien lo tiene en uso nos vamos a Servico en la barra de busqueda de windows y detenemos el servicio de **MySQL80** ademas recomiendo quitar en automatico el tipo de inicio
