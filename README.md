@@ -69,23 +69,23 @@ Al descomprimirlo, debería aparecer una carpeta llamada **AppFormacion**, que c
 ## 5. Docker ##
 
 
-## - Instalación de WSL##
+### - Instalación de WSL ###
 1. Ejecute el siguiente comando: **wsl --install** asi instalaremos las caracteristicas necesarias para ejecutar WSL
 2. En el proceso de instalacion del wsl se le pedira que reinicie la máquina una vez reiniciada saltara la ventana del cmd para iniciar sesión
 3. Crea una cuenta de usuario y una contraseña para la distribución de Linux recién instalada
 
-## - Instalación de Docker##
+### - Instalación de Docker ###
 1. Visita la [página oficial](https://www.docker.com/get-started/) de Docker Desktop y descargue la opción de Windows
 2. Inicie la aplicacion y deja la opción recomendada
 3. Una vez dentro del Docker inicie sesión
 
-##Posibles ERRORES##
+### Posibles ERRORES ###
 
 - Si pone algun mensaje de **WSL 2** es porque se requiere el WSL es tan sencillo como **wsl --set-default-version 2**
 - En otras ocasiones podria ser simplemente que tengas que reiniciar el **Docker Desktope**
 
 
-## - Creación del fichero Dockerfile ##
+### - Creación del fichero Dockerfile ###
 
 - En nuestro proyecto al ser un programa multiservicio y tener distintos modulos es necesario crear un **Dockerfile** en la raiz de cada modulo
 - Cada modulo tiene que tener su .jar correspondiente, para generarlo haz click derecho en la raiz del proyecto ver terminal
@@ -99,7 +99,7 @@ Al descomprimirlo, debería aparecer una carpeta llamada **AppFormacion**, que c
           lo cambiaremos por un *, se deberia de ver algo asi .tarjet/*.jar [apodo].jar, lo aplicaremos con el comando COPY target/*.jar nombre.jar
           Por ultimo pondremos el Entrypoint que se deberia de ver asi: [Entrypoint ["java", "-jar", "nombre.jar"]]
 
-## - Creación del fichero Docker-compose ##
+### - Creación del fichero Docker-compose ###
 
 - Una vez finalizado los ficheros o fichero **Dockerfile** es hora de crear las imagenes de los modulos, iremos modulo por modulo creando sus respectivas imagenes 
   con el comando [docker build -t "nombre-adecuado" .]
@@ -130,7 +130,7 @@ Al descomprimirlo, debería aparecer una carpeta llamada **AppFormacion**, que c
  4. Para configurar el network visto antes hemos utilizado el que da por defecto para esto solo define un nombre a la red
 - Una vez ya configurada el docker-compose lo levantaremos con el comando [docker-compose up], si todo va bien le podras dar a la tecla v y te mostrara el contenedor en el docker
 
-## Posibles errores detectados al Dockerizar el proyecto ##
+### Posibles errores detectados al Dockerizar el proyecto ###
 
 -Error de uso de puerto: Nosotros no conseguimos mapear los puertos por lo tanto lo pusimos en otros, apesar de ello funciona cada endpoint a la base de datos
 -Error de nombre de la tabla: Por lo general tendras los nombres de las tablas en minusculas, Windwos te pide que el nombre de la tabla sea con la primera letra en mayusculas, 
