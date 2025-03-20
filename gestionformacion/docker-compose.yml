@@ -1,7 +1,7 @@
 services:
 
-  convocatoria-app:
-    image: convocatoria-app
+  convocatoria:
+    image: convocatoria
     container_name: convocatoria-container
     ports:
       - "8105:8105"
@@ -12,47 +12,56 @@ services:
     volumes:
       - ./core-module/target/classes:/app/classes
 
-  course-app:
-    image: course-app
+  course:
+    image: course
     container_name: course-container
     ports:
       - "8102:8102"
     networks:
       - spring-network
+    depends_on:
+      - mysql
     volumes:
       - ./core-module/target/classes:/app/classes
 
-  login-app:
-    image: login-app
+  login:
+    image: login
     container_name: login-container
     ports:
       - "8100:8100"
     networks:
       - spring-network
+    depends_on:
+      - mysql
     volumes:
       - ./core-module/target/classes:/app/classes
 
-  register-app:
-    image: register-app
+  register:
+    image: register
     container_name: register-container
     ports:
       - "8101:8101"
     networks:
       - spring-network
+    depends_on:
+      - mysql
     volumes:
       - ./core-module/target/classes:/app/classes
 
-  rol-app:
-    image: rol-app
+  rol:
+    image: rol
     container_name: rol-container
     ports:
       - "8104:8104"
     networks:
       - spring-network
+    depends_on:
+      - mysql
     volumes:
       - ./core-module/target/classes:/app/classes
-  usuario-app:
-    image: usuario-app
+  
+  usuario:
+    image: usuario
     container_name: usuario-container
     ports:
       - "8103:8103"
@@ -69,8 +78,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: gestionformacion
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
     ports:
       - "3306:3306"
     networks:
