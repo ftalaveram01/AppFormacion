@@ -27,12 +27,9 @@ public class CourseServicesImpl implements CourseServices {
 	}
 
 	@Override
-	public Long create(Course course, Long idAdmin) {
+	public Long create(Course course) {
 		
 		course.setHabilitado(true);
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
 
 		if(course.getId() != null) {
 			throw new IllegalStateException("Para crear un curso el id ha de ser null.");
@@ -50,10 +47,7 @@ public class CourseServicesImpl implements CourseServices {
 
 	@Transactional
 	@Override
-	public void update(Course course, Long id, Long idAdmin) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
+	public void update(Course course, Long id) {
 		
 		if(course.getId() == null)
 			course.setId(id);
@@ -70,10 +64,7 @@ public class CourseServicesImpl implements CourseServices {
 
 	@Override
 	@Transactional
-	public void delete(Long id, Long idAdmin) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
+	public void delete(Long id) {
 		
 		boolean existe = cursoRepository.existsById(id);
 		
@@ -94,12 +85,6 @@ public class CourseServicesImpl implements CourseServices {
 	@Override
 	public List<Course> getAll() {
 		return cursoRepository.findAll();
-	}
- 
-	private boolean isAdmin(Long idAdmin) {
-		if(!usuarioRepository.existsById(idAdmin))
-			throw new IllegalStateException("No existe el usuario admin");
-		return usuarioRepository.isAdmin(idAdmin);
 	}
 
 	@Override

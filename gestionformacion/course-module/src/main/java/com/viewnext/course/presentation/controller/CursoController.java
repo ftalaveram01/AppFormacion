@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,9 +62,10 @@ public class CursoController {
 	 * @param ucb
 	 * @return 201 con la ubicación
 	 */
+    @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<String> create(@RequestBody Course course, @RequestParam(required = true) Long idAdmin, UriComponentsBuilder ucb){
-		Long id = courseServices.create(course, idAdmin);
+	public ResponseEntity<String> create(@RequestBody Course course, UriComponentsBuilder ucb){
+		Long id = courseServices.create(course);
 		return ResponseEntity.created(ucb.path("/courses/{id}").build(id)).build();
 	}
 	
@@ -75,9 +77,10 @@ public class CursoController {
 	 * @param course
 	 * @return 204
 	 */
+    @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
-	public ResponseEntity<String> update(@RequestBody Course course, @PathVariable Long id, @RequestParam(required = true) Long idAdmin) {
-		courseServices.update(course, id, idAdmin);
+	public ResponseEntity<String> update(@RequestBody Course course, @PathVariable Long id) {
+		courseServices.update(course, id);
 		return ResponseEntity.ok().build();
 	}
 
@@ -89,9 +92,10 @@ public class CursoController {
 	 * @param id
 	 * @return 204
 	 */
+    @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam(required = true) Long idAdmin){
-		courseServices.delete(id, idAdmin);
+	public ResponseEntity<Void> delete(@PathVariable Long id){
+		courseServices.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
