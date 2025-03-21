@@ -7,11 +7,11 @@ import com.viewnext.core.business.model.Rol;
 
 public interface RolServices {
 	
-	Rol create(Rol rol, Long idAdmin);
+	Rol create(Rol rol);
 	
-	void delete(Long id, Long idAdmin);
+	void delete(Long id);
 	
-	Rol update(String descripcion, Long id, Long idAdmin);
+	Rol update(String descripcion, Long id);
 	
 	List<Rol> getAll();
 	

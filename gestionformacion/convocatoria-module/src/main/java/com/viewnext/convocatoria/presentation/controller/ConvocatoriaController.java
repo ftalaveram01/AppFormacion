@@ -3,6 +3,7 @@ package com.viewnext.convocatoria.presentation.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,28 +31,34 @@ public class ConvocatoriaController {
 		this.convocatoriaServices = convocatoriaServices;
 	}
 	
+
+    @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<Convocatoria> create(@RequestBody ConvocatoriaRequest request, @RequestParam Long idAdmin) {
-	    Convocatoria convocatoria = convocatoriaServices.create(idAdmin, request);
+	public ResponseEntity<Convocatoria> create(@RequestBody ConvocatoriaRequest request) {
+	    Convocatoria convocatoria = convocatoriaServices.create(request);
 	    return ResponseEntity.ok(convocatoria);
 	}
 	
+    @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestParam Long idAdmin, @RequestBody UpdateRequest request){
-		convocatoriaServices.update(id, idAdmin, request);
-		return ResponseEntity.noContent().build();
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id, @RequestParam Long idAdmin){
-		convocatoriaServices.delete(id, idAdmin);
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UpdateRequest request){
+		convocatoriaServices.update(id, request);
 		return ResponseEntity.noContent().build();
 	}
 	
 
+    @PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(@PathVariable Long id){
+		convocatoriaServices.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+
+    @PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
-	public ResponseEntity<List<Convocatoria>> getAll(@RequestParam(required = true) Long idAdmin) {
-	    List<Convocatoria> convocatorias = convocatoriaServices.getAll(idAdmin);
+	public ResponseEntity<List<Convocatoria>> getAll() {
+	    List<Convocatoria> convocatorias = convocatoriaServices.getAll();
 	    return ResponseEntity.ok(convocatorias);
 	}
 

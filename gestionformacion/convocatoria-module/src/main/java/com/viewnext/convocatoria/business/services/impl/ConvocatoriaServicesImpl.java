@@ -48,10 +48,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 
     @Transactional
 	@Override
-	public Convocatoria create(Long idAdmin, ConvocatoriaRequest request) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No tienes permisos para realizar esta accion");
+	public Convocatoria create(ConvocatoriaRequest request) {
 		
 		if(request.getFechaFin().before(request.getFechaInicio()))
 			throw new IllegalStateException("La fecha de inicio no puede ser despues de la de fin.");
@@ -87,10 +84,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 	}
 
 	@Override
-	public List<Convocatoria> getAll(Long idAdmin) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
+	public List<Convocatoria> getAll() {
 		
 		return convocatoriaRepository.findAll();
 	}
@@ -111,10 +105,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 
     @Transactional
 	@Override
-	public void update(Long id, Long idAdmin, UpdateRequest request) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No tienes permisos para realizar esta accion");
+	public void update(Long id, UpdateRequest request) {
 		
 		if(request.getFechaFin().before(request.getFechaInicio()))
 			throw new IllegalStateException("La fecha de inicio no puede ser despues de la de fin.");
@@ -142,10 +133,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 
     @Transactional
 	@Override
-	public void delete(Long id, Long idAdmin) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No tienes permisos para realizar esta accion");
+	public void delete(Long id) {
 		
 		if(!convocatoriaRepository.existsById(id))
 			throw new IllegalStateException("No existe la convocatoria.");
@@ -204,12 +192,6 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
 		convocatoriaRepository.save(convocatoria);
 		
-	}
-	
-	private boolean isAdmin(Long idAdmin) {
-		if(!usuarioRepository.existsById(idAdmin))
-			throw new IllegalStateException("No existe el usuario admin");
-		return usuarioRepository.isAdmin(idAdmin);
 	}
 
 	@Override

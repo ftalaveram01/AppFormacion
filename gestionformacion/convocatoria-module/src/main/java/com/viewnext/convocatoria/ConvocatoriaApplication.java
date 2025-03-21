@@ -11,7 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.viewnext.core.presentation.config.LogAspect;
 
-@ComponentScan(basePackages = {"com.viewnext.core.presentation.config", "com.viewnext.convocatoria"})
+@ComponentScan(basePackages = {"com.viewnext.core.presentation.config", "com.viewnext.convocatoria",
+"com.viewnext.core.security"})
 @EntityScan(basePackages = {"com.viewnext.core.business.model"})
 @EnableJpaRepositories(basePackages = {"com.viewnext.core.repositories"})
 @SpringBootApplication

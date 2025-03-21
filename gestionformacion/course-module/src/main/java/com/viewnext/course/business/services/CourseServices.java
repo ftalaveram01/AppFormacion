@@ -16,7 +16,7 @@ public interface CourseServices {
 	 * @param course
 	 * @return id
 	 */
-	Long create(Course course, Long idAdmin);
+	Long create(Course course);
 	
 	/**
 	 * 
@@ -35,7 +35,7 @@ public interface CourseServices {
 	 * 
 	 * @param course
 	 */
-	void update(Course course, Long id, Long idAdmin);
+	void update(Course course, Long id);
 	
 	/**
 	 * 
@@ -44,7 +44,7 @@ public interface CourseServices {
 	 * 
 	 * @param id
 	 */
-	void delete(Long id, Long idAdmin);
+	void delete(Long id);
 	
 	/**
 	 * 

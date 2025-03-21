@@ -2,13 +2,19 @@ package com.viewnext.login.presentation.controller;
 
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.security.UtilsJWT;
+import com.viewnext.core.security.payloads.JwtResponse;
 import com.viewnext.login.business.services.LoginServices;
 
 /**
@@ -19,9 +25,14 @@ import com.viewnext.login.business.services.LoginServices;
 public class LoginController {
 	
 	private LoginServices loginServices;
+    private AuthenticationManager authenticationManager;
+    private UtilsJWT utilsJwt;
 	
-	public LoginController(LoginServices loginServices) {
+	public LoginController(LoginServices loginServices, AuthenticationManager authenticationManager,
+			UtilsJWT utilsJwt) {
 		this.loginServices = loginServices;
+		this.authenticationManager = authenticationManager;
+		this.utilsJwt = utilsJwt;
 	}
 
 	/**
@@ -34,14 +45,20 @@ public class LoginController {
      * @return una ResponseEntity que contiene la información del usuario si el inicio de sesión es exitoso
      */
 	@GetMapping("/login")
-	public ResponseEntity<Optional<Usuario>> login(@RequestParam(required = true) String email, @RequestParam(required = true) String password){
+	public ResponseEntity<JwtResponse> login(@RequestParam(required = true) String email, @RequestParam(required = true) String password){
 		
-		Optional<Usuario> usuario = loginServices.login(email, password);
-		
-		if(usuario.isEmpty())
-			throw new IllegalStateException("Login incorrecto.");
-		
-		return ResponseEntity.ok(usuario);
+    	Authentication autenticacion = null;
+    	
+    	try {
+    		autenticacion = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password));
+    	} catch(Exception e) {
+    		throw new IllegalStateException("Usuario inválido");
+    	}
+        
+        SecurityContextHolder.getContext().setAuthentication(autenticacion);
+        String jwt = utilsJwt.generarJwt(autenticacion);
+		return ResponseEntity.ok(new JwtResponse(jwt));
 	}
 
 }

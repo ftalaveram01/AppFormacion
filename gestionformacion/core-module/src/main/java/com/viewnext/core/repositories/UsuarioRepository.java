@@ -15,7 +15,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 	
 	Boolean existsByEmail(String email);
 	
-	@Query("SELECT u.rol.nombreRol = 'ADMIN' FROM Usuario u WHERE u.id = :id")
-	Boolean isAdmin(Long id);
-	
 }

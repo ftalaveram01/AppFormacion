@@ -8,15 +8,15 @@ import com.viewnext.core.business.model.Convocatoria;
 
 public interface ConvocatoriaServices {
 	
-	Convocatoria create(Long idAdmin, ConvocatoriaRequest request);
+	Convocatoria create(ConvocatoriaRequest request);
 	
-	List<Convocatoria> getAll(Long idAdmin);
+	List<Convocatoria> getAll();
 	
 	List<Convocatoria> getActivas();
 	
-	void update(Long id, Long idAdmin, UpdateRequest request);
+	void update(Long id, UpdateRequest request);
 	
-	void delete(Long id, Long idAdmin);
+	void delete(Long id);
 	
 	List<Convocatoria> getFromUsuario(Long idUsuario);
 	

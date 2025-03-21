@@ -1,5 +1,6 @@
 package com.viewnext.register.business.services.impl;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Rol;
@@ -18,9 +19,13 @@ public class RegistroServiceImpl implements RegistroService{
 	
 	private RolRepository rolRepository;
 	
-	public RegistroServiceImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
+    private PasswordEncoder passwordEncoder;
+	
+	public RegistroServiceImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository
+			, PasswordEncoder passwordEncoder) {
 		this.usuarioRepository = usuarioRepository;
 		this.rolRepository = rolRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	/**
@@ -48,6 +53,8 @@ public class RegistroServiceImpl implements RegistroService{
 			usuario.setRol(rol);
 			
 		}
+		
+		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		
 		Usuario creado = usuarioRepository.save(usuario);
 		

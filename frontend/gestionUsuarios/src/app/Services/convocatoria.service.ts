@@ -1,4 +1,4 @@
-import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,17 +7,31 @@ import { Observable } from 'rxjs';
 })
 export class ConvocatoriaService {
 
-  private convocatoriaApiUrl = 'http://localhost:8085/convocatorias'
+  private convocatoriaApiUrl = 'http://localhost:8105/convocatorias'
 
   constructor(private http: HttpClient) { }
 
   getConvocatorias(): Observable<any> {
     const params = new HttpParams().set('idAdmin', Number(localStorage.getItem('idUsuario')))
-    return this.http.get(this.convocatoriaApiUrl, { params })
+
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.get(this.convocatoriaApiUrl, { headers, params })
   }
 
   getConvocatoriasActivas(): Observable<any> {
-    return this.http.get(`${this.convocatoriaApiUrl}/activas`)
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+    return this.http.get(`${this.convocatoriaApiUrl}/activas`, { headers })
   }
 
   getConvocatoriasUsuario(): Observable<any> {
@@ -28,27 +42,53 @@ export class ConvocatoriaService {
   createConvocatoria(convocatoria: any): Observable<any> {
     const params = new HttpParams().set('idAdmin', Number(localStorage.getItem('idUsuario')))
 
-    console.log(convocatoria)
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
 
-    return this.http.post(`${this.convocatoriaApiUrl}`, convocatoria, { params })
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.post(`${this.convocatoriaApiUrl}`, convocatoria, { headers, params })
   }
 
   updateConvocatoria(id: Number, convocatoriaActualizada: any): Observable<any> {
     const params = new HttpParams().set('idAdmin', Number(localStorage.getItem('idUsuario')))
 
-    return this.http.put(`${this.convocatoriaApiUrl}/${id}`, convocatoriaActualizada, { params })
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.put(`${this.convocatoriaApiUrl}/${id}`, convocatoriaActualizada, { headers, params })
   }
 
   deleteConvocatoria(id: Number): Observable<any> {
     const params = new HttpParams().set('idAdmin', Number(localStorage.getItem('idUsuario')))
 
-    return this.http.delete(`${this.convocatoriaApiUrl}/${id}`, { params })
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.delete(`${this.convocatoriaApiUrl}/${id}`, { headers, params })
   }
 
   inscribirEnConvocatoria(idConvocatoria: Number, idUsuario: Number): Observable<any> {
     const params = new HttpParams().set('idUsuario', String(idUsuario))
 
-    return this.http.put(`${this.convocatoriaApiUrl}/${idConvocatoria}/inscribir`, params)
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.put(`${this.convocatoriaApiUrl}/${idConvocatoria}/inscribir`, { headers })
   }
 
   enviarCertificado(idConvocatoria: Number): Observable<any> {
@@ -56,7 +96,14 @@ export class ConvocatoriaService {
     const params = new HttpParams()
       .set('idAdmin', Number(localStorage.getItem('idUsuario')));
 
-    return this.http.post(`${this.convocatoriaApiUrl}/${idConvocatoria}/usuarios/certificado`, { params })
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.post(`${this.convocatoriaApiUrl}/${idConvocatoria}/usuarios/certificado`, { headers, params })
   }
 
 }

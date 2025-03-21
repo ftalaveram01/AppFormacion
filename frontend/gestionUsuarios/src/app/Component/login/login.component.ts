@@ -19,11 +19,11 @@ export class LoginComponent {
   password: string = '';
   userEmail: string = this.email;
   contadorClick: number = 0;
-  mensajeError!: any; 
+  mensajeError!: any;
 
-  constructor(private authService: AuthService,private userService: UserService, private localStorage: LocalStorageService, private router: Router){}
+  constructor(private authService: AuthService, private userService: UserService, private localStorage: LocalStorageService, private router: Router) { }
 
-  ngOnInit(): void{}
+  ngOnInit(): void { }
 
   onSubmit() {
 
@@ -31,7 +31,7 @@ export class LoginComponent {
       this.userEmail = this.email;
       this.contadorClick = 0;
     }
-  
+
     if (this.contadorClick >= 5) {
       this.userService.deshabilitar(this.userEmail, (ok: boolean, error?: any) => {
         if (ok) {
@@ -40,29 +40,22 @@ export class LoginComponent {
           this.mensajeError = error;
         }
       });
-    } else{
+    } else {
 
-      this.authService.loginUser(this.email, this.password, (ok: boolean, user?:any) =>{
-        if(ok){
-          this.localStorage.setItem('idUsuario',user.id);
-          console.log(user.id)
-          this.localStorage.setItem('idAdmin',user.rol.id);
-          console.log(user.rol.id)
-          this.localStorage.setItem('token',user.token);
-          console.log(user.token);
-          this.router.navigate(['/inicio'], {
-          queryParams: {id: user.id, idAdmin: user.rol.id}
-          });  
-        }else{
-          
-          this.mensajeError = user
-  
+      this.authService.loginUser(this.email, this.password, (ok: boolean, token?: any) => {
+        if (ok) {
+          localStorage.setItem("token", JSON.stringify(token));
+          this.router.navigate(['/inicio']);
+        } else {
+
+          this.mensajeError = token
+
           this.contadorClick++
-  
+
           console.log(this.contadorClick)
-  
-          }
-        })
-    }  
+
+        }
+      })
+    }
   }
 }

@@ -7,32 +7,40 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private userApiUrl = 'http://localhost:8083/usuarios';
+  private userApiUrl = 'http://localhost:8103/usuarios';
 
   constructor(private http: HttpClient) { }
 
   getAllUsers(): Observable<any> {
     this.getToken();
 
-    const idAdmin = localStorage.getItem("idUsuario")
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
 
-    const params = new HttpParams()
-      .set('idAdmin', Number(idAdmin));
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
 
-    return this.http.get(`${this.userApiUrl}`, { params })
+    return this.http.get(`${this.userApiUrl}`, { headers })
   }
 
   getUser(id: number, idAdmin: number): Observable<any> {
     this.getToken();
 
-    const params = new HttpParams()
-      .set('idAdmin', idAdmin)
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
 
-    return this.http.get(`${this.userApiUrl}/${id}`, { params })
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.userApiUrl}/${id}`, { headers })
   }
 
   createUser(user: any): Observable<any> {
     this.getToken();
+
+    user.habilitado = 1
 
     const idAdmin = localStorage.getItem("idUsuario")
 
@@ -43,7 +51,14 @@ export class UserService {
 
     const params = new HttpParams().set('idAdmin', Number(idAdmin));
 
-    return this.http.post(`${this.userApiUrl}/crear`, user, { params })
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.post(`${this.userApiUrl}/crear`, user, { headers, params })
   }
 
   updateUser(id: number, user: any): Observable<any> {
@@ -66,7 +81,14 @@ export class UserService {
     const params = new HttpParams()
       .set('idAdmin', Number(idAdmin));
 
-    return this.http.put(`${this.userApiUrl}/actualizar`, user, { params })
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.put(`${this.userApiUrl}/actualizar`, user, { headers, params })
   }
 
   deleteUser(id: number) {
@@ -77,7 +99,14 @@ export class UserService {
     const params = new HttpParams()
       .set('idAdmin', Number(idAdmin));
 
-    return this.http.delete(`${this.userApiUrl}/borrar/${id}`, { params })
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.delete(`${this.userApiUrl}/borrar/${id}`, { headers, params })
   }
 
   deshabilitar(email: string, callback: (ok: boolean, error?: any) => void) {
@@ -86,7 +115,14 @@ export class UserService {
     const params = new HttpParams()
       .set('email', email);
 
-    return this.http.delete(`${this.userApiUrl}/deshabilitar`, { params }).subscribe(
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.delete(`${this.userApiUrl}/deshabilitar`, { headers, params }).subscribe(
       response => {
         callback(true, 'El usuario fue bloqueado')
       },

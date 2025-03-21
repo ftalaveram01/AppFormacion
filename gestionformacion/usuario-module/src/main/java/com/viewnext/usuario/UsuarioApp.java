@@ -10,7 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.viewnext.core.presentation.config.LogAspect;
 
-@ComponentScan(basePackages = {"com.viewnext.core.presentation.config", "com.viewnext.usuario"})
+@ComponentScan(basePackages = {"com.viewnext.core.presentation.config", "com.viewnext.usuario",
+"com.viewnext.core.security"})
 @EntityScan(basePackages = {"com.viewnext.core.business.model"})
 @EnableJpaRepositories(basePackages = {"com.viewnext.core.repositories"})
 @EnableAspectJAutoProxy 

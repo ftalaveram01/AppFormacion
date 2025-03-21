@@ -3,6 +3,7 @@ package com.viewnext.usuario.presentation.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,33 +28,38 @@ public class UsuarioController {
 		this.usuarioServices = usuarioServices;
 	}
 	
+    @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/crear")
-	public ResponseEntity<String> create(@RequestBody Usuario usuario, @RequestParam Long idAdmin, UriComponentsBuilder ucb){
-		Long id = usuarioServices.create(usuario, idAdmin);
+	public ResponseEntity<String> create(@RequestBody Usuario usuario, UriComponentsBuilder ucb){
+		Long id = usuarioServices.create(usuario);
 		
 		return ResponseEntity.created(ucb.path("/usuarios/{id}").build(id)).build();
 	}
 	
+    @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/borrar/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam Long idAdmin){
-		usuarioServices.delete(id, idAdmin);
+	public ResponseEntity<Void> delete(@PathVariable Long id){
+		usuarioServices.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
+    @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/actualizar")
-	public ResponseEntity<Void> update(@RequestBody Usuario usuario, @RequestParam Long idAdmin){
-		usuarioServices.update(usuario, idAdmin);
+	public ResponseEntity<Void> update(@RequestBody Usuario usuario){
+		usuarioServices.update(usuario);
 		return ResponseEntity.noContent().build();
 	}
 	
+    @PreAuthorize("hasRole('ADMIN')")
 	@GetMapping()
-	public List<Usuario> getAll(@RequestParam Long idAdmin){
-		return usuarioServices.getAll(idAdmin);
+	public List<Usuario> getAll(){
+		return usuarioServices.getAll();
 	}
 	
+    @PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{id}")
-	public Usuario read(@PathVariable Long id, @RequestParam Long idAdmin) {
-		return usuarioServices.read(id, idAdmin);
+	public Usuario read(@PathVariable Long id) {
+		return usuarioServices.read(id);
 	}
 	
 	@DeleteMapping("/deshabilitar")
