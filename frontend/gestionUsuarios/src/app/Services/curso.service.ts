@@ -73,9 +73,6 @@ export class CursoService {
     this.getToken();
     curso.id = id;
 
-    const idAdmin = localStorage.getItem('idUsuario')
-    const params = new HttpParams().set('idAdmin', Number(idAdmin))
-
     curso.usuarios = usuariosSeleccionados;
     curso.habilitado = 1
 
@@ -86,7 +83,9 @@ export class CursoService {
       "Authorization": `Bearer ${token}`
     });
 
-    return this.http.put(`${this.cursoApiUrl}/${id}`, curso, { headers, params })
+    console.log(curso)
+
+    return this.http.put(`${this.cursoApiUrl}/${id}`, curso, { headers })
   }
 
   deleteCurso(id: number): Observable<any> {

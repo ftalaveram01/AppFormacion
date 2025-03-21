@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './curso-form.component.html',
   styleUrl: './curso-form.component.css'
 })
-export class CursoFormComponent implements OnInit{
+export class CursoFormComponent implements OnInit {
 
   cursoForm: FormGroup;
   searchForm: FormGroup;
@@ -32,7 +32,7 @@ export class CursoFormComponent implements OnInit{
   limiteUsuarios: number = 5;
   totalPages: number = 0;
 
-  constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
+  constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
     this.cursoForm = this.fb.group({
       nombre: [''],
       descripcion: [''],
@@ -50,7 +50,7 @@ export class CursoFormComponent implements OnInit{
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.isUpdate = params['isUpdate']
-      
+
       //PARA TRAER TODO LOS USUARIOS AL ACTUALIZAR UN CURSO
       if (params['id']) {
         this.idCurso = +params['id'];
@@ -60,7 +60,7 @@ export class CursoFormComponent implements OnInit{
 
         })
 
-      }else{
+      } else {
         //PARA TRAER TODOS LOS USUARIOS AL CREAR UN CURSO
         this.getUsuarios(null)
       }
@@ -68,7 +68,7 @@ export class CursoFormComponent implements OnInit{
     // PAGINACION
     this.getUsersPage();
   }
-  
+
   getUsuarios(curso: any = null): void {
     this.cursoService.getUsuarios(this.usuarios).subscribe(response => {
       this.usuarios = response;
@@ -76,24 +76,24 @@ export class CursoFormComponent implements OnInit{
       if (curso) {
         const usuariosCurso = curso.usuarios.map((u: any) => u.id);
         const grupo = this.fb.group({});
-        this.usuarios.forEach((usuario,i) => {
+        this.usuarios.forEach((usuario) => {
           const seleccionado = curso ? usuariosCurso.includes(usuario.id) : false;
           grupo.addControl(`seleccionado${usuario.id}`, this.fb.control(seleccionado));
           console.log(seleccionado)
         });
         this.seleccionadosForm = grupo;
-      }else{
-          const grupo = this.fb.group({});
-          this.usuarios.forEach((usuario, i) => {
-            grupo.addControl(`seleccionado${usuario.id}`, this.fb.control(false));
-          });
-          this.seleccionadosForm = grupo;
-   
-      }   
+      } else {
+        const grupo = this.fb.group({});
+        this.usuarios.forEach((usuario, i) => {
+          grupo.addControl(`seleccionado${usuario.id}`, this.fb.control(false));
+        });
+        this.seleccionadosForm = grupo;
+
+      }
     })
-  
+
   }
-  
+
   onSearch(): void {
     const searchTerm = this.searchForm.get('userSearch')?.value.toLowerCase();
     const filteredUsuarios = this.usuarios.filter(usuario =>
@@ -102,14 +102,14 @@ export class CursoFormComponent implements OnInit{
     this.paginar(filteredUsuarios);
   }
 
-  onSubmit(): void{
-    if(this.cursoForm.valid){
+  onSubmit(): void {
+    if (this.cursoForm.valid) {
       const usuariosSeleccionados = this.usuarios.filter(usuario =>
         this.seleccionadosForm.get(`seleccionado${usuario.id}`)?.value
       );
-      if(this.isUpdate){
-        this.updateCurso(this.idCurso,this.cursoForm.value, usuariosSeleccionados);
-      }else{
+      if (this.isUpdate) {
+        this.updateCurso(this.idCurso, this.cursoForm.value, usuariosSeleccionados);
+      } else {
         this.createCurso(this.cursoForm.value, usuariosSeleccionados);
       }
     }
@@ -118,9 +118,9 @@ export class CursoFormComponent implements OnInit{
   private updateCurso(id: number, curso: any, usuariosSeleccionados: any[]): void {
     this.cursoService.updateCurso(id, curso, usuariosSeleccionados).subscribe(response => {
       console.log('Curso actualizado:');
-  
+
       this.succesUpdate = true
-  
+
       this.cursoForm.reset();
       alert('El curso fue correctamente actualizado')
       this.router.navigate(['/cursos'])
@@ -130,38 +130,26 @@ export class CursoFormComponent implements OnInit{
   private createCurso(curso: any, usuariosSeleccionados: any[]): void {
     this.cursoService.createCurso(curso, usuariosSeleccionados).subscribe(response => {
       console.log('Curso creado:');
-  
+
       this.succesCreate = true
-  
+
       this.cursoForm.reset();
       alert('El curso fue correctamente creado')
       this.router.navigate(['/cursos'])
     },)
   }
- 
-  private formatearFecha(fechaInicio: Date) : String{
-    const anio = fechaInicio.getFullYear();
-    const mes = (fechaInicio.getMonth() + 1).toString().padStart(2, '0');
-    const dia = fechaInicio.getDate().toString().padStart(2, '0');
-    const hora = fechaInicio.getHours().toString().padStart(2, '0');
-    const minutos = fechaInicio.getMinutes().toString().padStart(2, '0');
-   
-    const fechaFormateada = `${anio}-${mes}-${dia}T${hora}:${minutos}`;
-   
-    return fechaFormateada
-  }
 
   // PAGINACION
 
-  private paginar(users: any[]){
-    const start = (this.page -1) * this.limiteUsuarios;
+  private paginar(users: any[]) {
+    const start = (this.page - 1) * this.limiteUsuarios;
     const end = start + this.limiteUsuarios;
-    
-    this.usuariosMostrados = users.slice(start,end)
+
+    this.usuariosMostrados = users.slice(start, end)
     console.log(this.usuariosMostrados)
   }
 
-  private getUsersPage(){
+  private getUsersPage() {
     this.cursoService.getUsuarios(this.usuarios).subscribe(response => {
 
       this.totalPages = Math.ceil(response.length / this.limiteUsuarios);
@@ -170,16 +158,16 @@ export class CursoFormComponent implements OnInit{
     });
   }
 
-  nextPage(users: any[]){
-    if(this.page < this.totalPages){
+  nextPage(users: any[]) {
+    if (this.page < this.totalPages) {
       this.page++;
       this.getUsersPage();
     }
   }
 
-  prevPage(users: any[]){
-    if(this.page > 1){
-      this.page-- ;
+  prevPage(users: any[]) {
+    if (this.page > 1) {
+      this.page--;
       this.getUsersPage();
     }
   }
