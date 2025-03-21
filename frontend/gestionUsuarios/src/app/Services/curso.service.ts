@@ -83,8 +83,6 @@ export class CursoService {
       "Authorization": `Bearer ${token}`
     });
 
-    console.log(curso)
-
     return this.http.put(`${this.cursoApiUrl}/${id}`, curso, { headers })
   }
 

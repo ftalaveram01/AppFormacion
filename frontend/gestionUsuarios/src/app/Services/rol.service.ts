@@ -7,18 +7,33 @@ import { Observable } from 'rxjs';
 })
 export class RolService {
 
-  private rolApiUrl: string = 'http://localhost:8084/roles';
+  private rolApiUrl: string = 'http://localhost:8104/roles';
 
   constructor(private http: HttpClient) { }
 
   getRoles(): Observable<any> {
     this.getToken();
 
-    return this.http.get(`${this.rolApiUrl}`)
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.rolApiUrl}`, { headers })
   }
 
   getRolById(idRol: number): Observable<any> {
-    return this.http.get(`${this.rolApiUrl}/${idRol}`)
+
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.rolApiUrl}/${idRol}`, { headers })
   }
 
   createRol(rol: any): Observable<any> {
@@ -29,7 +44,14 @@ export class RolService {
 
     rol.id = this.generarIdAleatoria()
 
-    return this.http.post(this.rolApiUrl, rol, { params });
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.post(this.rolApiUrl, rol, { headers, params });
   }
 
   updateRol(id: number, rol: any): Observable<any> {
@@ -40,9 +62,14 @@ export class RolService {
     const idAdmin = localStorage.getItem("idUsuario")
     const params = new HttpParams().set('idAdmin', Number(idAdmin))
 
-    console.log(idAdmin)
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
 
-    return this.http.put(`${this.rolApiUrl}/${id}`, rol.descripcion, { params })
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.put(`${this.rolApiUrl}/${id}`, rol.descripcion, { headers, params })
   }
 
   deleteRol(id: number): Observable<any> {
@@ -51,7 +78,14 @@ export class RolService {
     const idAdmin = localStorage.getItem('idUsuario')
     const params = new HttpParams().set('idAdmin', Number(idAdmin))
 
-    return this.http.delete(`${this.rolApiUrl}/${id}`, { params });
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.delete(`${this.rolApiUrl}/${id}`, { headers, params });
   }
 
   getToken(): void {
