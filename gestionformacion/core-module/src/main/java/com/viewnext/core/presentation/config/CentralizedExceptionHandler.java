@@ -3,6 +3,7 @@ package com.viewnext.core.presentation.config;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
  
@@ -74,6 +75,11 @@ public class CentralizedExceptionHandler {
         } else {
             return ResponseEntity.badRequest().body("Error de integridad de datos");
         }
+    }
+    
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
+        return ResponseEntity.status(401).body("Acceso denegado: no tiene los permisos necesarios para realizar esta acción.");
     }
 
 }
