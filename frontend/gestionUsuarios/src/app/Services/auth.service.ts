@@ -31,10 +31,10 @@ export class AuthService {
       .set('password', password);
 
 
-    this.http.get("http://localhost:8080/autentificacion/login",
-      { params }).subscribe((users: any) => {
-        if (users) {
-          onLogin(true, users)
+    this.http.get("http://localhost:8100/autentificacion/login",
+      { params }).subscribe((jwt: any) => {
+        if (jwt) {
+          onLogin(true, jwt)
         }
       },
         (error) => {
@@ -54,7 +54,7 @@ export class AuthService {
     user.rol = objetoRol
     user.habilitado = 1
 
-    this.http.post("http://localhost:8081/autentificacion/registrar", user).subscribe(
+    this.http.post("http://localhost:8101/autentificacion/registrar", user).subscribe(
       () => {
         onRegister(true)
       },
