@@ -38,7 +38,7 @@ public class PersistenceConfig {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/gestionformacion");
+        dataSourceBuilder.url("jdbc:mysql://mysql_database:3306/gestionformacion");
         
         dataSourceBuilder.username("root");
         dataSourceBuilder.password("root");
