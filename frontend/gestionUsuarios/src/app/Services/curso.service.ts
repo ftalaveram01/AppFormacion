@@ -38,7 +38,15 @@ export class CursoService {
 
   getCurso(id: number): Observable<any> {
     this.getToken();
-    return this.http.get(`${this.cursoApiUrl}/${id}`);
+
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.cursoApiUrl}/${id}`, { headers });
   }
 
   createCurso(curso: any, usuariosSeleccionados: any[]): Observable<any> {
@@ -51,7 +59,14 @@ export class CursoService {
     curso.habilitado = 1
     curso.convocatorias = []
 
-    return this.http.post(this.cursoApiUrl, curso, { params });
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.post(this.cursoApiUrl, curso, { headers, params });
   }
 
   updateCurso(id: number, curso: any, usuariosSeleccionados: any[]): Observable<any> {
@@ -64,7 +79,14 @@ export class CursoService {
     curso.usuarios = usuariosSeleccionados;
     curso.habilitado = 1
 
-    return this.http.put(`${this.cursoApiUrl}/${id}`, curso, { params })
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.put(`${this.cursoApiUrl}/${id}`, curso, { headers, params })
   }
 
   deleteCurso(id: number): Observable<any> {
