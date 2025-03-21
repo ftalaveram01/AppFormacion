@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Rol;
-import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.core.repositories.RolRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
@@ -28,10 +27,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 
 	@Transactional
 	@Override
-	public Long create(Usuario usuario, Long idAdmin) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
+	public Long create(Usuario usuario) {
 		
 		if(usuario.getId()!=null)
 			throw new IllegalStateException("El usuario no puede tener id");
@@ -56,10 +52,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 
 	@Transactional
 	@Override
-	public void delete(Long id, Long idAdmin) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
+	public void delete(Long id) {
 		
 		if(!usuarioRepository.existsById(id))
 			throw new IllegalStateException("No existe el usuario a borrar.");
@@ -75,10 +68,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 
 	@Transactional
 	@Override
-	public void update(Usuario usuario, Long idAdmin) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
+	public void update(Usuario usuario) {
 		
 		if(!usuarioRepository.existsById(usuario.getId()))
 			throw new IllegalStateException("No existe el usuario a actualizar.");
@@ -104,19 +94,13 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	}
 
 	@Override
-	public List<Usuario> getAll(Long idAdmin) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No existe eres administrador");
+	public List<Usuario> getAll() {
 		
 		return usuarioRepository.findAll();
 	}
 
 	@Override
-	public Usuario read(Long id, Long idAdmin) {
-		
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
+	public Usuario read(Long id) {
 		
 		Optional<Usuario> usu = usuarioRepository.findById(id);
 		
@@ -125,13 +109,5 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		
 		return usu.get();
 	}
-	
-	public boolean isAdmin(Long idAdmin) {
-		if(!usuarioRepository.existsById(idAdmin))
-			throw new IllegalStateException("No existe el usuario admin");
-		return usuarioRepository.isAdmin(idAdmin);
-	}
-
-
 
 }
