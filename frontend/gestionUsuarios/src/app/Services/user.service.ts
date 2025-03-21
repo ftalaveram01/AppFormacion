@@ -7,28 +7,32 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private userApiUrl = 'http://localhost:8083/usuarios';
+  private userApiUrl = 'http://localhost:8103/usuarios';
 
   constructor(private http: HttpClient) { }
 
   getAllUsers(): Observable<any> {
     this.getToken();
 
-    const idAdmin = localStorage.getItem("idUsuario")
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
 
-    const params = new HttpParams()
-      .set('idAdmin', Number(idAdmin));
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
 
-    return this.http.get(`${this.userApiUrl}`, { params })
+    return this.http.get(`${this.userApiUrl}`, { headers })
   }
 
   getUser(id: number, idAdmin: number): Observable<any> {
     this.getToken();
 
-    const params = new HttpParams()
-      .set('idAdmin', idAdmin)
+    const token = localStorage.getItem('token')
 
-    return this.http.get(`${this.userApiUrl}/${id}`, { params })
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get(`${this.userApiUrl}/${id}`, { headers })
   }
 
   createUser(user: any): Observable<any> {

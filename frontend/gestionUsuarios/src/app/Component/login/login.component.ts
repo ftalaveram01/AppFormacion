@@ -42,13 +42,13 @@ export class LoginComponent {
       });
     } else {
 
-      this.authService.loginUser(this.email, this.password, (ok: boolean, user?: any) => {
+      this.authService.loginUser(this.email, this.password, (ok: boolean, token?: any) => {
         if (ok) {
-          this.localStorage.setItem('token', user.token);
+          localStorage.setItem("token", JSON.stringify(token));
           this.router.navigate(['/inicio']);
         } else {
 
-          this.mensajeError = user
+          this.mensajeError = token
 
           this.contadorClick++
 

@@ -7,21 +7,33 @@ import { Observable } from 'rxjs';
 })
 export class CursoService {
 
-  private cursoApiUrl: string = 'http://localhost:8082/courses';
-  private usuariosApiURl: string = 'http://localhost:8083/usuarios'
+  private cursoApiUrl: string = 'http://localhost:8102/courses';
+  private usuariosApiURl: string = 'http://localhost:8103/usuarios'
 
   constructor(private http: HttpClient) { }
 
   getCursos(): Observable<any> {
     this.getToken();
-    return this.http.get(this.cursoApiUrl);
+
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.get(this.cursoApiUrl, { headers });
   }
 
   getUsuarios(usuarios: any): Observable<any> {
-    const idAdmin = localStorage.getItem('idUsuario')
-    const params = new HttpParams().set('idAdmin', Number(idAdmin))
-    this.getToken();
-    return this.http.get(`${this.usuariosApiURl}`, { params });
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.usuariosApiURl}`, { headers })
   }
 
   getCurso(id: number): Observable<any> {
