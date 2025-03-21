@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ConvocatoriaService } from '../../Services/convocatoria.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-curso-list',
@@ -15,6 +16,7 @@ export class CursoListComponent implements OnInit {
 
   cursos: any[] = [];
   idAdmin!: number;
+  idUsuario!: number;
   cursoForm: FormGroup;
 
   constructor(private cursoService: CursoService, private fb: FormBuilder, private router: Router, private convocatoriaServices: ConvocatoriaService) {
@@ -34,9 +36,9 @@ export class CursoListComponent implements OnInit {
           ...curso,
         };
       });
-      if(this.isAdmin()){
+      if (this.isAdmin()) {
 
-      }else{
+      } else {
         this.cursos = this.cursos.filter((curso) => {
           return curso.habilitado === true
         })
@@ -44,7 +46,13 @@ export class CursoListComponent implements OnInit {
 
     });
 
-    this.idAdmin = Number(localStorage.getItem('idAdmin'))
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const tokenDecoded: any = jwtDecode(token)
+
+    this.idAdmin = tokenDecoded.rol[0].rol.id;
+    this.idUsuario = tokenDecoded.sub;
   }
 
   deleteCurso(id: number, nombreCurso: string): void {
@@ -63,8 +71,7 @@ export class CursoListComponent implements OnInit {
   }
 
   btnMatricularse(idCurso: number): void {
-    const idUsuario = Number(localStorage.getItem('idUsuario'))
-    this.cursoService.addUsuarioToCurso(idCurso, idUsuario).subscribe(() => {
+    this.cursoService.addUsuarioToCurso(idCurso, this.idUsuario).subscribe(() => {
       this.cursoService.getCursos().subscribe(data => {
         this.cursos = data.map((curso: any) => {
           const fechaInicio = new Date(curso.fechaInicio);
@@ -81,8 +88,7 @@ export class CursoListComponent implements OnInit {
   }
 
   btnDesmatricularse(idCurso: number): void {
-    const idUsuario = Number(localStorage.getItem('idUsuario'))
-    this.cursoService.deleteUsuarioFromCurso(idUsuario, idCurso).subscribe(() => {
+    this.cursoService.deleteUsuarioFromCurso(this.idUsuario, idCurso).subscribe(() => {
       this.cursoService.getCursos().subscribe(data => {
         this.cursos = data.map((curso: any) => {
           const fechaInicio = new Date(curso.fechaInicio);
@@ -121,9 +127,8 @@ export class CursoListComponent implements OnInit {
     const curso = this.cursos.find(c => c.id === idCurso);
     if (!curso)
       return false;
-    const idUsuario = Number(localStorage.getItem('idUsuario'));
 
-    return curso.usuarios.some((u: any) => u.id === idUsuario);
+    return curso.usuarios.some((u: any) => u.id == this.idUsuario);
   }
 
   borrarCache(): void {
