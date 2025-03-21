@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ConvocatoriaService } from '../../Services/convocatoria.service';
 import { UserService } from '../../Services/user.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-convocatoria',
@@ -24,7 +25,12 @@ export class ConvocatoriaComponent {
   ) { }
 
   ngOnInit(): void {
-    this.idAdmin = Number(localStorage.getItem('idAdmin'));
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const tokenDecoded: any = jwtDecode(token)
+
+    this.idAdmin = tokenDecoded.rol[0].rol.id;
 
     if (this.isAdmin()) {
       this.convocatoriaService.getConvocatorias().subscribe((data) => {
