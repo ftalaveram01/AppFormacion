@@ -1,15 +1,12 @@
 package com.viewnext.rol.business.services.impl;
 
-import java.sql.SQLException;
 
 import java.util.List;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Rol;
 import com.viewnext.core.repositories.RolRepository;
-import com.viewnext.core.repositories.UsuarioRepository;
 import com.viewnext.rol.business.services.RolServices;
 
 import jakarta.transaction.Transactional;
@@ -19,18 +16,13 @@ public class RolServicesImpl implements RolServices{
 	
 	private RolRepository rolRepository;
 	
-	private UsuarioRepository usuarioRepository;
-	
-	public RolServicesImpl(RolRepository rolRepository, UsuarioRepository usuarioRepository) {
+	public RolServicesImpl(RolRepository rolRepository) {
 		this.rolRepository = rolRepository;
-		this.usuarioRepository = usuarioRepository;
 	}
 
 	@Transactional
 	@Override
-	public Rol create(Rol rol, Long idAdmin) {
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
+	public Rol create(Rol rol) {
 		
 		if(rol.getId() == null)
 			throw new IllegalStateException("El rol tiene que tener un id valido.");
@@ -45,9 +37,7 @@ public class RolServicesImpl implements RolServices{
 
 	@Transactional
 	@Override
-	public void delete(Long id, Long idAdmin) {
-	    if(!isAdmin(idAdmin))
-	        throw new IllegalStateException("No eres administrador");
+	public void delete(Long id) {
 	    
 	    if(!rolRepository.existsById(id))
 	        throw new IllegalStateException("Rol no encontrado");
@@ -57,9 +47,7 @@ public class RolServicesImpl implements RolServices{
 
 	@Transactional
 	@Override
-	public Rol update(String descripcion, Long id, Long idAdmin) {
-		if(!isAdmin(idAdmin))
-			throw new IllegalStateException("No eres administrador");
+	public Rol update(String descripcion, Long id) {
 		
 		if(!rolRepository.existsById(id))
 			throw new IllegalStateException("El rol con ID [" + id + "] no existe.");
@@ -81,12 +69,6 @@ public class RolServicesImpl implements RolServices{
 		if(!rolRepository.existsById(id))
 			throw new IllegalStateException("El rol con ID [" + id + "] no existe.");
 		return rolRepository.findById(id).get();
-	}
-	
-	private boolean isAdmin(Long idAdmin) {
-		if(!usuarioRepository.existsById(idAdmin))
-			throw new IllegalStateException("No existe el usuario admin");
-		return usuarioRepository.isAdmin(idAdmin);
 	}
 
 }

@@ -3,6 +3,7 @@ package com.viewnext.rol.presentation.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,9 +32,10 @@ public class RolController {
 		return rolServices.getAll();
 	}
 	
+    @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public Rol createRol(@RequestBody Rol rol, @RequestParam Long idAdmin) {
-		return rolServices.create(rol, idAdmin);
+	public Rol createRol(@RequestBody Rol rol) {
+		return rolServices.create(rol);
 	}
 	
 	@GetMapping("/{id}")
@@ -41,14 +43,16 @@ public class RolController {
 		return rolServices.read(id);
 	}
 	
+    @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
-	public Rol update(@PathVariable Long id, @RequestBody String descripcion, @RequestParam Long idAdmin) {
-		return rolServices.update(descripcion, id, idAdmin);
+	public Rol update(@PathVariable Long id, @RequestBody String descripcion) {
+		return rolServices.update(descripcion, id);
 	}
 	
+    @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam Long idAdmin){
-		rolServices.delete(id, idAdmin);
+	public ResponseEntity<Void> delete(@PathVariable Long id){
+		rolServices.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
