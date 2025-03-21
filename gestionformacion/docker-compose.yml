@@ -1,70 +1,6 @@
 services:
-
-  convocatoria-app:
-    image: convocatoria-app
-    container_name: convocatoria-container
-    ports:
-      - "8105:8105"
-    networks:
-      - spring-network
-    depends_on:
-      - mysql
-    volumes:
-      - ./core-module/target/classes:/app/classes
-
-  course-app:
-    image: course-app
-    container_name: course-container
-    ports:
-      - "8102:8102"
-    networks:
-      - spring-network
-    volumes:
-      - ./core-module/target/classes:/app/classes
-
-  login-app:
-    image: login-app
-    container_name: login-container
-    ports:
-      - "8100:8100"
-    networks:
-      - spring-network
-    volumes:
-      - ./core-module/target/classes:/app/classes
-
-  register-app:
-    image: register-app
-    container_name: register-container
-    ports:
-      - "8101:8101"
-    networks:
-      - spring-network
-    volumes:
-      - ./core-module/target/classes:/app/classes
-
-  rol-app:
-    image: rol-app
-    container_name: rol-container
-    ports:
-      - "8104:8104"
-    networks:
-      - spring-network
-    volumes:
-      - ./core-module/target/classes:/app/classes
-  usuario-app:
-    image: usuario-app
-    container_name: usuario-container
-    ports:
-      - "8103:8103"
-    networks:
-      - spring-network
-    volumes:
-      - ./core-module/target/classes:/app/classes
-    depends_on:
-      - mysql
-
   mysql:
-    image: mysql
+    image: mysql:latest
     container_name: mysql_database
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -77,9 +13,123 @@ services:
       - spring-network
     volumes:
       - mysql-volume:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  convocatoria:
+    image: convocatoria
+    container_name: convocatoria-container
+    ports:
+      - "8105:8105"
+    environment:
+      DB_HOST: mysql_database
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: admin
+    networks:
+      - spring-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./core-module/target/classes:/app/classes
+
+  course:
+    image: course
+    container_name: course-container
+    ports:
+      - "8102:8102"
+    environment:
+      DB_HOST: mysql_database
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: admin
+    networks:
+      - spring-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./core-module/target/classes:/app/classes
+
+  login:
+    image: login
+    container_name: login-container
+    ports:
+      - "8100:8100"
+    environment:
+      DB_HOST: mysql_database
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: admin
+    networks:
+      - spring-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./core-module/target/classes:/app/classes
+
+  register:
+    image: register
+    container_name: register-container
+    ports:
+      - "8101:8101"
+    environment:
+      DB_HOST: mysql_database
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: admin
+    networks:
+      - spring-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./core-module/target/classes:/app/classes
+
+  rol:
+    image: rol
+    container_name: rol-container
+    ports:
+      - "8104:8104"
+    environment:
+      DB_HOST: mysql_database
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: admin
+    networks:
+      - spring-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./core-module/target/classes:/app/classes
+
+  usuario-app:
+    image: usuario-app
+    container_name: usuario-container
+    ports:
+      - "8103:8103"
+    environment:
+      DB_HOST: mysql_database
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: admin
+    networks:
+      - spring-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./core-module/target/classes:/app/classes
 
 networks:
   spring-network:
-
+    driver: bridge
 volumes:
   mysql-volume:
+    external: true
