@@ -19,7 +19,7 @@ body {
   flex-direction: row;
   justify-content: space-around;
   max-width: 90dvw;
-  margin-top: 20px
+  margin-top: 50px
 }
 
 .cerrar-sesion a button {
@@ -51,6 +51,11 @@ a {
   text-decoration: none;
 }
 
+section button:hover {
+  transition: 200ms;
+  scale: 1.2;
+}
+
 button {
   padding: 10px 20px;
   border: none;
@@ -59,6 +64,11 @@ button {
   font-size: 16px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+section button {
+  box-shadow: 0 0 15px #000000;
+  padding: 16px 20px;
 }
 
 button:hover {
