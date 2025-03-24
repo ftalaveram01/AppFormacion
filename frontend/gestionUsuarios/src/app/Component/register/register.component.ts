@@ -4,38 +4,41 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../../Services/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../Services/user.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
-  standalone : true,
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent implements OnInit{
+export class RegisterComponent implements OnInit {
 
   form !: FormGroup;
   succes!: boolean;
-  errors: { [nameError: string]: string} = {};
+  errors: { [nameError: string]: string } = {};
   rol: any = []
+  urlQR!: SafeResourceUrl
+  codigoAuthQR!: string
 
-  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private userService: UserService){ }
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router, private userService: UserService, private sanitizer: DomSanitizer) { }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.form = this.fb.group({
-      email: ['',Validators.required, this.emailValidator],
+      email: ['', Validators.required, this.emailValidator],
       password: ['', Validators.required],
-      confirmPassword: ['',Validators.required]
+      confirmPassword: ['', Validators.required]
     }, {
       validators: this.passwordMatchValidator
     })
   }
 
-  onSubmit() :void{
-    if(this.form.valid){
+  onSubmit(): void {
+    if (this.form.valid) {
       this.succes = true
       this.validUser();
-    } 
+    }
   }
 
   async emailValidator(control: any) {
@@ -46,30 +49,32 @@ export class RegisterComponent implements OnInit{
     return null;
   }
 
-  passwordMatchValidator(formGroup: FormGroup) : void{
+  passwordMatchValidator(formGroup: FormGroup): void {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
-  
+
     if (password !== confirmPassword) {
       formGroup.get('confirmPassword')?.setErrors({ noMatch: true });
     } else {
     }
   }
 
-  validUser(): void{
-    this.authService.registerUser(this.form.value, (ok : boolean) => {
-      if(!ok){
+  validUser(): void {
+    this.authService.registerUser(this.form.value, (ok: boolean, body: any) => {
+      if (!ok) {
         this.errors['email'] = 'REGISTRO FALLIDO, INTENTELO DE NUEVO';
         this.succes = false;
-      }else{
+      } else {
         this.succes = true;
+        this.urlQR = this.sanitizer.bypassSecurityTrustResourceUrl(`${body.qr}`);
+        this.codigoAuthQR = body.secreto;
       }
     })
   }
 
-  createUser(user: any): void{
-    this.userService.createUser(user).subscribe((ok:boolean) =>{
-      if(ok){
+  createUser(user: any): void {
+    this.userService.createUser(user).subscribe((ok: boolean) => {
+      if (ok) {
         console.log(`USUARIO CREADO CORRECTAMENTE`);
       }
     });
