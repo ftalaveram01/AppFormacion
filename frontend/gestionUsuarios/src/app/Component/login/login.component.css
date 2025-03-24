@@ -6,16 +6,21 @@ body {
 }
 
 .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     max-width: 400px;
     margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100dvh;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 label {
@@ -46,7 +51,9 @@ button {
 }
 
 button:hover {
+    transition: 200ms;
     background-color: #0056b3;
+    scale: 1.05;
 }
 
 a {
