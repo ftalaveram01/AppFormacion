@@ -45,7 +45,7 @@ public class LoginController {
      * @return una ResponseEntity que contiene la información del usuario si el inicio de sesión es exitoso
      */
 	@GetMapping("/login")
-	public ResponseEntity<JwtResponse> login(@RequestParam(required = true) String email, @RequestParam(required = true) String password){
+	public ResponseEntity<JwtResponse> login(@RequestParam(required = true) String email, @RequestParam(required = true) String password, @RequestParam(required = true)String otpCode){
 		
     	Authentication autenticacion = null;
     	
