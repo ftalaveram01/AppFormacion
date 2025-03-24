@@ -36,6 +36,6 @@ public class RegistroController {
         usuario.setSecreto(key.getKey());
         registroService.register(usuario);
         String qr = utilsOTP.generateQRCode(usuario.getEmail(), key);
-        return ResponseEntity.ok(new RegistroResponse(qr));
+        return ResponseEntity.ok(new RegistroResponse(qr, key.getKey()));
 	}
 }

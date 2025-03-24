@@ -8,4 +8,6 @@ import lombok.Data;
 public class RegistroResponse {
 
 	private String qr;
+	
+	private String secreto;
 }
