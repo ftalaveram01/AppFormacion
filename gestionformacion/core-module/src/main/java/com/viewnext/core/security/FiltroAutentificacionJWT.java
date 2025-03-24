@@ -38,8 +38,6 @@ public class FiltroAutentificacionJWT extends OncePerRequestFilter{
 				 if (jwt != null && utilsJwt.validarJwt(jwt)) {
 					 
 					 UsuarioDetails usuario = (UsuarioDetails) usuarioDetailsService.loadUserByUsername(utilsJwt.getTokenUsername(jwt));
-					 
-					 System.out.println(usuario.getUsername() + " " + usuario.getPassword() + " " + usuario.getId());
 
 					 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 					 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

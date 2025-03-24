@@ -11,7 +11,8 @@ CREATE TABLE Rol (
 CREATE TABLE Usuario (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(20) NOT NULL,
+    secreto VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
     id_rol BIGINT,
     habilitado BOOLEAN NOT NULL DEFAULT TRUE,
     FOREIGN KEY(id_rol) REFERENCES Rol(id) ON DELETE RESTRICT
@@ -54,23 +55,7 @@ INSERT INTO Rol (id, nombre_rol, descripcion) VALUES
 (0, 'ADMIN', 'Usuario con todos los permisos'),
 (1, 'ALUMNO', 'Usuario normal');
 
-INSERT INTO Usuario (id, email, password, id_Rol, habilitado) VALUES
-(1, 'admin@gmail.com', '1234', 0, TRUE),
-(2, 'alumno1@example.com', '1234', 1, TRUE),
-(3, 'alumno2@example.com', '1234', 1, TRUE),
-(4, 'alumno3@example.com', '1234', 1, TRUE),
-(5, 'alumno4@example.com', '1234', 1, FALSE);
-
 INSERT INTO Curso (id, nombre, descripcion, numero_horas, habilitado) VALUES
 (1, 'Curso de Angular', 'Curso de introducción a Angular', 200, true),
 (2, 'Curso de React', 'Curso de introducción a React', 60, true),
 (3, 'Curso de Vue.js', 'Curso de introducción a Vue.js', 100, false);
-
-INSERT INTO Curso_Usuario (id_usuario, id_curso) VALUES
-(2, 1),
-(2, 2),
-(3, 1),
-(3, 3),
-(4, 2),
-(4, 3),
-(5, 1);

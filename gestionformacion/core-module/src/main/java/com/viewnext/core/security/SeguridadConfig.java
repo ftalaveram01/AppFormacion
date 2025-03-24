@@ -26,7 +26,8 @@ public class SeguridadConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/autentificacion/**").permitAll()
                 .anyRequest().authenticated())
-            .addFilterBefore(filtroAutentificacionJWT(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(filtroAutentificacionJWT(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(filtroAutentificacionOTP(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 	}
@@ -44,6 +45,16 @@ public class SeguridadConfig {
     @Bean
     public FiltroAutentificacionJWT filtroAutentificacionJWT() {
         return new FiltroAutentificacionJWT();
+    }
+    
+    @Bean
+    public FiltroAutentificacionOTP filtroAutentificacionOTP() {
+        return new FiltroAutentificacionOTP();
+    }
+    
+    @Bean
+    public CredentialRepositoryImpl credentialRepository() {
+        return new CredentialRepositoryImpl();
     }
 
 }

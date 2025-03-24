@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.security.UtilsOTP;
+import com.viewnext.core.security.payloads.RegistroResponse;
 import com.viewnext.register.business.services.RegistroService;
+import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 
 /**
  * Controlador REST para gestionar el registro de los usuarios
@@ -19,15 +22,20 @@ public class RegistroController {
 
 	private RegistroService registroService;
 	
-	public RegistroController(RegistroService registroService) {
+	private UtilsOTP utilsOTP;
+	
+	public RegistroController(RegistroService registroService, UtilsOTP utilsOTP) {
 		this.registroService = registroService;
+		this.utilsOTP = utilsOTP;
 	}
 	
 	@PostMapping("/registrar")
-	public ResponseEntity<Void> registrar(@RequestBody Usuario usuario, UriComponentsBuilder ucb){
+	public ResponseEntity<RegistroResponse> registrar(@RequestBody Usuario usuario, UriComponentsBuilder ucb){
 		
-		Long id = registroService.register(usuario);
-		
-		return ResponseEntity.created(ucb.path("/usuarios/{id}").build(id)).build();
+        GoogleAuthenticatorKey key = utilsOTP.generateKey();
+        usuario.setSecreto(key.getKey());
+        registroService.register(usuario);
+        String qr = utilsOTP.generateQRCode(usuario.getEmail(), key);
+        return ResponseEntity.ok(new RegistroResponse(qr, key.getKey()));
 	}
 }
