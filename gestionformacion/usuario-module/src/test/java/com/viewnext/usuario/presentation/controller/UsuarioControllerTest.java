@@ -52,27 +52,25 @@ public class UsuarioControllerTest {
         usuario.setEmail("prueba@gmail.com");
         usuario.setPassword("1234");
         usuario.setRol(rol);
-        when(usuarioServices.create(any(Usuario.class), any(Long.class))).thenReturn(1L);
+        when(usuarioServices.create(any(Usuario.class))).thenReturn(1L);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/usuarios/crear")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("idAdmin", "0")
                 .content(objectMapper.writeValueAsString(usuario)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        verify(usuarioServices, times(1)).create(any(Usuario.class), eq(0L));
+        verify(usuarioServices, times(1)).create(any(Usuario.class));
         assertEquals("http://localhost/usuarios/1", result.getResponse().getHeader("Location"));
     }
 
     @Test
     public void testDelete() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/usuarios/borrar/1")
-                .param("idAdmin", "0"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/usuarios/borrar/1"))
                 .andExpect(status().isNoContent());
 
-        verify(usuarioServices, times(1)).delete(eq(1L), eq(0L));
+        verify(usuarioServices, times(1)).delete(eq(1L));
     }
 
     @Test
@@ -87,22 +85,20 @@ public class UsuarioControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.put("/usuarios/actualizar")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("idAdmin", "1")
                 .content(objectMapper.writeValueAsString(usuario)))
                 .andExpect(status().isNoContent());
 
-        verify(usuarioServices, times(1)).update(any(Usuario.class), eq(1L));
+        verify(usuarioServices, times(1)).update(any(Usuario.class));
     }
 
     @Test
     public void testGetAll() throws Exception {
-        when(usuarioServices.getAll(any(Long.class))).thenReturn(java.util.Collections.emptyList());
+        when(usuarioServices.getAll()).thenReturn(java.util.Collections.emptyList());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/usuarios")
-                .param("idAdmin", "0"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/usuarios"))
                 .andExpect(status().isOk());
 
-        verify(usuarioServices, times(1)).getAll(eq(0L));
+        verify(usuarioServices, times(1)).getAll();
     }
 
     @Test
@@ -114,14 +110,13 @@ public class UsuarioControllerTest {
         usuario.setEmail("prueba@gmail.com");
         usuario.setPassword("1234");
         usuario.setRol(rol);
-        when(usuarioServices.read(any(Long.class), any(Long.class))).thenReturn(usuario);
+        when(usuarioServices.read(any(Long.class))).thenReturn(usuario);
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/usuarios/1")
-                .param("idAdmin", "0"))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/usuarios/1"))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(usuarioServices, times(1)).read(eq(1L), eq(0L));
+        verify(usuarioServices, times(1)).read(eq(1L));
         assertEquals(objectMapper.writeValueAsString(usuario), result.getResponse().getContentAsString());
     }
 }

@@ -39,13 +39,8 @@ public class RolServicesImplTest {
     
     @Test
     void testCreate() {
-    	Usuario usuario = new Usuario();
     	Rol rolv2 = new Rol();
     	rolv2.setNombreRol("ADMIN");
-    	usuario.setRol(rolv2);
-    	usuario.setId(3L);
-    	when(usuarioRepository.existsById(3L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(3L)).thenReturn(true);
     	Rol rol = new Rol();
     	rol.setId(5L);
     	rol.setNombreRol("ADMIN");
@@ -54,84 +49,59 @@ public class RolServicesImplTest {
     	when(rolRepository.existsById(5L)).thenReturn(false);
     	when(rolRepository.save(rol)).thenReturn(rol);
     	
-    	Rol guardado = rolServices.create(rol, 3L);
+    	Rol guardado = rolServices.create(rol);
     	
     	assertEquals(rol, guardado);
     }
     
     @Test
     void testCreateIdNull() {
-    	Usuario usuario = new Usuario();
     	Rol rolv2 = new Rol();
     	rolv2.setNombreRol("ADMIN");
-    	usuario.setRol(rolv2);
-    	usuario.setId(3L);
-    	when(usuarioRepository.existsById(3L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(3L)).thenReturn(true);
     	Rol rol = new Rol();
     	rol.setId(null);
     	
-    	assertThrows(IllegalStateException.class, () -> rolServices.create(rol, 3L)); 
+    	assertThrows(IllegalStateException.class, () -> rolServices.create(rol)); 
     	
     }
     
     @Test
     void testCreateIdExistente() {
-    	Usuario usuario = new Usuario();
     	Rol rolv2 = new Rol();
     	rolv2.setNombreRol("ADMIN");
-    	usuario.setRol(rolv2);
-    	usuario.setId(3L);
-    	when(usuarioRepository.existsById(3L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(3L)).thenReturn(true);
     	Rol rol = new Rol();
     	rol.setId(5L);
     	
     	when(rolRepository.existsById(5L)).thenReturn(true);
     	
-    	assertThrows(IllegalStateException.class, () -> rolServices.create(rol, 3L)); 
+    	assertThrows(IllegalStateException.class, () -> rolServices.create(rol)); 
     	
     }
     
     @Test
     void testDelete() {
-    	Usuario usuario = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	usuario.setRol(rol);
-    	usuario.setId(3L);
-    	when(usuarioRepository.existsById(3L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(3L)).thenReturn(true);
     	when(rolRepository.existsById(5L)).thenReturn(true);
     	
-    	rolServices.delete(5L, 3L);
+    	rolServices.delete(5L);
     	verify(rolRepository,times(1)).deleteById(5L);
     }
     
     @Test
     void testDeleteNoExiste() {
-    	Usuario usuario = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	usuario.setRol(rol);
-    	usuario.setId(3L);
-    	when(usuarioRepository.existsById(3L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(3L)).thenReturn(true);
     	when(rolRepository.existsById(5L)).thenReturn(false);
     	
-    	assertThrows(IllegalStateException.class, () -> rolServices.delete(5L, 3L));
+    	assertThrows(IllegalStateException.class, () -> rolServices.delete(5L));
     	
     }
     
     @Test
     void testUpdate() {
-    	Usuario usuario = new Usuario();
     	Rol rolv1 = new Rol();
     	rolv1.setNombreRol("ADMIN");
-    	usuario.setRol(rolv1);
-    	usuario.setId(3L);
-    	when(usuarioRepository.existsById(3L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(3L)).thenReturn(true);
     	Rol rol = new Rol();
     	rol.setId(5L);
     	rol.setNombreRol("ADMIN");
@@ -141,19 +111,14 @@ public class RolServicesImplTest {
     	when(rolRepository.existsById(5L)).thenReturn(true);
     	when(rolRepository.save(rol)).thenReturn(rol);
     	
-    	Rol creado = rolServices.update(rol.getDescripcion(), 5L, 3L);
+    	Rol creado = rolServices.update(rol.getDescripcion(), 5L);
     	assertEquals(rol, creado);
     }
     
     @Test
     void testUpdateNoExistente() {
-    	Usuario usuario = new Usuario();
     	Rol rolv2 = new Rol();
     	rolv2.setNombreRol("ADMIN");
-    	usuario.setRol(rolv2);
-    	usuario.setId(3L);
-    	when(usuarioRepository.existsById(3L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(3L)).thenReturn(true);
     	Rol rol = new Rol();
     	rol.setId(5L);
     	rol.setNombreRol("ADMIN");
@@ -161,7 +126,7 @@ public class RolServicesImplTest {
     	
     	when(rolRepository.existsById(5L)).thenReturn(false);
     	
-    	assertThrows(IllegalStateException.class, () -> rolServices.update(rol.getDescripcion(), 5L, 3L));
+    	assertThrows(IllegalStateException.class, () -> rolServices.update(rol.getDescripcion(), 5L));
     }
     
     @Test

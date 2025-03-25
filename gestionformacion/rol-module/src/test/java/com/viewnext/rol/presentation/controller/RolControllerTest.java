@@ -70,10 +70,9 @@ public class RolControllerTest {
     	
     	String json = mapper.writeValueAsString(rol);
     	
-    	when(rolServices.create(rol, 0L)).thenReturn(rol);
+    	when(rolServices.create(rol)).thenReturn(rol);
     	
 		MvcResult response = mockMvc.perform(post("/roles").contentType("application/json")
-				.param("idAdmin", "0")
 				.content(json))
 				.andExpect(status().isOk())
 				.andReturn();
@@ -92,10 +91,9 @@ public class RolControllerTest {
     	
     	String json = mapper.writeValueAsString(rol);
     	
-    	when(rolServices.create(rol, 0L)).thenThrow(new IllegalStateException("Excepcion de create"));
+    	when(rolServices.create(rol)).thenThrow(new IllegalStateException("Excepcion de create"));
     	
 		MvcResult response = mockMvc.perform(post("/roles").contentType("application/json")
-				.param("idAdmin", "0")
 				.content(json))
 				.andExpect(status().isBadRequest())
 				.andReturn();
@@ -144,12 +142,11 @@ public class RolControllerTest {
     	rol.setNombreRol("ADMIN");
     	rol.setDescripcion("Prueba");
     	
-		when(rolServices.update(rol.getDescripcion(), 5L, 0L)).thenReturn(rol);
+		when(rolServices.update(rol.getDescripcion(), 5L)).thenReturn(rol);
 		
 		String json = mapper.writeValueAsString(rol);
 		
 		MvcResult response = mockMvc.perform(put("/roles/5").contentType("text/plain")
-				.param("idAdmin", "0")
 				.content("Prueba"))
 				.andExpect(status().isOk())
 				.andReturn();
@@ -166,12 +163,11 @@ public class RolControllerTest {
     	rol.setNombreRol("ADMIN");
     	rol.setDescripcion("Prueba");
     	
-		when(rolServices.update(rol.getDescripcion(), 5L, 0L)).thenThrow(new IllegalStateException("Excepcion de update"));
+		when(rolServices.update(rol.getDescripcion(), 5L)).thenThrow(new IllegalStateException("Excepcion de update"));
 		
 		String json = mapper.writeValueAsString(rol);
 		
 		MvcResult response = mockMvc.perform(put("/roles/5").contentType("text/plain")
-				.param("idAdmin", "0")
 				.content("Prueba"))
 				.andExpect(status().isBadRequest())
 				.andReturn();
@@ -184,19 +180,19 @@ public class RolControllerTest {
 	@Test
 	void testDelete() throws Exception{
 		
-		mockMvc.perform(delete("/roles/5").contentType("application/json").param("idAdmin", "0"))
+		mockMvc.perform(delete("/roles/5").contentType("application/json"))
 			.andExpect(status().isNoContent())
 			.andReturn();
 		
-		verify(rolServices, times(1)).delete(5L, 0L);
+		verify(rolServices, times(1)).delete(5L);
 	}
 	
 	@Test
 	void testDeleteError() throws Exception{
 		
-		doThrow(new IllegalStateException("Excepcion de delete")).when(rolServices).delete(5L, 0L);;
+		doThrow(new IllegalStateException("Excepcion de delete")).when(rolServices).delete(5L);;
 		
-		mockMvc.perform(delete("/roles/5").contentType("application/json").param("idAdmin", "0"))
+		mockMvc.perform(delete("/roles/5").contentType("application/json"))
 			.andExpectAll(status().isBadRequest())
 			.andReturn();
 	}
