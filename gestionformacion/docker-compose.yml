@@ -132,4 +132,3 @@ networks:
     driver: bridge
 volumes:
   mysql-volume:
-    external: true
