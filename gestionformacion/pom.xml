@@ -45,9 +45,13 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- MYSQL -->
+		<!-- H2 PARA TESTING SOLO -->
 		
-		
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <scope>test</scope>
+		</dependency>
 		
 		<!-- LOMBOOK -->
 		

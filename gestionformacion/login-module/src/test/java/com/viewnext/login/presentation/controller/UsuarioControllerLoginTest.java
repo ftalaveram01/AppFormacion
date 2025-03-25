@@ -7,34 +7,38 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.login.business.services.LoginServices;
 
 @WebMvcTest(LoginController.class)
-class UsuarioControllerLoginTest extends AbstractControllerTest{
+@ActiveProfiles("test")
+@ImportAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+class UsuarioControllerLoginTest{
+	
+	@Autowired
+	private MockMvc mockMvc;
 
     @MockitoBean
     private LoginServices loginServices;
 
-    private Usuario user;
-
-    @SuppressWarnings("deprecation")
-    @BeforeEach
-	@Override
-    public void setup(){
-        initObject();
-        MockitoAnnotations.initMocks(this);
-    }
-
 	 @Test
 	 void testLoginTrue() throws Exception {
+		 Usuario user = new Usuario();
+		 user.setId(1L);
+	     user.setEmail("prueba@gmail.com");
+	     user.setPassword("1234");
+	     user.setHabilitado(true);
 	     
 	     when(loginServices.login(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
 	     
@@ -56,20 +60,6 @@ class UsuarioControllerLoginTest extends AbstractControllerTest{
 	            .param("password", "wrongpassword"))
 	            .andExpect(status().isBadRequest());
 	     
-	 }
-
-	    
-	 //************************************
-	 //
-	 // Private method
-	 //
-	 //************************************
-
-	 private void initObject() {
-		 user = new Usuario();
-		 user.setId(1L);
-	     user.setEmail("prueba@gmail.com");
-	     user.setPassword("1234");
 	 }
 	
 }
