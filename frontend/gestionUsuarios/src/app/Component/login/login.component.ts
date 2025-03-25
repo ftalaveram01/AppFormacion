@@ -17,6 +17,7 @@ export class LoginComponent {
 
   email: string = '';
   password: string = '';
+  verifyCode: string = '';
   userEmail: string = this.email;
   contadorClick: number = 0;
   mensajeError!: any;
@@ -42,7 +43,7 @@ export class LoginComponent {
       });
     } else {
 
-      this.authService.loginUser(this.email, this.password, (ok: boolean, token?: any) => {
+      this.authService.loginUser(this.email, this.password, this.verifyCode, (ok: boolean, token?: any) => {
         if (ok) {
           localStorage.setItem("token", JSON.stringify(token));
           this.router.navigate(['/inicio']);

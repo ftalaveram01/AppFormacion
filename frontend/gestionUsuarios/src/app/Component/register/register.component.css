@@ -1,21 +1,31 @@
 body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    height: 98dvh;
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     max-width: 400px;
+    height: 50dvh;
     margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 form {
     display: flex;
     flex-direction: column;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
 }
 
 label {
@@ -65,7 +75,19 @@ p {
     color: green;
     font-size: 14px;
 }
+
 .error {
     color: red;
     font-size: 14px;
+}
+
+.qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+iframe>#document {
+    padding: 0;
 }

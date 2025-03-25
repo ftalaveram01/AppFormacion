@@ -24,11 +24,12 @@ export class AuthService {
     return this.http.get("http://localhost:8080/usuarios", header);
   }
 
-  loginUser(email: string, password: string, onLogin: (succes: boolean, user?: any) => void) {
+  loginUser(email: string, password: string, verifyCode: string, onLogin: (succes: boolean, user?: any) => void) {
 
     const params = new HttpParams()
       .set('email', email)
-      .set('password', password);
+      .set('password', password)
+      .set('otpCode', verifyCode);
 
 
     this.http.get("http://localhost:8100/autentificacion/login",
@@ -45,7 +46,7 @@ export class AuthService {
 
   }
 
-  registerUser(user: any, onRegister: (succes: boolean) => void) {
+  registerUser(user: any, onRegister: (succes: boolean, body: any) => void) {
     const numRol: number = 1;
 
     const objetoRol: any = {
@@ -55,11 +56,11 @@ export class AuthService {
     user.habilitado = 1
 
     this.http.post("http://localhost:8101/autentificacion/registrar", user).subscribe(
-      () => {
-        onRegister(true)
+      (data) => {
+        onRegister(true, data)
       },
       (error) => {
-        onRegister(false)
+        onRegister(false, error)
       }
     )
   }
