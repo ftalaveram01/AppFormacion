@@ -2,7 +2,6 @@ package com.viewnext.usuario.presentation.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,7 +25,7 @@ import com.viewnext.usuario.business.services.UsuarioServices;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(UsuarioController.class)
-public class UsuarioControllerTest {
+class UsuarioControllerTest {
 
     private MockMvc mockMvc;
 
@@ -44,7 +43,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    void testCreate() throws Exception {
         Rol rol= new Rol();
         rol.setId(1L);
 
@@ -65,16 +64,16 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    void testDelete() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/usuarios/borrar/1"))
                 .andExpect(status().isNoContent());
 
-        verify(usuarioServices, times(1)).delete(eq(1L));
+        verify(usuarioServices, times(1)).delete(1L);
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    void testUpdate() throws Exception {
         Rol rol= new Rol();
         rol.setId(1L);
 
@@ -92,7 +91,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void testGetAll() throws Exception {
+    void testGetAll() throws Exception {
         when(usuarioServices.getAll()).thenReturn(java.util.Collections.emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/usuarios"))
@@ -102,7 +101,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void testRead() throws Exception {
+    void testRead() throws Exception {
         Rol rol= new Rol();
         rol.setId(1L);
 
@@ -116,7 +115,7 @@ public class UsuarioControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(usuarioServices, times(1)).read(eq(1L));
+        verify(usuarioServices, times(1)).read(1L);
         assertEquals(objectMapper.writeValueAsString(usuario), result.getResponse().getContentAsString());
     }
 }

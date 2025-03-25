@@ -22,11 +22,10 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viewnext.core.business.model.Rol;
-import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.rol.business.services.RolServices;
 
 @WebMvcTest(RolController.class)
-public class RolControllerTest {
+class RolControllerTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -165,8 +164,6 @@ public class RolControllerTest {
     	
 		when(rolServices.update(rol.getDescripcion(), 5L)).thenThrow(new IllegalStateException("Excepcion de update"));
 		
-		String json = mapper.writeValueAsString(rol);
-		
 		MvcResult response = mockMvc.perform(put("/roles/5").contentType("text/plain")
 				.content("Prueba"))
 				.andExpect(status().isBadRequest())
@@ -190,7 +187,7 @@ public class RolControllerTest {
 	@Test
 	void testDeleteError() throws Exception{
 		
-		doThrow(new IllegalStateException("Excepcion de delete")).when(rolServices).delete(5L);;
+		doThrow(new IllegalStateException("Excepcion de delete")).when(rolServices).delete(5L);
 		
 		mockMvc.perform(delete("/roles/5").contentType("application/json"))
 			.andExpectAll(status().isBadRequest())

@@ -2,7 +2,6 @@ package com.viewnext.core.security;
 
 import java.io.IOException;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class FiltroAutentificacionJWT extends OncePerRequestFilter{
 	 @Override
 	 protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		 
-	 	if(! RUTAS_PUBLICAS.stream().anyMatch(request.getServletPath()::startsWith)) {
+	 	if(RUTAS_PUBLICAS.stream().noneMatch(request.getServletPath()::startsWith)) {
 			 try {
 				 
 				 String jwt = parseJwt(request);

@@ -1,8 +1,5 @@
 package com.viewnext.login.presentation.controller;
 
-import java.util.Optional;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,13 +21,11 @@ import com.viewnext.login.business.services.LoginServices;
 @RequestMapping("/autentificacion")
 public class LoginController {
 	
-	private LoginServices loginServices;
     private AuthenticationManager authenticationManager;
     private UtilsJWT utilsJwt;
 	
-	public LoginController(LoginServices loginServices, AuthenticationManager authenticationManager,
+	public LoginController(AuthenticationManager authenticationManager,
 			UtilsJWT utilsJwt) {
-		this.loginServices = loginServices;
 		this.authenticationManager = authenticationManager;
 		this.utilsJwt = utilsJwt;
 	}

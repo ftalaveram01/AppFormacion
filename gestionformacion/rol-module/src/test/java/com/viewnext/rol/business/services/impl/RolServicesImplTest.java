@@ -20,13 +20,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.core.business.model.Rol;
-import com.viewnext.core.business.model.RolEnum;
-import com.viewnext.core.business.model.Usuario;
 import com.viewnext.core.repositories.RolRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class RolServicesImplTest {
+class RolServicesImplTest {
 	
 	@Mock
 	private RolRepository rolRepository;

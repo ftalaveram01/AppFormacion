@@ -126,6 +126,9 @@ class UsuarioServiceImplTest {
         usuario2.setId(2L);
         
         when(usuarioRepository.save(usuario)).thenReturn(usuario2);
+        
+        Long id = usuarioServicesImpl.create(usuario);
+        assertEquals(2L, id);
 
     }
     
@@ -215,7 +218,7 @@ class UsuarioServiceImplTest {
     }
     
     @Test
-    public void testRead() {
+    void testRead() {
     	
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
@@ -234,7 +237,7 @@ class UsuarioServiceImplTest {
     }
     
     @Test
-    public void testReadNoExistente() {
+    void testReadNoExistente() {
     	
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");

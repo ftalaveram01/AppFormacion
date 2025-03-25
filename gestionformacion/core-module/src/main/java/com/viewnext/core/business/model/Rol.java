@@ -1,5 +1,7 @@
 package com.viewnext.core.business.model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,7 +19,8 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "id")
 @ToString
 @Entity
-public class Rol {
+public class Rol implements Serializable{
+	private static final long serialVersionUID = 2L;
 	
 	@Id
 	Long id;

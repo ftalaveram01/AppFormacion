@@ -17,6 +17,10 @@ import jakarta.transaction.Transactional;
 @Service
 public class CourseServicesImpl implements CourseServices {
 	
+	private final static String ELCURSO = "El curso con ID [";
+	
+	private final static String NOEXISTE = "] no existe.";
+	
 	private final CursoRepository cursoRepository;
 	
 	private final UsuarioRepository usuarioRepository;
@@ -55,7 +59,7 @@ public class CourseServicesImpl implements CourseServices {
 			throw new IllegalStateException("No coincide el id del body con la ruta.");
 		
 		if(!cursoRepository.existsById(id)) {
-			throw new IllegalStateException("El curso con ID [" + id + "] no existe.");
+			throw new IllegalStateException(ELCURSO + id + NOEXISTE);
 		}
 		
 		course.setHabilitado(true);		
@@ -69,14 +73,14 @@ public class CourseServicesImpl implements CourseServices {
 		boolean existe = cursoRepository.existsById(id);
 		
 		if(!existe) {
-			throw new IllegalStateException("El curso con ID [" + id + "] no existe.");
+			throw new IllegalStateException(ELCURSO + id + NOEXISTE);
 		}
 		
 		Course curso = cursoRepository.findById(id).get();
-		
-		if(curso.getHabilitado()) {
+
+		if(Boolean.TRUE.equals(curso.getHabilitado())) {
 			curso.setHabilitado(false);
-			curso.setUsuarios(new ArrayList<Usuario>());
+			curso.setUsuarios(new ArrayList<>());
 			cursoRepository.save(curso);
 		}else
 			throw new IllegalStateException("El curso ya está deshabilitado");	
@@ -121,7 +125,7 @@ public class CourseServicesImpl implements CourseServices {
 		boolean existe = cursoRepository.existsById(idCurso);
 		
 		if(!existe) {
-			throw new IllegalStateException("El curso con ID [" + idCurso + "] no existe.");
+			throw new IllegalStateException(ELCURSO + idCurso + NOEXISTE);
 		}
 		
 		Optional <Course> cursoOptional = cursoRepository.findById(idCurso);

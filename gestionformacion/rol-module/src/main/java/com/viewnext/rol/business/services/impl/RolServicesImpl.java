@@ -30,9 +30,7 @@ public class RolServicesImpl implements RolServices{
 		if(rolRepository.existsById(rol.getId()))
 			throw new IllegalStateException("Ya existe un rol con ese id.");
 		
-		Rol guardado = rolRepository.save(rol);
-		
-		return guardado;
+		return rolRepository.save(rol);
 	}
 
 	@Transactional
@@ -55,8 +53,7 @@ public class RolServicesImpl implements RolServices{
 		Rol rol = rolRepository.findById(id).get();
 		rol.setDescripcion(descripcion);
 		
-		Rol creado = rolRepository.save(rol);
-		return creado;
+		return rolRepository.save(rol);
 	}
 
 	@Override

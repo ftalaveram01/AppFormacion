@@ -31,8 +31,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		
 		if(usuario.getId()!=null)
 			throw new IllegalStateException("El usuario no puede tener id");
-		
-		if(usuarioRepository.existsByEmail(usuario.getEmail()))
+		if(Boolean.TRUE.equals(usuarioRepository.existsByEmail(usuario.getEmail())))
 			throw new IllegalStateException("Ya existe un usuario con ese email.");
 		
 		if(usuario.getRol().getId() == null) {
@@ -59,7 +58,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		
 		Usuario usu = usuarioRepository.findById(id).get();
 		
-		if(usu.getHabilitado()) {
+		if(Boolean.TRUE.equals(usu.getHabilitado())) {
 			usu.setHabilitado(false);
 			usuarioRepository.save(usu);
 		}else
@@ -85,7 +84,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		
 		Usuario usu = usuarioRepository.findByEmail(email);
 		
-		if(!usu.getHabilitado())
+		if(Boolean.FALSE.equals(usu.getHabilitado()))
 			throw new IllegalStateException("El usuario ya está deshabilitado");
 		usu.setHabilitado(false);
 		

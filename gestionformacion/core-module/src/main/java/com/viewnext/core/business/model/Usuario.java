@@ -1,5 +1,7 @@
 package com.viewnext.core.business.model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +22,8 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "id")
 @ToString
 @Entity
-public class Usuario {
+public class Usuario implements Serializable{
+	private static final long serialVersionUID = 3L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

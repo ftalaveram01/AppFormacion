@@ -41,7 +41,7 @@ public class RegistroServiceImpl implements RegistroService{
 		if(usuario.getId()!=null)
 			throw new IllegalStateException("El usuario no puede tener id");
 		
-		if(usuarioRepository.existsByEmail(usuario.getEmail()))
+		if(Boolean.TRUE.equals(usuarioRepository.existsByEmail(usuario.getEmail())))
 			throw new IllegalStateException("Ya existe un usuario con ese email.");
 		
 		if(usuario.getRol().getId() == null) {

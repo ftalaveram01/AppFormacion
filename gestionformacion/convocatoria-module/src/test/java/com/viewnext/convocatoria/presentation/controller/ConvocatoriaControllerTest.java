@@ -29,7 +29,7 @@ import com.viewnext.convocatoria.model.UpdateRequest;
 import com.viewnext.core.business.model.Convocatoria;
 
 @WebMvcTest(ConvocatoriaController.class)
-public class ConvocatoriaControllerTest {
+class ConvocatoriaControllerTest {
 	
 	@Autowired
 	private MockMvc mockMvc;

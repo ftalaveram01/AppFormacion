@@ -34,7 +34,7 @@ import com.viewnext.core.repositories.CursoRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class ConvocatoriaServicesImplTest {
+class ConvocatoriaServicesImplTest {
 	
 	@Mock
 	private ConvocatoriaRepository convocatoriaRepository;
@@ -47,6 +47,9 @@ public class ConvocatoriaServicesImplTest {
 	
 	@Mock
 	private UsuarioRepository usuarioRepository;
+	
+	@Mock
+	private EmailService emailService;
 	
 	@InjectMocks
 	private ConvocatoriaServicesImpl convocatoriaServices;
@@ -335,8 +338,6 @@ public class ConvocatoriaServicesImplTest {
 	    
 	    convocatoriaServices.create(request);
 	    verify(convocatoriaScheduler, times(1)).programarTarea(conv, true, false);
-	    
-	    //TODO completar cuando funcione el envio del correos
 	}
 	
 	@Test
@@ -422,8 +423,6 @@ public class ConvocatoriaServicesImplTest {
 		
 		verify(convocatoriaRepository, times(1)).save(conv);
 		verify(convocatoriaScheduler, times(1)).programarTarea(conv, true, false);
-		
-	    //TODO completar cuando funcione el envio del correos
 	}
 	
 	@Test
@@ -459,6 +458,10 @@ public class ConvocatoriaServicesImplTest {
 		when(usuarioRepository.findById(3L)).thenReturn(Optional.of(usu));
 		
 		convocatoriaServices.generarCertificado(2L,  3L);
+		
+		verify(emailService, times(1)).enviarCorreo(usu.getEmail(), 
+		"ENHORABUENA, AQUI TIENES TU CERTIFICADO", 
+		"Has completado el curso de "+conv.getCurso().getNombre() + "\n" + "Fecha Inicio: "+conv.getFechaInicio() + "\n" + "Fecha Fin: "+conv.getFechaFin());
 	}
 
 }
