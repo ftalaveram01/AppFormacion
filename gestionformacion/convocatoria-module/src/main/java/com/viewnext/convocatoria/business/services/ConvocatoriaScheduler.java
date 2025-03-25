@@ -10,7 +10,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Convocatoria;
@@ -57,13 +56,13 @@ public class ConvocatoriaScheduler {
     	
         if (crearModificar && !postConstruct) {
             
-            ScheduledFuture<?> tareaInicio = scheduledExecutorService.schedule(() -> {
-                tareaFechaInicio(convocatoria);
-            }, fechaInicio.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+            ScheduledFuture<?> tareaInicio = scheduledExecutorService.schedule(() -> 
+                tareaFechaInicio(convocatoria)
+            , fechaInicio.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
             
-            ScheduledFuture<?> tareaFin = scheduledExecutorService.schedule(() -> {
-                tareaFechaFin(convocatoria);
-            }, fechaFin.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+            ScheduledFuture<?> tareaFin = scheduledExecutorService.schedule(() -> 
+                tareaFechaFin(convocatoria)
+            , fechaFin.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
             
             tareasProgramadas.put(convocatoria, new ArrayList<>());
             List<ScheduledFuture<?>> tareas = tareasProgramadas.get(convocatoria);
@@ -88,9 +87,9 @@ public class ConvocatoriaScheduler {
             			tareaFechaFin(convocatoria);
             		else {
             			
-                        ScheduledFuture<?> tareaFin = scheduledExecutorService.schedule(() -> {
-                            tareaFechaFin(convocatoria);
-                        }, fechaFin.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+                        ScheduledFuture<?> tareaFin = scheduledExecutorService.schedule(() -> 
+                            tareaFechaFin(convocatoria)
+                        , fechaFin.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
                         tareasProgramadas.put(convocatoria, new ArrayList<>());
                         List<ScheduledFuture<?>> tareas = tareasProgramadas.get(convocatoria);
                         tareas.add(tareaFin);

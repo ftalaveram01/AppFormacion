@@ -4,17 +4,14 @@ import org.junit.jupiter.api.Test;
 
 
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,7 +34,7 @@ import com.viewnext.core.repositories.CursoRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class ConvocatoriaServicesImplTest {
+class ConvocatoriaServicesImplTest {
 	
 	@Mock
 	private ConvocatoriaRepository convocatoriaRepository;
@@ -50,6 +47,9 @@ public class ConvocatoriaServicesImplTest {
 	
 	@Mock
 	private UsuarioRepository usuarioRepository;
+	
+	@Mock
+	private EmailService emailService;
 	
 	@InjectMocks
 	private ConvocatoriaServicesImpl convocatoriaServices;
@@ -144,72 +144,50 @@ public class ConvocatoriaServicesImplTest {
 		verify(convocatoriaRepository, times(1)).save(conv);
 		
 	}
-	
-	@Test
-	void deleteNoAdmin() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(false);
-		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.delete(2L, 5L));
-	}
+
 	
 	@Test
 	void deleteNoExistente() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		when(convocatoriaRepository.existsById(2L)).thenReturn(false);
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.delete(2L, 5L));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.delete(2L));
 	}
 	
 	@Test
 	void deleteInactiva() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		when(convocatoriaRepository.existsById(2L)).thenReturn(true);
 		
 		Convocatoria conv = new Convocatoria();
 		conv.setEstado(ConvocatoriaEnum.TERMINADA);
 		when(convocatoriaRepository.findById(2L)).thenReturn(Optional.of(conv));
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.delete(2L, 5L));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.delete(2L));
 		
 		conv.setEstado(ConvocatoriaEnum.DESIERTA);
 		when(convocatoriaRepository.findById(2L)).thenReturn(Optional.of(conv));
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.delete(2L, 5L));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.delete(2L));
 	}
 	
 	@Test
 	void deleteOk() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		when(convocatoriaRepository.existsById(2L)).thenReturn(true);
 		
 		Convocatoria conv = new Convocatoria();
 		conv.setEstado(ConvocatoriaEnum.EN_PREPARACION);
 		when(convocatoriaRepository.findById(2L)).thenReturn(Optional.of(conv));
 		
-		convocatoriaServices.delete(2L,  5L);
+		convocatoriaServices.delete(2L);
 		
 		conv.setEstado(ConvocatoriaEnum.DESIERTA);
 		
 		verify(convocatoriaRepository, times(1)).save(conv);
 		verify(convocatoriaScheduler, times(1)).cancelarTareas(conv);
 	}
-	
-	@Test
-	void testGetAllNoAdmin() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(false);
-		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.getAll(5L));
-	}
+
 	
 	@Test
 	void testGetAll() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		Convocatoria conv = new Convocatoria();
 		Convocatoria conv2 = new Convocatoria();
 		conv.setId(1L);
@@ -217,7 +195,7 @@ public class ConvocatoriaServicesImplTest {
 		
 		when(convocatoriaRepository.findAll()).thenReturn(Arrays.asList(conv, conv2));
 		
-		List<Convocatoria> convs = convocatoriaServices.getAll(5L);
+		List<Convocatoria> convs = convocatoriaServices.getAll();
 		
 		assertTrue(convs.containsAll(Arrays.asList(conv, conv2)));
 	}
@@ -277,44 +255,29 @@ public class ConvocatoriaServicesImplTest {
 	}
 	
 	@Test
-	void testCreateNoAdmin() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(false);
-		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.create(5L, new ConvocatoriaRequest()));
-		
-	}
-	
-	@Test
 	void testCreateFechaFinAntes() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		
 		ConvocatoriaRequest request = new ConvocatoriaRequest();
 		request.setFechaFin(new Date());
 		request.setFechaInicio(new Date(request.getFechaFin().getTime() + 800));
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.create(5L, request));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.create(request));
 		
 	}
 	
 	@Test
 	void testCreateFechaInicioAntesActual() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		
 		ConvocatoriaRequest request = new ConvocatoriaRequest();
 		request.setFechaFin(new Date());
 		request.setFechaInicio(new Date(request.getFechaFin().getTime() - 800));
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.create(5L, request));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.create(request));
 		
 	}
 	
 	@Test
 	void testCreateCursoNoExistente() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		
 		
 		ConvocatoriaRequest request = new ConvocatoriaRequest();
@@ -324,14 +287,12 @@ public class ConvocatoriaServicesImplTest {
 		
 		when(cursoRepository.existsById(2L)).thenReturn(false);
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.create(5L, request));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.create(request));
 		
 	}
 	
 	@Test
 	void testCreateAlumnosInsuficientes() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		
 		
 		ConvocatoriaRequest request = new ConvocatoriaRequest();
@@ -346,14 +307,12 @@ public class ConvocatoriaServicesImplTest {
 		
 		when(cursoRepository.findById(2L)).thenReturn(Optional.of(curso));
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.create(5L, request));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.create(request));
 		
 	}
 	
 	@Test
 	void testCreateOk() {
-	    when(usuarioRepository.existsById(5L)).thenReturn(true);
-	    when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 	    
 	    ConvocatoriaRequest request = new ConvocatoriaRequest();
 	    request.setFechaFin(new Date(new Date().getTime() + 2000));
@@ -377,51 +336,34 @@ public class ConvocatoriaServicesImplTest {
 	    conv.setUsuarios(new ArrayList<>());
 	    when(convocatoriaRepository.save(any(Convocatoria.class))).thenReturn(conv);
 	    
-	    convocatoriaServices.create(5L, request);
+	    convocatoriaServices.create(request);
 	    verify(convocatoriaScheduler, times(1)).programarTarea(conv, true, false);
-	    
-	    //TODO completar cuando funcione el envio del correos
-	}
-	
-	@Test
-	void testUpdateNoAdmin() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(false);
-		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, 5L, new UpdateRequest()));
-		
 	}
 	
 	@Test
 	void testUpdateFechaFinAntes() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		
 		UpdateRequest request = new UpdateRequest();
 		request.setFechaFin(new Date());
 		request.setFechaInicio(new Date(request.getFechaFin().getTime() + 800));
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, 5L, request));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, request));
 		
 	}
 	
 	@Test
 	void testUpdateFechaInicioAntesActual() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		
 		UpdateRequest request = new UpdateRequest();
 		request.setFechaFin(new Date());
 		request.setFechaInicio(new Date(request.getFechaFin().getTime() - 800));
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, 5L, request));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, request));
 		
 	}
 	
 	@Test
 	void testUpdateConvocatoriaNoExistente() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		
 		
 		UpdateRequest request = new UpdateRequest();
@@ -430,14 +372,12 @@ public class ConvocatoriaServicesImplTest {
 		
 		when(convocatoriaRepository.existsById(3L)).thenReturn(false);
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, 5L, request));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, request));
 		
 	}
 
 	@Test
 	void testUpdateNoActiva() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		
 		UpdateRequest request = new UpdateRequest();
 		request.setFechaFin(new Date(new Date().getTime() + 2000));
@@ -449,19 +389,17 @@ public class ConvocatoriaServicesImplTest {
 	    conv.setEstado(ConvocatoriaEnum.TERMINADA);
 	    when(convocatoriaRepository.findById(3L)).thenReturn(Optional.of(conv));
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, 5L, request));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, request));
 		
 	    conv.setEstado(ConvocatoriaEnum.DESIERTA);
 	    when(convocatoriaRepository.findById(3L)).thenReturn(Optional.of(conv));
 		
-		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, 5L, request));
+		assertThrows(IllegalStateException.class, () -> convocatoriaServices.update(3L, request));
 		
 	}
 	
 	@Test
 	void testUpdateOk() {
-		when(usuarioRepository.existsById(5L)).thenReturn(true);
-		when(usuarioRepository.isAdmin(5L)).thenReturn(true);
 		
 		UpdateRequest request = new UpdateRequest();
 		request.setFechaFin(new Date(new Date().getTime() + 2000));
@@ -481,12 +419,10 @@ public class ConvocatoriaServicesImplTest {
 		conv.setUsuarios(new ArrayList<Usuario>());
 		conv.setEstado(ConvocatoriaEnum.EN_PREPARACION);
 		
-		convocatoriaServices.update(3L, 5L, request);
+		convocatoriaServices.update(3L, request);
 		
 		verify(convocatoriaRepository, times(1)).save(conv);
 		verify(convocatoriaScheduler, times(1)).programarTarea(conv, true, false);
-		
-	    //TODO completar cuando funcione el envio del correos
 	}
 	
 	@Test
@@ -522,6 +458,10 @@ public class ConvocatoriaServicesImplTest {
 		when(usuarioRepository.findById(3L)).thenReturn(Optional.of(usu));
 		
 		convocatoriaServices.generarCertificado(2L,  3L);
+		
+		verify(emailService, times(1)).enviarCorreo(usu.getEmail(), 
+		"ENHORABUENA, AQUI TIENES TU CERTIFICADO", 
+		"Has completado el curso de "+conv.getCurso().getNombre() + "\n" + "Fecha Inicio: "+conv.getFechaInicio() + "\n" + "Fecha Fin: "+conv.getFechaFin());
 	}
 
 }

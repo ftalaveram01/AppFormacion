@@ -61,7 +61,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		
 		Course curso = cursoRepository.findById(request.getIdCurso()).get();
 		
-		if(!curso.getHabilitado())
+		if(Boolean.FALSE.equals(curso.getHabilitado()))
 			throw new IllegalStateException("El curso está deshabilitado");
 		
 		if(curso.getUsuarios().size()<10)
@@ -72,7 +72,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		conv.setFechaFin(request.getFechaFin());
 		conv.setCurso(curso);
 		conv.setEstado(ConvocatoriaEnum.EN_PREPARACION);
-		conv.setUsuarios(new ArrayList<Usuario>());
+		conv.setUsuarios(new ArrayList<>());
 		
 		Convocatoria guardada = convocatoriaRepository.save(conv);
 		convocatoriaScheduler.programarTarea(guardada, true, false);
@@ -121,7 +121,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 			throw new IllegalStateException("La convocatoria no está activa");
 		conv.setFechaInicio(request.getFechaInicio());
 		conv.setFechaFin(request.getFechaFin());
-		conv.setUsuarios(new ArrayList<Usuario>());
+		conv.setUsuarios(new ArrayList<>());
 		conv.setEstado(ConvocatoriaEnum.EN_PREPARACION);
 		
 		convocatoriaRepository.save(conv);
@@ -166,8 +166,6 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
     @Transactional
 	@Override
 	public void inscribirUsuario(Long idConvocatoria, Long idUsuario) {
-    	
-    	System.out.println(idConvocatoria);
 		
 		Convocatoria convocatoria = convocatoriaRepository.findById(idConvocatoria)
 				.orElseThrow(() -> new IllegalStateException("ERROR la convocatoria no existe"));

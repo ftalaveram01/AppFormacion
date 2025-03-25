@@ -1,12 +1,8 @@
 package com.viewnext.usuario.business.services.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,17 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
 
 import com.viewnext.core.business.model.Rol;
-import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.core.repositories.RolRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
@@ -45,13 +37,8 @@ class UsuarioServiceImplTest {
     @Test
     void testDarAltaUser() {
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
          
         Usuario usuario = new Usuario();
         usuario.setId(null);
@@ -66,7 +53,7 @@ class UsuarioServiceImplTest {
         when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(false);
         when(usuarioRepository.save(usuario)).thenReturn(usuario2);
         
-        Long id = usuarioServicesImpl.create(usuario, 1L);
+        Long id = usuarioServicesImpl.create(usuario);
         assertEquals(2L, id);
         
         
@@ -74,13 +61,8 @@ class UsuarioServiceImplTest {
     
     @Test
     void testDarAltaUserExistente() {
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
     	
         Usuario usuario = new Usuario();
         usuario.setId(null);
@@ -89,36 +71,26 @@ class UsuarioServiceImplTest {
         when(usuarioRepository.existsByEmail(usuario.getEmail())).thenReturn(true);
 
         assertThrows(IllegalStateException.class, () -> 
-                usuarioServicesImpl.create(usuario, 1L));
+                usuarioServicesImpl.create(usuario));
     }
     
     @Test
     void testDarAltaUserNotNull() {
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
 
         Usuario usuario = new Usuario();
         usuario.setId(2L);
         
        assertThrows(IllegalStateException.class,() ->  
-                       usuarioServicesImpl.create(usuario, 1L));
+                       usuarioServicesImpl.create(usuario));
         
     }
     
     @Test
     void testDarAltaUserRolNoExistente() {
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);        
+    	rol.setNombreRol("ADMIN");   
         Usuario usuario = new Usuario();
         usuario.setId(null);
         usuario.setEmail("test@gmail.com");
@@ -130,20 +102,15 @@ class UsuarioServiceImplTest {
         when(rolRepository.findByNombreRol(rolv2.getNombreRol())).thenReturn(null);
 
         assertThrows(IllegalStateException.class, () -> {
-                    usuarioServicesImpl.create(usuario, 1L);       
+                    usuarioServicesImpl.create(usuario);       
         });
         
     }
     
     @Test
     void testDarAltaUserRolSinId() {
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario usuario = new Usuario();
         usuario.setId(null);
@@ -159,27 +126,22 @@ class UsuarioServiceImplTest {
         usuario2.setId(2L);
         
         when(usuarioRepository.save(usuario)).thenReturn(usuario2);
-        Long id = usuarioServicesImpl.create(usuario, 1L);
+        
+        Long id = usuarioServicesImpl.create(usuario);
+        assertEquals(2L, id);
 
-        
-        
     }
     
     @Test
     void testDeleteNoExisteUser() {
         when(usuarioRepository.existsById(any(Long.class))).thenReturn(false);
-        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(1L, 1L));	
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(1L));	
     }
     
     @Test
     void testDelete() {
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario usuario = new Usuario();
         usuario.setId(2L);
@@ -188,7 +150,7 @@ class UsuarioServiceImplTest {
         when(usuarioRepository.existsById(2L)).thenReturn(true);
         when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuario));
         
-        usuarioServicesImpl.delete(2L, 1L);
+        usuarioServicesImpl.delete(2L);
         
         usuario.setHabilitado(false);
         
@@ -197,13 +159,8 @@ class UsuarioServiceImplTest {
     
     @Test
     void testDeleteDeshabilitado() {
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);        
+    	rol.setNombreRol("ADMIN");  
         Usuario usuario = new Usuario();
         usuario.setId(2L);
         usuario.setHabilitado(false);
@@ -211,37 +168,27 @@ class UsuarioServiceImplTest {
         when(usuarioRepository.existsById(2L)).thenReturn(true);
         when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuario));
         
-        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(2L, 1L));
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(2L));
     }
     
     @Test
     void testDeleteIdNoExistente() {
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario usuario = new Usuario();
         usuario.setId(2L);
         
         when(usuarioRepository.existsById(2L)).thenReturn(false);
         
-        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(2L, 1L));
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.delete(2L));
     }
     
     @Test
     void testUpdate() {
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario user = new Usuario();
         user.setId(2L);
@@ -249,7 +196,7 @@ class UsuarioServiceImplTest {
         
         when(usuarioRepository.existsById(2L)).thenReturn(true);
 
-        usuarioServicesImpl.update(user, 1L);
+        usuarioServicesImpl.update(user);
 
         verify(usuarioRepository, times(1)).save(user);
         
@@ -258,33 +205,23 @@ class UsuarioServiceImplTest {
     @Test
     void testUpdateNoExiste() {
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);        
+    	rol.setNombreRol("ADMIN");      
         Usuario user = new Usuario();
         user.setId(2L);
         user.setRol(rol);
         
         when(usuarioRepository.existsById(2L)).thenReturn(false);
 
-        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.update(user, 1L));
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.update(user));
         
     }
     
     @Test
-    public void testRead() {
+    void testRead() {
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
 
         Usuario usuario = new Usuario();
         usuario.setId(2L);
@@ -292,7 +229,7 @@ class UsuarioServiceImplTest {
 
         when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuario));
 
-        Usuario resultado = usuarioServicesImpl.read(2L, 1L);
+        Usuario resultado = usuarioServicesImpl.read(2L);
 
         verify(usuarioRepository, times(1)).findById(2L);
         assertEquals(usuario, resultado);
@@ -300,15 +237,10 @@ class UsuarioServiceImplTest {
     }
     
     @Test
-    public void testReadNoExistente() {
+    void testReadNoExistente() {
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
 
         Usuario usuario = new Usuario();
         usuario.setId(2L);
@@ -316,19 +248,14 @@ class UsuarioServiceImplTest {
 
         when(usuarioRepository.findById(2L)).thenReturn(Optional.empty());
 
-        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.read(2L,  1L));
+        assertThrows(IllegalStateException.class, () -> usuarioServicesImpl.read(2L));
     }
     
     @Test
     void testGetAll() {
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	admin.setId(1L);
-    	when(usuarioRepository.existsById(1L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(1L)).thenReturn(true);
         
         Usuario usuario1 = new Usuario();
         usuario1.setId(1L);
@@ -340,7 +267,7 @@ class UsuarioServiceImplTest {
         
         when(usuarioRepository.findAll()).thenReturn(Arrays.asList(usuario1, usuario2));
         
-        List<Usuario> users = usuarioServicesImpl.getAll(1L);
+        List<Usuario> users = usuarioServicesImpl.getAll();
         
         assertEquals(Arrays.asList(usuario1, usuario2), users);
         

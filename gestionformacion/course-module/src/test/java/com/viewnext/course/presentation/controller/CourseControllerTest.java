@@ -96,11 +96,11 @@ class CourseControllerTest{
 	
 	@Test
 	void testCreate() throws Exception{
-		when(courseServices.create(any(Course.class), eq(5L))).thenReturn(2L);
+		when(courseServices.create(any(Course.class))).thenReturn(2L);
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(post("/courses").param("idAdmin", "5").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(post("/courses").contentType("application/json").content(json))
 				.andExpect(status().isCreated())
 				.andReturn();
 		
@@ -112,11 +112,11 @@ class CourseControllerTest{
 	
 	@Test
 	void testCreateExistente() throws Exception{
-		when(courseServices.create(any(Course.class), eq(5L))).thenThrow(new IllegalStateException("Excepcion de create"));
+		when(courseServices.create(any(Course.class))).thenThrow(new IllegalStateException("Excepcion de create"));
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(post("/courses").param("idAdmin", "5").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(post("/courses").contentType("application/json").content(json))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		
@@ -131,23 +131,23 @@ class CourseControllerTest{
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(put("/courses/2").param("idAdmin", "5").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(put("/courses/2").contentType("application/json").content(json))
 				.andExpect(status().isOk())
 				.andReturn();
 		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
-		verify(courseServices, times(1)).update(any(Course.class), eq(2L), eq(5L));
+		verify(courseServices, times(1)).update(any(Course.class), eq(2L));
 		assertEquals("", responseBody);
 	}
 	
 	@Test
 	void testUpdateNoExistente() throws Exception{
 		
-		doThrow(new IllegalStateException("Error de update")).when(courseServices).update(any(Course.class), eq(2L), eq(5L));
+		doThrow(new IllegalStateException("Error de update")).when(courseServices).update(any(Course.class), eq(2L));
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(put("/courses/2").param("idAdmin", "5").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(put("/courses/2").contentType("application/json").content(json))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -159,18 +159,18 @@ class CourseControllerTest{
 	@Test
 	void testDelete() throws Exception{
 		
-		mockMvc.perform(delete("/courses/2").param("idAdmin", "5"))
+		mockMvc.perform(delete("/courses/2"))
 				.andExpect(status().isNoContent())
 				.andReturn();
 		
-		verify(courseServices,times(1)).delete(2L, 5L);
+		verify(courseServices,times(1)).delete(2L);
 	}
 	
 	@Test
 	void testDeleteNoExistente() throws Exception{
-		doThrow(new IllegalStateException("Error de delete")).when(courseServices).delete(2L, 5L);
+		doThrow(new IllegalStateException("Error de delete")).when(courseServices).delete(2L);
 		
-		MvcResult response = mockMvc.perform(delete("/courses/2").param("idAdmin", "5").contentType("application/json"))
+		MvcResult response = mockMvc.perform(delete("/courses/2").contentType("application/json"))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		

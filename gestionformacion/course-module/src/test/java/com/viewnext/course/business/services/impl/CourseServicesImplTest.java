@@ -22,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Rol;
-import com.viewnext.core.business.model.RolEnum;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.core.repositories.CursoRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
@@ -40,22 +39,17 @@ class CourseServicesImplTest {
 	private CourseServicesImpl courseServices;
     
 
-    
     @Test
     void createTest() {
     	Course course = new Course();
     	course.setId(2L);
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
     	
     	when(courseRepository.save(any(Course.class))).thenReturn(course);
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	
-    	Long id = courseServices.create(new Course(), 5L);
+    	Long id = courseServices.create(new Course());
     	
     	assertEquals(2L, id);
     }
@@ -65,14 +59,9 @@ class CourseServicesImplTest {
     	Course course = new Course();
     	course.setId(2L);
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);    	
-    	assertThrows(IllegalStateException.class, () -> courseServices.create(course, 5L));
+    	rol.setNombreRol("ADMIN");  	
+    	assertThrows(IllegalStateException.class, () -> courseServices.create(course));
     }
     
     @Test
@@ -90,16 +79,12 @@ class CourseServicesImplTest {
     	Course course = new Course();
     	course.setId(2L);
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
     	
     	when(courseRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	
-    	courseServices.update(course, 2L, 5L);
+    	courseServices.update(course, 2L);
     	
     	verify(courseRepository, times(1)).save(course);
     }
@@ -109,16 +94,12 @@ class CourseServicesImplTest {
     	Course course = new Course();
     	course.setId(2L);
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
     	
     	when(courseRepository.existsById(any(Long.class))).thenReturn(false);
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	
-    	assertThrows(IllegalStateException.class, () -> courseServices.update(course, 2L, 5L));
+    	assertThrows(IllegalStateException.class, () -> courseServices.update(course, 2L));
     }
     
     @Test
@@ -126,14 +107,10 @@ class CourseServicesImplTest {
     	Course course = new Course();
     	course.setId(null);
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);    	
-    	assertThrows(IllegalStateException.class, () -> courseServices.update(course, 2L, 5L));
+    	  	
+    	assertThrows(IllegalStateException.class, () -> courseServices.update(course, 2L));
     }
     
     @Test
@@ -141,33 +118,24 @@ class CourseServicesImplTest {
     	Course course = new Course();
     	course.setId(2L);
     	
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
-    	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
-    	
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);    	
-    	assertThrows(IllegalStateException.class, () -> courseServices.update(course, 3L, 5L));
+    	rol.setNombreRol("ADMIN");    	
+    	assertThrows(IllegalStateException.class, () -> courseServices.update(course, 3L));
     }
     
     @Test
     void deleteIdExistenteTest() {
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
     	
     	Course curso = new Course();
     	curso.setId(2L);
     	curso.setHabilitado(true);
     	
-    	when(usuarioRepository.existsById(5L)).thenReturn(true);
-    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	when(courseRepository.existsById(2L)).thenReturn(true);
     	when(courseRepository.findById(2L)).thenReturn(Optional.of(curso));
     	
-    	courseServices.delete(2L, 5L);
+    	courseServices.delete(2L);
     	
     	curso.setHabilitado(false);
     	
@@ -176,16 +144,12 @@ class CourseServicesImplTest {
     
     @Test
     void deleteIdNoExistenteTest() {
-    	Usuario admin = new Usuario();
     	Rol rol = new Rol();
     	rol.setNombreRol("ADMIN");
-    	admin.setRol(rol);
     	
     	when(courseRepository.existsById(any(Long.class))).thenReturn(false);
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(true);
     	
-    	assertThrows(IllegalStateException.class, () -> courseServices.delete(2L, 5L));
+    	assertThrows(IllegalStateException.class, () -> courseServices.delete(2L));
     }
     
     @Test
@@ -200,33 +164,6 @@ class CourseServicesImplTest {
     	List<Course> courses = courseServices.getAll();
     	
     	assertEquals(Arrays.asList(course, coursev2), courses);
-    }
-    
-    @Test
-    void testIsNotAdmin() {
-    	Usuario noAdmin = new Usuario();
-    	Rol rol = new Rol();
-    	rol.setNombreRol("ALUMNO");
-    	noAdmin.setRol(rol);
-    	
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(true);
-    	when(usuarioRepository.isAdmin(any(Long.class))).thenReturn(false);
-    	
-    	assertThrows(IllegalStateException.class, () -> courseServices.delete(2L, 5L));
-    	assertThrows(IllegalStateException.class, () -> courseServices.update(new Course(), 2L, 5L));
-    	assertThrows(IllegalStateException.class, () -> courseServices.create(new Course(), 5L));
-    	
-    }
-    
-    @Test
-    void testAdminUserNotExists() {
-    	
-    	when(usuarioRepository.existsById(any(Long.class))).thenReturn(false);
-    	
-    	assertThrows(IllegalStateException.class, () -> courseServices.delete(2L, 5L));
-    	assertThrows(IllegalStateException.class, () -> courseServices.update(new Course(), 2L, 5L));
-    	assertThrows(IllegalStateException.class, () -> courseServices.create(new Course(), 5L));
-    	
     }
     
     @Test

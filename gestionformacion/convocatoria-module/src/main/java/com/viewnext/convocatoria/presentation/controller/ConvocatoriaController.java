@@ -41,7 +41,7 @@ public class ConvocatoriaController {
 	
     @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UpdateRequest request){
+	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody UpdateRequest request){
 		convocatoriaServices.update(id, request);
 		return ResponseEntity.noContent().build();
 	}
@@ -49,7 +49,7 @@ public class ConvocatoriaController {
 
     @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id){
+	public ResponseEntity<Void> delete(@PathVariable Long id){
 		convocatoriaServices.delete(id);
 		return ResponseEntity.noContent().build();
 	}
