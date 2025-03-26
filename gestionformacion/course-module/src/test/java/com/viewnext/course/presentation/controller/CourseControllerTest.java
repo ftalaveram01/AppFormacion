@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,26 +15,54 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.testcontainers.containers.MySQLContainer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Rol;
+import com.viewnext.core.business.model.RolAuthority;
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.repositories.UsuarioRepository;
+import com.viewnext.core.security.UsuarioDetails;
+import com.viewnext.core.security.UsuarioDetailsService;
+import com.viewnext.core.security.UtilsJWT;
 import com.viewnext.course.business.services.CourseServices;
 
-@WebMvcTest(CursoController.class)
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import io.restassured.RestAssured;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 class CourseControllerTest{
+	
+	private Long jwtExpirationMs = 3600000L;
+	private String jwtSecret = "TkpwTVpaMTFpVTBHWktjV0Y5AL9JdFJra0ZxPVRlZTN2ZkJjR0hrYjAMRs1=";
+	
+	@LocalServerPort
+	 private Integer port;
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -44,6 +73,43 @@ class CourseControllerTest{
 	@MockitoBean
 	private CourseServices courseServices;
 	
+	@MockitoBean
+	private UsuarioRepository usuarioRepository;
+	
+	@MockitoBean
+	private UsuarioDetailsService usuarioDetailsService;
+	
+	@MockitoBean
+	private UtilsJWT utilsJWT;
+	
+	static MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:9.2.0")
+    		.withDatabaseName("gestionformacion")
+            .withUsername("user")
+            .withPassword("password")
+            .withInitScript("schema.sql");
+	
+	@BeforeAll
+    static void beforeAll() {
+    	mysqlContainer.start();
+    }
+ 
+    @AfterAll
+    static void afterAll() {
+    	mysqlContainer.stop();
+    }
+    
+    @BeforeEach
+    void setUp() {
+      RestAssured.baseURI = "http://localhost:" + port;
+    }
+	
+	@DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+      registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+      registry.add("spring.datasource.username", mysqlContainer::getUsername);
+      registry.add("spring.datasource.password", mysqlContainer::getPassword);
+    }
+	
 	@Test
 	void testGetAll() throws Exception{
 		Course course = new Course();
@@ -51,9 +117,11 @@ class CourseControllerTest{
 		Course coursev2 = new Course();
 		coursev2.setId(3L);
 		
+		this.mockAlumno();
+		
 		when(courseServices.getAll()).thenReturn(Arrays.asList(course, coursev2));
 		
-		MvcResult response = mockMvc.perform(get("/courses").contentType("application/json"))
+		MvcResult response = mockMvc.perform(get("/courses").with(jwt().jwt(jwt -> jwt.claim("roles", "USER"))).contentType("application/json"))
 				.andExpect(status().isOk())
 				.andReturn();
 		
@@ -70,7 +138,7 @@ class CourseControllerTest{
 		
 		when(courseServices.read(2L)).thenReturn(Optional.of(course));
 		
-		MvcResult response = mockMvc.perform(get("/courses/2").contentType("application/json"))
+		MvcResult response = mockMvc.perform(get("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "USER"))).contentType("application/json"))
 				.andExpect(status().isOk())
 				.andReturn();
 		
@@ -85,7 +153,7 @@ class CourseControllerTest{
 		
 		when(courseServices.read(any(Long.class))).thenReturn(Optional.empty());
 		
-		MvcResult response = mockMvc.perform(get("/courses/2").contentType("application/json"))
+		MvcResult response = mockMvc.perform(get("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "USER"))).contentType("application/json"))
 				.andExpect(status().isNotFound())
 				.andReturn();
 		
@@ -100,7 +168,7 @@ class CourseControllerTest{
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(post("/courses").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(post("/courses").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json").content(json))
 				.andExpect(status().isCreated())
 				.andReturn();
 		
@@ -116,7 +184,7 @@ class CourseControllerTest{
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(post("/courses").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(post("/courses").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json").content(json))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		
@@ -131,7 +199,7 @@ class CourseControllerTest{
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(put("/courses/2").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(put("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json").content(json))
 				.andExpect(status().isOk())
 				.andReturn();
 		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -147,7 +215,7 @@ class CourseControllerTest{
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(put("/courses/2").contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(put("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json").content(json))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -159,7 +227,7 @@ class CourseControllerTest{
 	@Test
 	void testDelete() throws Exception{
 		
-		mockMvc.perform(delete("/courses/2"))
+		mockMvc.perform(delete("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))))
 				.andExpect(status().isNoContent())
 				.andReturn();
 		
@@ -170,7 +238,7 @@ class CourseControllerTest{
 	void testDeleteNoExistente() throws Exception{
 		doThrow(new IllegalStateException("Error de delete")).when(courseServices).delete(2L);
 		
-		MvcResult response = mockMvc.perform(delete("/courses/2").contentType("application/json"))
+		MvcResult response = mockMvc.perform(delete("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json"))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		
@@ -214,7 +282,7 @@ class CourseControllerTest{
 		
 		when(courseServices.read(2L)).thenReturn(Optional.of(curso));
 		
-		MvcResult response = mockMvc.perform(get("/courses/2").contentType("application/json"))
+		MvcResult response = mockMvc.perform(get("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json"))
 	            .andExpect(status().isOk())
 	            .andReturn();
 		
@@ -231,7 +299,7 @@ class CourseControllerTest{
 	void testAlumnoEnCursoNoExistente() throws Exception {
 		doThrow(new IllegalStateException("Error curso no existente")).when(courseServices).read(2L);
 
-		MvcResult response = mockMvc.perform(get("/courses/2").contentType("application/json"))
+		MvcResult response = mockMvc.perform(get("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json"))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 
@@ -248,6 +316,7 @@ class CourseControllerTest{
 		int idCurso = 1;
 		
 		mockMvc.perform(delete("/courses")
+				.with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN")))
 				.param("idUsuario", String.valueOf(idUsuario))
 				.param("idCurso", String.valueOf(idCurso))
 				.contentType("aplication/json"))
@@ -265,6 +334,7 @@ class CourseControllerTest{
 		int idCurso = 2;
 		
 		MvcResult response = mockMvc.perform(delete("/courses")
+				.with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN")))
 				.param("idUsuario", String.valueOf(idUsuario))
 				.param("idCurso", String.valueOf(idCurso))
 				.contentType("application/json"))
@@ -276,10 +346,11 @@ class CourseControllerTest{
 		assertEquals(expected, responseBody);
 	}
 
+	@Test
 	void testInscribirAlumno() throws Exception{
 		
-		MvcResult response = mockMvc.perform(put("/courses").param("idUsuario", "5").param("idCurso", "3").contentType("application/json"))
-				.andExpect(status().isCreated())
+		MvcResult response = mockMvc.perform(put("/courses").with(jwt().jwt(jwt -> jwt.claim("roles", "USER"))).param("idUsuario", "5").param("idCurso", "3").contentType("application/json"))
+				.andExpect(status().isOk())
 				.andReturn();
 		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
@@ -293,7 +364,7 @@ class CourseControllerTest{
 		
 		doThrow(new IllegalStateException("Usuario o curso no existente")).when(courseServices).inscribir(5L, 3L);
 		
-		MvcResult response = mockMvc.perform(put("/courses").param("idUsuario", "5").param("idCurso", "3").contentType("application/json"))
+		MvcResult response = mockMvc.perform(put("/courses").with(jwt().jwt(jwt -> jwt.claim("roles", "USER"))).param("idUsuario", "5").param("idCurso", "3").contentType("application/json"))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -301,4 +372,62 @@ class CourseControllerTest{
 		assertEquals("Usuario o curso no existente", responseBody);
 		
 	}
+	
+	private String generateJwtAdmin() {
+        Rol admin = new Rol();
+        admin.setNombreRol("ADMIN");
+        return Jwts.builder()
+                .claim("email", "example100@example.com")
+                .claim("rol", Collections.singleton(new RolAuthority(admin)))
+                .setSubject("1")
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(decodificarSecreto())
+                .compact();
+    }
+ 
+    private String generateJwtAlumno() {
+        Rol alumno = new Rol();
+        alumno.setNombreRol("ALUMNO");
+        return Jwts.builder()
+                .claim("email", "example100@example.com")
+                .claim("rol", Collections.singleton(new RolAuthority(alumno)))
+                .setSubject("1")
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(decodificarSecreto())
+                .compact();
+    }
+    
+    private void mockAdmin() {
+    	Rol admin = new Rol();
+	     admin.setNombreRol("ADMIN");
+	     
+	     Usuario user = new Usuario(1L, "example100@example.com", "secreto", "password", admin, true);
+		
+		 UsuarioDetails usuarioDetails = new UsuarioDetails(user);
+		 when(usuarioRepository.existsByEmail("example100@example.com")).thenReturn(true);
+	     when(usuarioRepository.findByEmail("example100@example.com")).thenReturn(user);
+	     when(usuarioDetailsService.loadUserByUsername("example100@example.com")).thenReturn(usuarioDetails);
+	     when(utilsJWT.validarJwt(any(String.class))).thenReturn(true);
+	     when(utilsJWT.getTokenUsername(any(String.class))).thenReturn("example100@example.com");
+    }
+    
+    private void mockAlumno() {
+    	Rol alumno = new Rol();
+	     alumno.setNombreRol("ALUMNO");
+	     
+	     Usuario user = new Usuario(1L, "example100@example.com", "secreto", "password", alumno, true);
+		
+		 UsuarioDetails usuarioDetails = new UsuarioDetails(user);
+		 when(usuarioRepository.existsByEmail("example100@example.com")).thenReturn(true);
+	     when(usuarioRepository.findByEmail("example100@example.com")).thenReturn(user);
+	     when(usuarioDetailsService.loadUserByUsername("example100@example.com")).thenReturn(usuarioDetails);
+	     when(utilsJWT.validarJwt(any(String.class))).thenReturn(true);
+	     when(utilsJWT.getTokenUsername(any(String.class))).thenReturn("example100@example.com");
+    }
+    
+    private Key decodificarSecreto() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    }
 }
