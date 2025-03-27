@@ -63,6 +63,7 @@ import com.viewnext.core.repositories.UsuarioRepository;
         user.setId(1L);
         user.setEmail("prueba@email.com");
         user.setPassword("1234");
+        user.setHabilitado(true);
     }
     
 }
