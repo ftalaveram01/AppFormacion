@@ -62,7 +62,7 @@ class CourseControllerTest{
 	private String jwtSecret = "TkpwTVpaMTFpVTBHWktjV0Y5AL9JdFJra0ZxPVRlZTN2ZkJjR0hrYjAMRs1=";
 	
 	@LocalServerPort
-	 private Integer port;
+	private Integer port;
 	
 	@Autowired
 	private MockMvc mockMvc;
