@@ -164,11 +164,19 @@ class CourseControllerTest{
 	
 	@Test
 	void testCreate() throws Exception{
+		
+		this.mockAdmin();
+		
+		String jwtToken = "Bearer " + this.generateJwtAdmin();
+		
 		when(courseServices.create(any(Course.class))).thenReturn(2L);
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(post("/courses").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(post("/courses")
+				.contentType("application/json")
+				.content("{\"nombre\":\"ROLE_USER\"}")
+				.header("Authorization", jwtToken))
 				.andExpect(status().isCreated())
 				.andReturn();
 		
@@ -180,11 +188,19 @@ class CourseControllerTest{
 	
 	@Test
 	void testCreateExistente() throws Exception{
+		
+		this.mockAdmin();
+		
+		String jwtToken = "Bearer " + this.generateJwtAdmin();
+		
 		when(courseServices.create(any(Course.class))).thenThrow(new IllegalStateException("Excepcion de create"));
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(post("/courses").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(post("/courses")
+				.contentType("application/json")
+				.content("{\"nombre\":\"ROLE_USER\"}")
+				.header("Authorization", jwtToken))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		
@@ -197,9 +213,16 @@ class CourseControllerTest{
 	@Test
 	void testUpdate() throws Exception{
 		
+		this.mockAdmin();
+		
+		String jwtToken = "Bearer " + this.generateJwtAdmin();
+		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(put("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(put("/courses/2")
+				.contentType("application/json")
+				.content("{\"nombre\":\"ROLE_USER\"}")
+				.header("Authorization", jwtToken))
 				.andExpect(status().isOk())
 				.andReturn();
 		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -211,11 +234,18 @@ class CourseControllerTest{
 	@Test
 	void testUpdateNoExistente() throws Exception{
 		
+		this.mockAdmin();
+		
+		String jwtToken = "Bearer " + this.generateJwtAdmin();
+		
 		doThrow(new IllegalStateException("Error de update")).when(courseServices).update(any(Course.class), eq(2L));
 		
 		String json = mapper.writeValueAsString(new Course());
 		
-		MvcResult response = mockMvc.perform(put("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json").content(json))
+		MvcResult response = mockMvc.perform(put("/courses/2")
+				.contentType("application/json")
+				.content("{\"nombre\":\"ROLE_USER\"}")
+				.header("Authorization", jwtToken))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		String responseBody = response.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -227,7 +257,14 @@ class CourseControllerTest{
 	@Test
 	void testDelete() throws Exception{
 		
-		mockMvc.perform(delete("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))))
+		this.mockAdmin();
+		
+		String jwtToken = "Bearer " + this.generateJwtAdmin();
+		
+		mockMvc.perform(delete("/courses/2")
+				.contentType("application/json")
+				.content("{\"nombre\":\"ROLE_USER\"}")
+				.header("Authorization", jwtToken))
 				.andExpect(status().isNoContent())
 				.andReturn();
 		
@@ -236,9 +273,17 @@ class CourseControllerTest{
 	
 	@Test
 	void testDeleteNoExistente() throws Exception{
+		
+		this.mockAdmin();
+		
+		String jwtToken = "Bearer " + this.generateJwtAdmin();
+		
 		doThrow(new IllegalStateException("Error de delete")).when(courseServices).delete(2L);
 		
-		MvcResult response = mockMvc.perform(delete("/courses/2").with(jwt().jwt(jwt -> jwt.claim("roles", "ADMIN"))).contentType("application/json"))
+		MvcResult response = mockMvc.perform(delete("/courses/2")
+				.contentType("application/json")
+				.content("{\\\"nombre\\\":\\\"ROLE_USER\\\"}")
+				.header("Authorization", jwtToken))
 				.andExpect(status().isBadRequest())
 				.andReturn();
 		
