@@ -78,6 +78,7 @@ class ConvocatoriaServicesImplTest {
 		Usuario usu = new Usuario();
 		usu.setId(2L);
 		conv.setUsuarios(Arrays.asList(usu));
+		conv.setEstado(ConvocatoriaEnum.EN_PREPARACION);
 
 		when(convocatoriaRepository.findById(5L)).thenReturn(Optional.of(conv));
 		when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usu));
@@ -95,6 +96,8 @@ class ConvocatoriaServicesImplTest {
 		for(int i=0;i<15;i++)
 			lista.add(new Usuario());
 		conv.setUsuarios(lista);
+		conv.setId(5L);
+		conv.setEstado(ConvocatoriaEnum.CONVOCADA);
 
 		when(convocatoriaRepository.findById(5L)).thenReturn(Optional.of(conv));
 		when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usu));
@@ -106,6 +109,7 @@ class ConvocatoriaServicesImplTest {
 	void inscribirUsuarioOk() {
 		Convocatoria conv = new Convocatoria();
 		conv.setUsuarios(new ArrayList<Usuario>());
+		conv.setEstado(ConvocatoriaEnum.EN_PREPARACION);
 		Usuario usu = new Usuario();
 		usu.setId(2L);
 
@@ -131,6 +135,7 @@ class ConvocatoriaServicesImplTest {
 		for(int i=0;i<14;i++)
 			lista.add(new Usuario());
 		conv.setUsuarios(lista);
+		conv.setEstado(ConvocatoriaEnum.EN_PREPARACION);
 
 		when(convocatoriaRepository.findById(5L)).thenReturn(Optional.of(conv));
 		when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usu));
@@ -313,6 +318,10 @@ class ConvocatoriaServicesImplTest {
 	
 	@Test
 	void testCreateOk() {
+		
+		Usuario usu = new Usuario();
+		usu.setEmail("prueba@gmail.com");
+		usu.setId(3L);
 	    
 	    ConvocatoriaRequest request = new ConvocatoriaRequest();
 	    request.setFechaFin(new Date(new Date().getTime() + 2000));
@@ -324,11 +333,14 @@ class ConvocatoriaServicesImplTest {
 	    curso.setUsuarios(new ArrayList<>());
 	    List<Usuario> lista = new ArrayList<>();
 	    for(int i=0;i<14;i++)
-	        lista.add(new Usuario());
+	        lista.add(usu);
 	    curso.setUsuarios(lista);
+	    curso.setHabilitado(true);
+	    curso.setNombre("Curso de prueba");
 	    when(cursoRepository.findById(2L)).thenReturn(Optional.of(curso));
 	    
 	    Convocatoria conv = new Convocatoria();
+	    conv.setId(2L);
 	    conv.setFechaInicio(request.getFechaInicio());
 	    conv.setFechaFin(request.getFechaFin());
 	    conv.setCurso(curso);
@@ -338,6 +350,9 @@ class ConvocatoriaServicesImplTest {
 	    
 	    convocatoriaServices.create(request);
 	    verify(convocatoriaScheduler, times(1)).programarTarea(conv, true, false);
+	    verify(emailService, times(14)).enviarCorreo(usu.getEmail(), 
+	    		"Convocatoria para el curso " + conv.getCurso().getNombre(), 
+	    		"Acepta la convocatoria en el siguiente apartado." + "\n" + "http://localhost:4200/confirmacion?idConvocatoria="+conv.getId().toString()+"&idUsuario="+usu.getId().toString()); 
 	}
 	
 	@Test
