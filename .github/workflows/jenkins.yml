@@ -1,0 +1,12 @@
+name: CI/CD Pipeline
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Run Jenkins job
+      run: |
+        curl -X POST http://localhost:9091/job/gestionformacion/build \
+        --user admin:114c3381f90318bfd8ffba6e8cf83b4f8f
