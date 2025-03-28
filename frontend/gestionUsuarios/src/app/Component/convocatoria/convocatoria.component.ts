@@ -75,6 +75,20 @@ export class ConvocatoriaComponent {
     });
   }
 
+  btnGenerarReporte(): void {
+    this.convocatoriaService.obtenerReporte().subscribe((blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ReporteConvocatoria.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+  }, error => {
+      console.error('Error downloading the PDF', error);
+  });
+  }
+
   borrarCache(): void {
     localStorage.clear();
   }
