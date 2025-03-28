@@ -1,0 +1,35 @@
+server:
+  port: 8106
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: apigateway
+          uri: http://apigateway.typicode.com
+          predicates:
+            - Path=/todos/**
+        - id: convocatoria-module
+          uri: http://convocatoria-module:8105
+          predicates:
+            - Path=/convocatorias/**
+        - id: course-module
+          uri: http://course-module:8102
+          predicates:
+            - Path=/courses/**
+        - id: login-module
+          uri: http://login-module:8100
+          predicates:
+            - Path=/autentificacion/**
+        - id: register-module
+          uri: http://register-module:8101
+          predicates:
+            - Path=/autentificacion/**
+        - id: rol-module
+          uri: http://rol-module:8104
+          predicates:
+            - Path=/roles/**
+        - id: usuario-module
+          uri: http://usuario-module:8103
+          predicates:
+            - Path=/usuarios/**
