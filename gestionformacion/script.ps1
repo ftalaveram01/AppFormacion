@@ -1,7 +1,7 @@
 $usuario = $env:USERNAME
 
 $rutaProyecto = "C:\Users\$usuario\PROYECTOS\AppFormacion\gestionformacion"
-$rutaApiGateway = "C:\Users\$usuario\PROYECTOS\api-gateway"
+$rutaApiGateway = "C:\Users\$usuario\PROYECTOS\AppFormacion\api-gateway"
 $rutaConvocatoria = "C:\Users\$usuario\PROYECTOS\AppFormacion\gestionformacion\convocatoria-module"
 $rutaCourse = "C:\Users\$usuario\PROYECTOS\AppFormacion\gestionformacion\course-module"
 $rutaLogin = "C:\Users\$usuario\PROYECTOS\AppFormacion\gestionformacion\login-module"
@@ -16,7 +16,7 @@ docker build -t "convocatoria" .
 Write-Host "La imagen de convocatoria ha sido creada"
 
 Set-Location -Path $rutaCourse
-docker build -t "course-app" .
+docker build -t "course" .
 Write-Host "La imagen de course ha sido creada"
 
 Set-Location -Path $rutaLogin
@@ -36,6 +36,9 @@ docker build -t "usuario" .
 Write-Host "La imagen de usuario ha sido creada"
 
 Set-Location -Path $rutaApiGateway
+
+mvn clean package -DskipTests
+
 docker build -t "gateway" .
 Write-Host "La imagen del gateway ha sido creada"
 
