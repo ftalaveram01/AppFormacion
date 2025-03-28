@@ -19,6 +19,17 @@ services:
       timeout: 5s
       retries: 5
 
+  gateway:
+    image: gateway
+    container_name: gateway-container
+    ports: 
+      - "8106:8106"
+    networks:
+      - spring-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+
   convocatoria:
     image: convocatoria
     container_name: convocatoria-container
@@ -54,7 +65,6 @@ services:
         condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
-
   login:
     image: login
     container_name: login-container
@@ -109,8 +119,8 @@ services:
     volumes:
       - ./core-module/target/classes:/app/classes
 
-  usuario-app:
-    image: usuario-app
+  usuario:
+    image: usuario
     container_name: usuario-container
     ports:
       - "8103:8103"
@@ -126,9 +136,9 @@ services:
         condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
-
 networks:
   spring-network:
     driver: bridge
+
 volumes:
   mysql-volume:
