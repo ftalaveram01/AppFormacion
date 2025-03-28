@@ -13,8 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.convocatoria.business.services.ConvocatoriaScheduler;
@@ -51,8 +49,6 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 	private UsuarioRepository usuarioRepository;
 	
 	private EmailService emailService;
-	
-    private static final Logger logger = LoggerFactory.getLogger(ConvocatoriaServices.class);
 	
 	public ConvocatoriaServicesImpl(ConvocatoriaRepository convocatoriaRepository,
 			ConvocatoriaScheduler convocatoriaScheduler, CursoRepository cursoRepository, UsuarioRepository usuarioRepository, EmailService emailService) {
@@ -269,7 +265,6 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 
 	    try (FileOutputStream fos = new FileOutputStream("ReporteConvocatoria.pdf")) {
 	        fos.write(resultado);
-	        System.out.println("PDF saved to file successfully.");
 	    } catch (IOException e) {
 	        System.out.println("Error saving PDF to file: " + e.getMessage());
 	    }
