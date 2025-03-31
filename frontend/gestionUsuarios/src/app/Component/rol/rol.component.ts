@@ -45,6 +45,20 @@ export class RolComponent {
     });
   }
 
+  btnGenerarReporte(): void {
+    this.rolService.obtenerReporte().subscribe((blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ReporteRol.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+  }, error => {
+      console.error('Error downloading the PDF', error);
+  });
+  }
+
   ngOnInit(): void{
     this.rolService.getRoles().subscribe((data) => {
       this.roles = data;
