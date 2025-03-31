@@ -1,18 +1,31 @@
 package com.viewnext.course.business.services.impl;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Course;
+import com.viewnext.core.business.model.CourseReporte;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.core.repositories.CursoRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
 import com.viewnext.course.business.services.CourseServices;
 
 import jakarta.transaction.Transactional;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class CourseServicesImpl implements CourseServices {
@@ -141,6 +154,42 @@ public class CourseServicesImpl implements CourseServices {
 		Optional <Usuario> userOptional = usuarioRepository.findById(idUsuario);
 		
 		return userOptional.get();
+	}
+
+	@Override
+	public byte[] generarReporte() {
+		List<CourseReporte> cursos = cursoRepository.findAllCourseReportes();
+
+	    JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cursos);
+
+	    JasperReport jasperReport = null;
+	    JasperPrint jasperPrint = null;
+	    byte[] resultado = null;
+
+	    InputStream reportStream = getClass().getResourceAsStream("/course.jrxml");
+	    try {
+	        jasperReport = JasperCompileManager.compileReport(reportStream);
+	    } catch (JRException e) {
+	        throw new IllegalStateException("Error al generar el reporte");
+	    }
+
+	    Map<String, Object> parameters = new HashMap<>();
+	    parameters.put("ReportTitle", "Reporte de Cursos");
+
+	    try {
+	        jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+	        resultado = JasperExportManager.exportReportToPdf(jasperPrint);
+	    } catch (JRException e) {
+	        throw new IllegalStateException("Error al generar el reporte");
+	    }
+
+	    try (FileOutputStream fos = new FileOutputStream("ReporteCursos.pdf")) {
+	        fos.write(resultado);
+	    } catch (IOException e) {
+	        System.out.println("Error saving PDF to file: " + e.getMessage());
+	    }
+
+	    return resultado;
 	}
 	
 	
