@@ -7,6 +7,9 @@
     <a href="login">
       <button (click)="borrarCache()">Cerrar Sesión</button>
     </a>
+    <button id="btn-Generar-Reporte" *ngIf="isAdmin()" (click)="btnGenerarReporte()">
+      GENERAR REPORTE
+    </button>
   </div>
 </div>
 

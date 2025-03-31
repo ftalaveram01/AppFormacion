@@ -88,6 +88,18 @@ export class RolService {
     return this.http.delete(`${this.rolApiUrl}/${id}`, { headers, params });
   }
 
+  obtenerReporte(): Observable<any> {
+
+    const storedToken = localStorage.getItem('token');
+    const token = storedToken ? JSON.parse(storedToken).token : null;
+
+    const headers = new HttpHeaders({
+      "Authorization": `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.rolApiUrl}/reporte`, { headers, responseType: 'blob'  })
+  }
+
   getToken(): void {
     const token = localStorage.getItem('token');
 

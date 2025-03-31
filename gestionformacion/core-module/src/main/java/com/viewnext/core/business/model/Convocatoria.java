@@ -53,6 +53,10 @@ public class Convocatoria {
         joinColumns = @JoinColumn(name = "id_convocatoria"),
         inverseJoinColumns = @JoinColumn(name = "id_usuario"))
     private List<Usuario> usuarios;
+    
+    public String getEstadoAsString() {
+        return this.estado.name();
+    }
 
 
 }

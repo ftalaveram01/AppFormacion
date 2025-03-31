@@ -58,4 +58,6 @@ public interface CourseServices {
 	
 	void deleteUsuario(Long idUsuario, Long idCurso);
 	
+	byte[] generarReporte();
+	
 }

@@ -46,6 +46,20 @@ export class UserComponent implements OnInit {
     })
   }
 
+  btnGenerarReporte(): void {
+    this.userService.obtenerReporte().subscribe((blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ReporteUsuario.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+  }, error => {
+      console.error('Error descargando el PDF', error);
+  });
+  }
+
   borrarCache(): void {
     localStorage.clear();
   }

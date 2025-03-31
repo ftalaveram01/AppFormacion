@@ -1,10 +1,15 @@
 package com.viewnext.convocatoria.business.services.impl;
 
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,6 +21,7 @@ import com.viewnext.convocatoria.model.ConvocatoriaRequest;
 import com.viewnext.convocatoria.model.UpdateRequest;
 import com.viewnext.core.business.model.Convocatoria;
 import com.viewnext.core.business.model.ConvocatoriaEnum;
+import com.viewnext.core.business.model.ConvocatoriaReporte;
 import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.Usuario;
 import com.viewnext.core.repositories.ConvocatoriaRepository;
@@ -23,6 +29,13 @@ import com.viewnext.core.repositories.CursoRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
@@ -221,6 +234,42 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 					"Convocatoria para el curso "+convocatoria.getCurso().getNombre(), 
 					"Acepta la convocatoria en el siguiente apartado." + "\n" + "http://localhost:4200/confirmacion?idConvocatoria="+convocatoria.getId().toString()+"&idUsuario="+usuario.getId().toString());
         }
+	}
+
+	@Override
+	public byte[] generarReporte() {
+	    List<ConvocatoriaReporte> convocatorias = convocatoriaRepository.findAllConvocatoriaReportes();
+
+	    JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(convocatorias);
+
+	    JasperReport jasperReport = null;
+	    JasperPrint jasperPrint = null;
+	    byte[] resultado = null;
+
+	    InputStream reportStream = getClass().getResourceAsStream("/convocatoria.jrxml");
+	    try {
+	        jasperReport = JasperCompileManager.compileReport(reportStream);
+	    } catch (JRException e) {
+	        throw new IllegalStateException("Error al generar el reporte");
+	    }
+
+	    Map<String, Object> parameters = new HashMap<>();
+	    parameters.put("ReportTitle", "Convocatoria Report");
+
+	    try {
+	        jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+	        resultado = JasperExportManager.exportReportToPdf(jasperPrint);
+	    } catch (JRException e) {
+	        throw new IllegalStateException("Error al generar el reporte");
+	    }
+
+	    try (FileOutputStream fos = new FileOutputStream("ReporteConvocatoria.pdf")) {
+	        fos.write(resultado);
+	    } catch (IOException e) {
+	        System.out.println("Error saving PDF to file: " + e.getMessage());
+	    }
+
+	    return resultado;
 	}
 	
 }
