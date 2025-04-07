@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.core.business.model.Rol;
@@ -32,10 +33,13 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	private UsuarioRepository usuarioRepository;
 	
 	private RolRepository rolRepository;
+	
+	private PasswordEncoder passwordEncoder;
 
-	public UsuarioServicesImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
+	public UsuarioServicesImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository, PasswordEncoder passwordEncoder) {
 		this.usuarioRepository = usuarioRepository;
 		this.rolRepository = rolRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Transactional
@@ -56,6 +60,8 @@ public class UsuarioServicesImpl implements UsuarioServices{
 			usuario.setRol(rol);
 			
 		}
+		
+		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		
 		Usuario creado = usuarioRepository.save(usuario);
 		
@@ -84,6 +90,12 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		
 		if(!usuarioRepository.existsById(usuario.getId()))
 			throw new IllegalStateException("No existe el usuario a actualizar.");
+		
+		if(usuario.getPassword().equals("")) {
+			usuario.setPassword(usuarioRepository.findById(usuario.getId()).get().getPassword());
+		}else {
+			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+		}
 		
 		usuarioRepository.save(usuario);
 	}
