@@ -88,7 +88,7 @@ export class ConvocatoriaService {
       "Authorization": `Bearer ${token}`
     });
 
-    return this.http.put(`${this.convocatoriaApiUrl}/${idConvocatoria}/inscribir`, { headers })
+    return this.http.put(`${this.convocatoriaApiUrl}/${idConvocatoria}/inscribir`, params, { headers })
   }
 
   enviarCertificado(idConvocatoria: Number): Observable<any> {
