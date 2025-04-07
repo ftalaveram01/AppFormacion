@@ -16,5 +16,7 @@ public interface RolServices {
 	List<Rol> getAll();
 	
 	Rol read(Long id);
+	
+	byte[] generarReporte();
 
 }

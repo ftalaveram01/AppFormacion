@@ -2,6 +2,9 @@ package com.viewnext.rol.presentation.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,6 +58,15 @@ public class RolController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	
+    @PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("/reporte")
+	public ResponseEntity<?> getReporte() {
+    	byte[] reporte = rolServices.generarReporte();
+    	 HttpHeaders headers = new HttpHeaders();
+         headers.setContentType(MediaType.APPLICATION_PDF);
+         headers.setContentDispositionFormData("filename", "ReporteRol.pdf");
+
+         return new ResponseEntity<>(reporte, headers, HttpStatus.OK);
+	}
 
 }

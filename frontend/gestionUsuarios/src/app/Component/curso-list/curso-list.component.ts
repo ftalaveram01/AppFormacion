@@ -143,6 +143,20 @@ export class CursoListComponent implements OnInit {
 
   }
 
+  btnGenerarReporte(): void {
+    this.cursoService.obtenerReporte().subscribe((blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ReporteCurso.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+  }, error => {
+      console.error('Error descargando el PDF', error);
+  });
+  }
+
   private formatearFecha(fecha: Date): string {
     const anio = fecha.getFullYear();
     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');

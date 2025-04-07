@@ -19,6 +19,16 @@ services:
       timeout: 5s
       retries: 5
 
+  eureka-server:
+    image: eureka
+    ports:
+     - "8761:8761"
+    networks:
+      - spring-network
+    environment:
+      - eureka.instance.hostname=discoveryserver
+      - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka
+
   convocatoria:
     image: convocatoria
     container_name: convocatoria-container
@@ -54,7 +64,6 @@ services:
         condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
-
   login:
     image: login
     container_name: login-container
@@ -109,8 +118,8 @@ services:
     volumes:
       - ./core-module/target/classes:/app/classes
 
-  usuario-app:
-    image: usuario-app
+  usuario:
+    image: usuario
     container_name: usuario-container
     ports:
       - "8103:8103"
@@ -126,9 +135,9 @@ services:
         condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
-
 networks:
   spring-network:
     driver: bridge
+
 volumes:
   mysql-volume:
