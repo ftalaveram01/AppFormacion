@@ -47,10 +47,9 @@
     <div class="course-status-badge" [ngClass]="c.curso.habilitado ? 'habilitado' : 'deshabilitado'">
       {{ c.curso.habilitado ? 'Habilitado' : 'Deshabilitado' }}
     </div>
-    <p>ID: {{c.curso.id}}</p>
+    <p *ngIf="isAdmin()">ID: {{c.curso.id}}</p>
     <p>Descripción: {{c.curso.descripcion}}</p>
     <p>Número de horas: {{c.curso.numeroHoras}}</p>
-    <p>Habilitado: {{c.curso.habilitado ? 'Sí' : 'No'}}</p>
 
     <div *ngIf="isAdmin()">
       <h4>Usuarios inscritos:</h4>

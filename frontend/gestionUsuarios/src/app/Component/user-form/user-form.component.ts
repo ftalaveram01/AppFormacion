@@ -18,17 +18,17 @@ export class UserFormComponent implements OnInit {
   roles: any[] = [];
   isUpdate: boolean = false;
   isCreate: boolean = false;
-  idUser! : number;
-  idAdmin! : number;
+  idUser!: number;
+  idAdmin!: number;
   usuarioActualizadoConExito: boolean = false
   usuarioCreadoConExito: boolean = false
-  errors: { [nameError: string]: string} = {};
+  errors: { [nameError: string]: string } = {};
 
-  constructor(private userService: UserService, private rolService: RolService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router){
+  constructor(private userService: UserService, private rolService: RolService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
     this.userForm = this.fb.group({
       email: ['', Validators.required, this.emailValidator],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
+      password: [''],
+      confirmPassword: [''],
       rol: ['']
     }, {
       validators: this.passwordMatchValidator
@@ -37,24 +37,27 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
     this.rolService.getRoles().subscribe(data => {
       console.log(data)
       this.roles = data;
     })
 
-    this.route.queryParams.subscribe(params =>{
+    this.route.queryParams.subscribe(params => {
       this.isUpdate = params['isUpdate'] === 'true'
       this.isCreate = params['isCreate'] === 'true'
-      if(params['id']){
+      if (params['id']) {
 
         this.idUser = +params['id'];
         this.idAdmin = Number(localStorage.getItem('idUsuario'))
         console.log(this.idAdmin)
-        this.userService.getUser(this.idUser, this.idAdmin).subscribe(user =>{
+        this.userService.getUser(this.idUser, this.idAdmin).subscribe(user => {
           this.userForm.patchValue(user)
           this.userForm.patchValue({
             rol: user.rol.id
+          })
+          this.userForm.patchValue({
+            password: ''
           })
         })
       }
@@ -62,31 +65,29 @@ export class UserFormComponent implements OnInit {
 
   }
 
-  onSubmit(): void{
-      if(this.userForm.valid){
-        if(this.isUpdate == true){
-          this.updateUser(this.idUser,this.userForm.value);
-          if(this.userForm.value.id == Number(localStorage.getItem('idUsuario'))){
-            alert('El usuario fue correctamente actualizado')
-            this.router.navigate(['login'])
-            console.log("Entra")
-          }
-        }else{
-          if(this.isCreate == true){
-            this.createUser(this.idUser, this.userForm.value);
-            alert('El usuario fue correctamente creado')
-            this.router.navigate(['users'])
-          } else{
-            console.log("ERROR EN EL FORM")
-        }
+  onSubmit(): void {
+    if (this.isUpdate == true) {
+      this.updateUser(this.idUser, this.userForm.value);
+      if (this.userForm.value.id == Number(localStorage.getItem('idUsuario'))) {
+        alert('El usuario fue correctamente actualizado')
+        this.router.navigate(['login'])
+        console.log("Entra")
+      }
+    } else {
+      if (this.isCreate == true) {
+        this.createUser(this.idUser, this.userForm.value);
+        alert('El usuario fue correctamente creado')
+        this.router.navigate(['users'])
+      } else {
+        console.log("ERROR EN EL FORM")
       }
     }
   }
 
-  passwordMatchValidator(formGroup: FormGroup): void{
+  passwordMatchValidator(formGroup: FormGroup): void {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
-  
+
     if (password !== confirmPassword) {
       formGroup.get('confirmPassword')?.setErrors({ noMatch: true });
     } else {
@@ -101,9 +102,9 @@ export class UserFormComponent implements OnInit {
     return null;
   }
 
-  private updateUser(id:number, user: any): void{
-    this.userService.updateUser(id,user).subscribe(response => {
-      if(user.id==localStorage.getItem("idUsuario")){
+  private updateUser(id: number, user: any): void {
+    this.userService.updateUser(id, user).subscribe(response => {
+      if (user.id == localStorage.getItem("idUsuario")) {
         this.usuarioActualizadoConExito = true
         this.userForm.reset();
         this.router.navigate(['/login']);
@@ -115,8 +116,8 @@ export class UserFormComponent implements OnInit {
       console.log('Usuario actualizado');
     },)
   }
-  
-  private createUser(id:number, user: any): void{
+
+  private createUser(id: number, user: any): void {
     this.userService.createUser(user).subscribe({
       next: (response) => {
         console.log('Usuario creado correctamente');
@@ -134,7 +135,7 @@ export class UserFormComponent implements OnInit {
       }
     });
   }
-  
+
 
   get email() {
     return this.userForm.get('email');
