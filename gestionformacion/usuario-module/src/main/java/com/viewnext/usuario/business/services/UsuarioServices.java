@@ -17,5 +17,7 @@ public interface UsuarioServices {
 	Usuario read(Long id);
 	
 	void deshabilitarUsuario(String email);
+	
+	byte[] generarReporte();
 
 }

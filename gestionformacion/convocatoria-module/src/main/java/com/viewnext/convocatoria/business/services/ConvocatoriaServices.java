@@ -23,5 +23,7 @@ public interface ConvocatoriaServices {
 	void generarCertificado(Long idConvocatoria, Long idUsuario);
 	
 	void inscribirUsuario(Long idConvocatoria, Long idUsuario);
+	
+	byte[] generarReporte();
 
 }
