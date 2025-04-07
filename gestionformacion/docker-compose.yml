@@ -29,17 +29,6 @@ services:
       - eureka.instance.hostname=discoveryserver
       - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka
 
-  gateway:
-    image: gateway
-    container_name: gateway-container
-    ports: 
-      - "8106:8106"
-    networks:
-      - spring-network
-    depends_on:
-      mysql:
-        condition: service_healthy
-
   convocatoria:
     image: convocatoria
     container_name: convocatoria-container
