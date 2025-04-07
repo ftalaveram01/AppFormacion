@@ -21,27 +21,27 @@ spring:
     gateway:
       routes:
         - id: convocatoria-module
-          uri: http://localhost:8105
+          uri: http://convocatoria-container:8105
           predicates:
             - Path=/convocatorias/**
         - id: course-module
-          uri: http://localhost:8102
+          uri: http://course-container:8102
           predicates:
             - Path=/courses/**
         - id: login-module
-          uri: http://localhost:8100
+          uri: http://login-container:8100
           predicates:
             - Path=/autentificacion/login
         - id: register-module
-          uri: http://localhost:8101
+          uri: http://register-container:8101
           predicates:
             - Path=/autentificacion/registrar
         - id: rol-module
-          uri: http://localhost:8104
+          uri: http://rol-container:8104
           predicates:
             - Path=/roles/**
         - id: usuario-module
-          uri: http://localhost:8103
+          uri: http://usuario-container:8103
           predicates:
             - Path=/usuarios/**
 
