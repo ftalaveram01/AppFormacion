@@ -19,16 +19,15 @@ services:
       timeout: 5s
       retries: 5
 
-  gateway:
-    image: gateway
-    container_name: gateway-container
-    ports: 
-      - "8106:8106"
+  eureka-server:
+    image: eureka
+    ports:
+     - "8761:8761"
     networks:
       - spring-network
-    depends_on:
-      mysql:
-        condition: service_healthy
+    environment:
+      - eureka.instance.hostname=discoveryserver
+      - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka
 
   convocatoria:
     image: convocatoria
