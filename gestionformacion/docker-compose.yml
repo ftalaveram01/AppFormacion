@@ -21,14 +21,32 @@ services:
 
   eureka-server:
     image: eureka
+    container_name: eureka-server-container
     ports:
      - "8761:8761"
     networks:
       - spring-network
     environment:
-      - eureka.instance.hostname=discoveryserver
-      - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka
+      eureka.instance.hostname: eureka-server-container
+      eureka.client.serviceUrl.defaultZone: http://eureka-server-container:8761/eureka
+    healthcheck:
+      test: ["CMD-SHELL", "ping -c 1 eureka-server-container || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  api-gateway:
+    image: api-gateway
+    container_name: api-gateway-container
+    ports:
+      - "8106:8106"
+    networks:
+      - spring-network
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://eureka-server-container:8761/eureka
+    depends_on:
+      eureka-server:
+        condition: service_healthy
   convocatoria:
     image: convocatoria
     container_name: convocatoria-container
@@ -39,10 +57,13 @@ services:
       DB_PORT: 3306
       DB_USER: admin
       DB_PASSWORD: admin
+      eureka.client.serviceUrl.defaultZone: http://eureka-server-container:8761/eureka
     networks:
       - spring-network
     depends_on:
       mysql:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
@@ -57,13 +78,17 @@ services:
       DB_PORT: 3306
       DB_USER: admin
       DB_PASSWORD: admin
+      eureka.client.serviceUrl.defaultZone: http://eureka-server-container:8761/eureka
     networks:
       - spring-network
     depends_on:
       mysql:
         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
+
   login:
     image: login
     container_name: login-container
@@ -74,10 +99,13 @@ services:
       DB_PORT: 3306
       DB_USER: admin
       DB_PASSWORD: admin
+      eureka.client.serviceUrl.defaultZone: http://eureka-server-container:8761/eureka
     networks:
       - spring-network
     depends_on:
       mysql:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
@@ -92,10 +120,13 @@ services:
       DB_PORT: 3306
       DB_USER: admin
       DB_PASSWORD: admin
+      eureka.client.serviceUrl.defaultZone: http://eureka-server-container:8761/eureka
     networks:
       - spring-network
     depends_on:
       mysql:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
@@ -110,10 +141,13 @@ services:
       DB_PORT: 3306
       DB_USER: admin
       DB_PASSWORD: admin
+      eureka.client.serviceUrl.defaultZone: http://eureka-server-container:8761/eureka
     networks:
       - spring-network
     depends_on:
       mysql:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
@@ -128,13 +162,17 @@ services:
       DB_PORT: 3306
       DB_USER: admin
       DB_PASSWORD: admin
+      eureka.client.serviceUrl.defaultZone: http://eureka-server-container:8761/eureka
     networks:
       - spring-network
     depends_on:
       mysql:
         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
     volumes:
       - ./core-module/target/classes:/app/classes
+
 networks:
   spring-network:
     driver: bridge
