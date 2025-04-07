@@ -1,11 +1,16 @@
 eureka:
   client:
-    fetch-registry: false
-    register-with-eureka: false
-  server:
-    enable-self-preservation: false
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    port: 8761
+
 spring:
   application:
-    name: eureka-server
+    name: rol-module
+
 server:
-  port: 8761
+  port: 8104
