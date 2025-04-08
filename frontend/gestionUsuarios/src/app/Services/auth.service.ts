@@ -21,7 +21,7 @@ export class AuthService {
       })
     };
 
-    return this.http.get("http://localhost:8080/usuarios", header);
+    return this.http.get("http://localhost:8106/usuarios", header);
   }
 
   loginUser(email: string, password: string, verifyCode: string, onLogin: (succes: boolean, user?: any) => void) {
@@ -32,7 +32,7 @@ export class AuthService {
       .set('otpCode', verifyCode);
 
 
-    this.http.get("http://localhost:8100/autentificacion/login",
+    this.http.get("http://localhost:8106/autentificacion/login",
       { params }).subscribe((jwt: any) => {
         if (jwt) {
           onLogin(true, jwt)
@@ -50,12 +50,19 @@ export class AuthService {
     const numRol: number = 1;
 
     const objetoRol: any = {
-      id: numRol
+      nombreRol: "ADMIN"
     }
     user.rol = objetoRol
     user.habilitado = 1
 
-    this.http.post("http://localhost:8101/autentificacion/registrar", user).subscribe(
+    const usuario = {
+      'email': user.email,
+      'password': user.password,
+      'rol': user.rol,
+      'habilitado': user.habilitado
+    }
+
+    this.http.post("http://localhost:8106/autentificacion/registrar", usuario).subscribe(
       (data) => {
         onRegister(true, data)
       },

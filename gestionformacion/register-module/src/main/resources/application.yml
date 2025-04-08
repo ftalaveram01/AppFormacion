@@ -10,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: gestionformacion
+    name: register-module
 
 server:
   port: 8101

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RolService {
 
-  private rolApiUrl: string = 'http://localhost:8104/roles';
+  private rolApiUrl: string = 'http://localhost:8106/roles';
 
   constructor(private http: HttpClient) { }
 
@@ -97,7 +97,7 @@ export class RolService {
       "Authorization": `Bearer ${token}`
     });
 
-    return this.http.get(`${this.rolApiUrl}/reporte`, { headers, responseType: 'blob'  })
+    return this.http.get(`${this.rolApiUrl}/reporte`, { headers, responseType: 'blob' })
   }
 
   getToken(): void {

@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "curso")
+@Table(name = "Curso")
 public class Course {
 
 	@Id
