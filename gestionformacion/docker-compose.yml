@@ -7,12 +7,16 @@ services:
       MYSQL_DATABASE: gestionformacion
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
+      MYSQL_INITDB_SKIP_TZINFO: 1
+      MYSQL_LOWER_CASE_TABLE_NAMES: 0
+
     ports:
       - "3306:3306"
     networks:
       - spring-network
     volumes:
       - mysql-volume:/var/lib/mysql
+      - ../script_bbdd/gestionformacion.sql:/docker-entrypoint-initdb.d/gestionformacion.sql
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
       interval: 10s

@@ -1,20 +1,17 @@
 spring:
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   application:
     name: course-module
+
 
   datasource:
     url: jdbc:mysql://mysql_database:3306/gestionformacion
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-    type: org.springframework.jdbc.datasource.SimpleDriverDataSource
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-      format_sql: true
-    show-sql: true
-    open-in-view: true
 
 server:
   port: 8102
