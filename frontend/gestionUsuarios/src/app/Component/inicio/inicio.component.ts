@@ -12,19 +12,12 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class InicioComponent implements OnInit {
 
-  user: any;
   idUser!: number;
   idAdmin!: number;
 
   constructor(private userService: UserService, private router: ActivatedRoute) { }
 
   ngOnInit(): void {
-
-    this.router.queryParams.subscribe(params => {
-      this.userService.getUser(this.idUser, this.idUser).subscribe(data => {
-        this.user = data;
-      })
-    })
 
     const storedToken = localStorage.getItem('token');
     const token = storedToken ? JSON.parse(storedToken).token : null;
