@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private userApiUrl = 'http://localhost:8103/usuarios';
+  private userApiUrl = 'http://localhost:8106/usuarios';
 
   constructor(private http: HttpClient) { }
 
@@ -142,7 +142,7 @@ export class UserService {
       "Authorization": `Bearer ${token}`
     });
 
-    return this.http.get(`${this.userApiUrl}/reporte`, { headers, responseType: 'blob'  })
+    return this.http.get(`${this.userApiUrl}/reporte`, { headers, responseType: 'blob' })
   }
 
   getToken(): void {

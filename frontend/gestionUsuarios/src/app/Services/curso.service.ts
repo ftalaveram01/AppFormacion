@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class CursoService {
 
-  private cursoApiUrl: string = 'http://localhost:8102/courses';
-  private usuariosApiURl: string = 'http://localhost:8103/usuarios'
+  private cursoApiUrl: string = 'http://localhost:8106/courses';
+  private usuariosApiURl: string = 'http://localhost:8106/usuarios'
 
   constructor(private http: HttpClient) { }
 
@@ -139,7 +139,7 @@ export class CursoService {
       "Authorization": `Bearer ${token}`
     });
 
-    return this.http.get(`${this.cursoApiUrl}/reporte`, { headers, responseType: 'blob'  })
+    return this.http.get(`${this.cursoApiUrl}/reporte`, { headers, responseType: 'blob' })
   }
 
   getToken(): void {

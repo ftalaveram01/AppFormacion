@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ConvocatoriaService {
 
-  private convocatoriaApiUrl = 'http://localhost:8105/convocatorias'
+  private convocatoriaApiUrl = 'http://localhost:8106/convocatorias'
 
   constructor(private http: HttpClient) { }
 
@@ -115,7 +115,7 @@ export class ConvocatoriaService {
       "Authorization": `Bearer ${token}`
     });
 
-    return this.http.get(`${this.convocatoriaApiUrl}/reporte`, { headers, responseType: 'blob'  })
+    return this.http.get(`${this.convocatoriaApiUrl}/reporte`, { headers, responseType: 'blob' })
   }
 
 }
