@@ -77,10 +77,13 @@
             <a href="http://localhost:4200/login">¿Ya tienes cuenta? Login</a>
         </form>
     </div>
-    <section *ngIf="succes" class="qr-section">
-        <iframe [src]="urlQR" frameborder="1" width="200" height="200px"></iframe>
-        <h3>CODIGO: {{codigoAuthQR}}</h3>
-    </section>
 
-
+    @if(succes){
+        <div class="qr-container">
+            <p>Escanea este código QR con tu aplicación Authenticator:</p>
+            <img [src]="urlQR" alt="QR Code" class="qr-image">
+            <p class="secret-code">O introduce manualmente este código:</p>
+            <p class="secret-text">{{ codigoAuthQR }}</p>
+          </div>
+    }
 </body>
