@@ -38,6 +38,7 @@ import com.viewnext.core.repositories.UsuarioRepository;
 import com.viewnext.core.security.UsuarioDetails;
 import com.viewnext.core.security.UsuarioDetailsService;
 import com.viewnext.core.security.UtilsJWT;
+import com.viewnext.core.security.UtilsOTP;
 import com.viewnext.usuario.business.services.UsuarioServices;
 
 import io.jsonwebtoken.Jwts;
@@ -57,6 +58,9 @@ class UsuarioControllerTest {
 
     @MockitoBean
     private UsuarioServices usuarioServices;
+    
+    @MockitoBean
+    private UtilsOTP utilsOTP;
 
     private UsuarioController usuarioController;
     
@@ -96,7 +100,7 @@ class UsuarioControllerTest {
     @BeforeEach
     void setUp() {
       RestAssured.baseURI = "http://localhost:" + port;
-      usuarioController = new UsuarioController(usuarioServices);
+      usuarioController = new UsuarioController(usuarioServices, utilsOTP);
     }
 	
 	@DynamicPropertySource

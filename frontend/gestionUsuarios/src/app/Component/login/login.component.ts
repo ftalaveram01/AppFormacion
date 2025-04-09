@@ -5,11 +5,14 @@ import { AuthService } from '../../Services/auth.service';
 import { LocalStorageService } from '../../Services/localstorage.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../Services/user.service';
+import { InputOtpModule } from 'primeng/inputotp';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, InputOtpModule, InputTextModule, PasswordModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

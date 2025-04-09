@@ -4,11 +4,16 @@ import { UserService } from '../../Services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RolService } from '../../Services/rol.service';
+import { ListboxModule } from 'primeng/listbox';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { AbstractControl } from '@angular/forms';
 
 
 @Component({
   selector: 'app-user-form',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ListboxModule, FloatLabelModule, InputTextModule, PasswordModule],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.css'
 })
@@ -23,17 +28,16 @@ export class UserFormComponent implements OnInit {
   usuarioActualizadoConExito: boolean = false
   usuarioCreadoConExito: boolean = false
   errors: { [nameError: string]: string } = {};
+  qr: string = "";
+  secreto: string = "";
 
   constructor(private userService: UserService, private rolService: RolService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
     this.userForm = this.fb.group({
       email: ['', Validators.required, this.emailValidator],
-      password: [''],
-      confirmPassword: [''],
-      rol: ['']
-    }, {
-      validators: this.passwordMatchValidator
-    })
-
+      password: ['',[ Validators.required, this.validarPass.bind(this)]],
+      confirmPassword: ['', Validators.required],
+      rol: ['', [Validators.required]]
+    });
   }
 
   ngOnInit(): void {
@@ -76,22 +80,25 @@ export class UserFormComponent implements OnInit {
     } else {
       if (this.isCreate == true) {
         this.createUser(this.idUser, this.userForm.value);
-        this.router.navigate(['users'])
       } else {
         console.log("ERROR EN EL FORM")
       }
     }
   }
 
-  passwordMatchValidator(formGroup: FormGroup): void {
-    const password = formGroup.get('password')?.value;
-    const confirmPassword = formGroup.get('confirmPassword')?.value;
-
-    if (password !== confirmPassword) {
-      formGroup.get('confirmPassword')?.setErrors({ noMatch: true });
-    } else {
+    validarPass(control: AbstractControl): { [key: string]: boolean } | null {
+      const value = control.value;
+      if (!value) return null;
+    
+      const hasUpperCase = /[A-Z]/.test(value);
+      const hasLowerCase = /[a-z]/.test(value);
+      const hasNumber = /[0-9]/.test(value);
+      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+      const hasEightChars = value.length >= 8;
+      const isValid = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && hasEightChars;
+    
+      return !isValid ? { passwordComplexity: true } : null;
     }
-  }
 
   async emailValidator(control: any) {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -118,11 +125,11 @@ export class UserFormComponent implements OnInit {
 
   private createUser(id: number, user: any): void {
     this.userService.createUser(user).subscribe({
-      next: (response) => {
+      next: (data) => {
         this.usuarioCreadoConExito = true
         this.userForm.reset();
-        alert('El usuario fue correctamente creado')
-        this.router.navigate(['users'])
+        this.qr = data.qr;
+        this.secreto = data.secreto;
       },
       error: (error) => {
         console.error('Error al crear usuario:');
@@ -145,6 +152,31 @@ export class UserFormComponent implements OnInit {
 
   get confirmPassword() {
     return this.userForm.get('confirmPassword');
+  }
+
+  tieneMayus(): boolean {
+    const value = this.userForm.get('password')?.value || '';
+    return /[A-Z]/.test(value);
+  }
+  
+  tieneMinus(): boolean {
+    const value = this.userForm.get('password')?.value || '';
+    return /[a-z]/.test(value);
+  }
+  
+  tieneNumero(): boolean {
+    const value = this.userForm.get('password')?.value || '';
+    return /[0-9]/.test(value);
+  }
+  
+  tieneCaracterEspecial(): boolean {
+    const value = this.userForm.get('password')?.value || '';
+    return /[!@#$%^&*(),.?":{}|<>]/.test(value);
+  }
+  
+  tiene8Caracteres(): boolean {
+    const value = this.userForm.get('password')?.value || '';
+    return value.length >= 8;
   }
 
 }

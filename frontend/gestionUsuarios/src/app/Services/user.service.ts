@@ -47,7 +47,6 @@ export class UserService {
     const objetoRol: any = {
       id: Number(user.rol)
     }
-    user.rol = objetoRol
 
     const params = new HttpParams().set('idAdmin', Number(idAdmin));
 

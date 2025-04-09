@@ -77,3 +77,112 @@ p {
 small {
     color: red;
 }
+
+.login-label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+  
+  .label-text {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .email-input {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border: 1px solid #dddddd !important;
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
+  
+  .email-input:enabled:focus {
+    outline: none;
+    border-color: #d71920 !important;
+    box-shadow: 0 0 0 2px rgba(215, 25, 32, 0.2) !important;
+  }
+  
+  .password-input {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border: 1px solid #dddddd !important;
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  ::ng-deep .p-password {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  ::ng-deep .p-password .p-password-input {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border: 1px solid #dddddd !important;
+    padding-left: 2.5rem !important;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  ::ng-deep .p-password .p-inputwrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  ::ng-deep .p-password .p-icon-wrapper {
+    right: 0.5rem !important;
+    transform: translateY(-50%);
+    top: 50%;
+  }
+  
+  ::ng-deep .p-password .p-icon {
+    color: #333333 !important;
+  }
+  
+  ::ng-deep .otp-input .p-inputotp {
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  
+  ::ng-deep .p-inputotp {
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  
+  ::ng-deep .p-inputotp .p-inputotp-input {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    border: 1px solid #dddddd !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    font-size: 1.2rem !important;
+    text-align: center !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  ::ng-deep .p-inputotp .p-inputotp-input:focus {
+    border-color: #d71920 !important;
+    box-shadow: 0 0 0 2px rgba(215, 25, 32, 0.2) !important;
+  }
+  
+  ::ng-deep .p-inputotp .p-inputotp-input::placeholder {
+    color: #999999 !important;
+  }
+  

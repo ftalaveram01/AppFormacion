@@ -2,18 +2,26 @@
     <div class="container">
 
         <form (ngSubmit)="onSubmit()">
-            <label>
-                Email:
-                <input type="email" [(ngModel)]="email" name="email" required>
+            <label class="login-label">
+                <span class="label-text">Email</span>
+                <span class="p-input-icon-left">
+                  <input type="text" pInputText [(ngModel)]="email" name="email" required 
+                         placeholder="tu@email.com" class="email-input" />
+                </span>
             </label>
-            <label>
-                Password:
-                <input type="password" [(ngModel)]="password" name="password" required>
+            <label class="login-label">
+                <span class="label-text">Contraseña</span>
+                <p-password [(ngModel)]="password" name="password" required [feedback]="false" 
+                           [toggleMask]="true" placeholder="••••••••" 
+                           inputStyleClass="password-input" [inputStyle]="{'width': '100%'}">
+                </p-password>
             </label>
-            <label>
-                Codigo de verificacion:
-                <input type="text" [(ngModel)]="verifyCode" name="verifyCode" required>
-            </label>
+            <label class="login-label">
+                <span class="label-text">Código de Acceso</span>
+                <p-inputOtp [(ngModel)]="verifyCode" name="otp" required [integerOnly]="true" 
+                           [length]="6" [mask]="true" inputStyleClass="otp-input">
+                </p-inputOtp>
+              </label>
             <small *ngIf="mensajeError">{{mensajeError}}</small>
             <button type="submit">Login</button>
             <a href="http://localhost:4200/register">¿No tienes cuenta? Registrate</a>
