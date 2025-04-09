@@ -51,7 +51,7 @@ public class Convocatoria {
 	
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "convocatoria_usuario",
+        name = "Convocatoria_Usuario",
         joinColumns = @JoinColumn(name = "id_convocatoria"),
         inverseJoinColumns = @JoinColumn(name = "id_usuario"))
     private List<Usuario> usuarios;
