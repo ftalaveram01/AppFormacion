@@ -50,7 +50,7 @@ export class AuthService {
     const numRol: number = 1;
 
     const objetoRol: any = {
-      nombreRol: "ADMIN"
+      nombreRol: "ALUMNO"
     }
     user.rol = objetoRol
     user.habilitado = 1
