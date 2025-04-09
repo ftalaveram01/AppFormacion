@@ -19,24 +19,32 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.security.UtilsOTP;
+import com.viewnext.core.security.payloads.RegistroResponse;
 import com.viewnext.usuario.business.services.UsuarioServices;
+import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
 	
 	private UsuarioServices usuarioServices;
+	
+	private UtilsOTP utilsOTP;
 
-	public UsuarioController(UsuarioServices usuarioServices) {
+	public UsuarioController(UsuarioServices usuarioServices, UtilsOTP utilsOTP) {
 		this.usuarioServices = usuarioServices;
+		this.utilsOTP = utilsOTP;
 	}
 	
     @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/crear")
-	public ResponseEntity<String> create(@RequestBody Usuario usuario, UriComponentsBuilder ucb){
-		Long id = usuarioServices.create(usuario);
-		
-		return ResponseEntity.created(ucb.path("/usuarios/{id}").build(id)).build();
+	public ResponseEntity<RegistroResponse> create(@RequestBody Usuario usuario, UriComponentsBuilder ucb){
+    	GoogleAuthenticatorKey key = utilsOTP.generateKey();
+        usuario.setSecreto(key.getKey());
+        usuarioServices.create(usuario);
+        String qr = utilsOTP.generateQRCode(usuario.getEmail(), key);
+        return ResponseEntity.ok(new RegistroResponse(qr, key.getKey()));
 	}
 	
     @PreAuthorize("hasRole('ADMIN')")
