@@ -1,11 +1,66 @@
 <form [formGroup]="convocatoriaForm" (ngSubmit)="btnConfirmarFechas()">
 
-    <label for="fechaInicio">Fecha inicio: </label>
-    <input type="datetime-local" name="fechaInicio" id="fechaInicio" formControlName="fechaInicio">
+  <h1>
+    @if(isCreate) {
+      Crear convocatoria
+    } @else {
+      Actualizar convocatoria
+    }
+  </h1>
 
-    <label for="fechaFin">Fecha fin: </label>
-    <input type="datetime-local" name="fechaFin" id="fechaFin" formControlName="fechaFin">
+  <label for="fechaInicio">Fecha inicio: </label>
+  <input type="datetime-local" name="fechaInicio" id="fechaInicio" formControlName="fechaInicio">
 
-    <button type="submit">{{isCreate ? 'Crear': 'Actualizar'}} Convocatoria</button>
+  @if (convocatoriaForm.get('fechaInicio')?.invalid && convocatoriaForm.get('fechaInicio')?.touched) {
+      <div class="error">
+        @if (convocatoriaForm.get('fechaInicio')?.errors?.['required']) {
+          <small>La fecha es obligatoria</small>
+        }
+        @if (convocatoriaForm.get('fechaInicio')?.errors?.['fechaInvalida']) {
+          <small>La fecha no puede ser anterior a la actual</small>
+        }
+      </div>
+  }
+
+  <label for="fechaFin">Fecha fin: </label>
+  <input type="datetime-local" name="fechaFin" id="fechaFin" formControlName="fechaFin">
+
+  @if (convocatoriaForm.get('fechaFin')?.invalid && convocatoriaForm.get('fechaFin')?.touched) {
+      <div class="error">
+        @if (convocatoriaForm.get('fechaFin')?.errors?.['required']) {
+          <small>La fecha es obligatoria</small>
+        }
+        @if (convocatoriaForm.get('fechaFin')?.errors?.['fechaInvalida']) {
+          <small>La fecha no puede ser anterior a la actual</small>
+        }
+      </div>
+  }
+
+  
+  @if (convocatoriaForm.errors?.['desajusteFechas']) {
+    <div class="error">
+        <small>La fecha de inicio no puede ser mayor a la fecha de fin</small>
+    </div>
+}
+
+  <p-button 
+      icon="pi pi-check"
+      [rounded]="true"
+      [disabled]="convocatoriaForm.invalid"
+      severity="success"
+      [ngClass]="{'disabled': convocatoriaForm.invalid}" 
+      [loading]="loading" 
+      (onClick)="btnConfirmarFechas()">
+  </p-button>
+  <p-button 
+    icon="pi pi-times" 
+    [rounded]="true"
+    severity="danger" 
+    (onClick)="redirigirCursos()"/>
+    <p-button 
+    icon="pi pi-undo" 
+    [rounded]="true"
+    severity="info" 
+    (onClick)="convocatoriaForm.reset()"/>
 
 </form>
