@@ -20,6 +20,7 @@ export class ConvocatoriaFormComponent implements OnInit {
   idConvocatoria!: number;
   isUpdate!: boolean;
   isCreate!: boolean;
+  isCurso!: boolean;
   loading: boolean = false;
 
   constructor(
@@ -39,6 +40,7 @@ export class ConvocatoriaFormComponent implements OnInit {
     this.idConvocatoria = Number(this.router.snapshot.queryParamMap.get('idConvocatoria'));
     this.isUpdate = (this.router.snapshot.queryParamMap.get('isUpdate')) === 'true';
     this.isCreate = (this.router.snapshot.queryParamMap.get('isCreate')) === 'true';
+    this.isCurso = (this.router.snapshot.queryParamMap.get('isCurso')) === 'true';
   }
 
   btnConfirmarFechas(): any {
@@ -143,7 +145,11 @@ export class ConvocatoriaFormComponent implements OnInit {
 
   
   redirigirCursos() {
-    this.routerNav.navigate(['/cursos']);
+    if(this.isCurso) {
+      this.routerNav.navigate(['/cursos']);
+    }else{
+      this.routerNav.navigate(['/convocatorias']);
+    }
   }
     
 }

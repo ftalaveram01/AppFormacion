@@ -293,7 +293,7 @@ export class CursoListComponent implements OnInit {
   btnCreateConvocatoria(isUpdate: boolean, isCreate: boolean, curso: any): void {
 
     this.router.navigate(['convocatorias/form'], {
-      queryParams: { idCurso: curso.id, isUpdate: isUpdate, isCreate: isCreate }
+      queryParams: { idCurso: curso.id, isUpdate: isUpdate, isCreate: isCreate, isCurso: true }
     })
 
   }
