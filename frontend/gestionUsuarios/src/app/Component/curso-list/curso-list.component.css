@@ -139,7 +139,7 @@ button:disabled {
   color: white;
 }
 
-.status-badge.habilitado {
+.status-badge.habilitado, #btn-habilitar {
   background-color: #28a745;
 }
 
