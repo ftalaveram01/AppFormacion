@@ -60,8 +60,8 @@
       <button id="btn-crear" 
         (click)="btnCreateConvocatoria(false, true, c)"
         [disabled]="c.usuarios.length < 10"
-        [ngClass]="{'disabled': c.usuarios.length < 10}"
-        [title]="c.usuarios.length < 10 ? 'No hay suficientes alumnos ({{c.usuarios.length}}/10)' : ''">
+        [ngClass]="{'disabled': c.usuarios.length < 10 || !c.habilitado}"
+        [title]="c.usuarios.length < 10 ? 'No hay suficientes alumnos' : 'Este curso está deshabilitado'">
         Crear Convocatoria
       </button>
     </div>
