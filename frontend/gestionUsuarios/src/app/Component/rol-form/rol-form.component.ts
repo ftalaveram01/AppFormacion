@@ -35,10 +35,6 @@ export class RolFormComponent implements OnInit {
       this.isUpdate = params['isUpdate'] === 'true';
       this.isCreate = params['isCreate'] === 'true';
       this.idRol = params['id'];
-
-      console.log('isUpdate:', this.isUpdate);
-      console.log('isCreate:', this.isCreate);
-      console.log('idRol:', this.idRol);
   
       if (this.isUpdate && this.idRol) {
         this.rolService.getRolById(this.idRol).subscribe(rol => {
@@ -51,7 +47,6 @@ export class RolFormComponent implements OnInit {
 
   private createRol(rol: any): void {
     this.rolService.createRol(rol).subscribe(response => {
-      console.log('Rol creado:');
       this.succesCreate = true;
       this.rolForm.reset();
       alert('El rol fue correctamente creado');
@@ -61,7 +56,6 @@ export class RolFormComponent implements OnInit {
 
   private updateRol(id: number, rol: any): void {
     this.rolService.updateRol(id, rol).subscribe(response => {
-      console.log('Rol actualizado:');
       this.succesUpdate = true;
       this.rolForm.reset();
       alert('El rol fue correctamente actualizado');

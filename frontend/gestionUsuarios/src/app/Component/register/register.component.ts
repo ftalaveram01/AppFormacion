@@ -92,7 +92,7 @@ export class RegisterComponent implements OnInit {
   createUser(user: any): void {
     this.userService.createUser(user).subscribe((ok: boolean) => {
       if (ok) {
-        console.log(`USUARIO CREADO CORRECTAMENTE`);
+        
       }
     });
   }

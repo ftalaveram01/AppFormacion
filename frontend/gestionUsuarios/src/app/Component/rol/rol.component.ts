@@ -32,16 +32,12 @@ export class RolComponent {
   }
 
   btnCreateRol(isUpdate: boolean, isCreate: boolean): void{
-    console.log(isCreate)
-    console.log(isUpdate)
     this.router.navigate(['rols/form'], {
       queryParams: {isUpdate: isUpdate, isCreate: isCreate}
     })
   }
 
   btnUpdateRol(isUpdate: boolean, isCreate: boolean, id: number): void{
-    console.log(isCreate)
-    console.log(isUpdate)
     this.router.navigate(['rols/form'], {
       queryParams: {isUpdate: isUpdate, isCreate: isCreate, id: id}
     });
@@ -100,14 +96,10 @@ export class RolComponent {
 
   buscarRol(): void{
 
-    console.log(this.roles)
-
     this.resultado = this.roles.filter(rol => {
       return rol.nombreRol.toLowerCase().includes(this.formulario.value.nombreRol)
     })
     this.filtrado = true
-
-    console.log(this.resultado)
   }
   
 }

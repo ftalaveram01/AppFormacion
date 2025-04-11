@@ -83,7 +83,6 @@ export class CursoFormComponent implements OnInit {
         this.usuarios.forEach((usuario) => {
           const seleccionado = curso ? usuariosCurso.includes(usuario.id) : false;
           grupo.addControl(`seleccionado${usuario.id}`, this.fb.control(seleccionado));
-          console.log(seleccionado)
         });
         this.seleccionadosForm = grupo;
       } else {
@@ -148,7 +147,6 @@ export class CursoFormComponent implements OnInit {
 
   private createCurso(curso: any, usuariosSeleccionados: any[]): void {
     this.cursoService.createCurso(curso, usuariosSeleccionados).subscribe(response => {
-      console.log('Curso creado:');
 
       this.succesCreate = true
 
@@ -165,7 +163,6 @@ export class CursoFormComponent implements OnInit {
     const end = start + this.limiteUsuarios;
 
     this.usuariosMostrados = users.slice(start, end)
-    console.log(this.usuariosMostrados)
   }
 
   private getUsersPage() {

@@ -62,7 +62,6 @@ export class LoginComponent {
         } else {
           this.mensajeError = token;
           this.contadorClick++;
-          console.log(this.contadorClick);
         }
       });
     }

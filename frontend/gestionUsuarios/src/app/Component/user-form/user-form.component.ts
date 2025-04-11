@@ -43,7 +43,6 @@ export class UserFormComponent implements OnInit {
   ngOnInit(): void {
 
     this.rolService.getRoles().subscribe(data => {
-      console.log(data)
       this.roles = data;
     })
 
@@ -54,7 +53,6 @@ export class UserFormComponent implements OnInit {
 
         this.idUser = +params['id'];
         this.idAdmin = Number(localStorage.getItem('idUsuario'))
-        console.log(this.idAdmin)
         this.userService.getUser(this.idUser, this.idAdmin).subscribe(user => {
           this.userForm.patchValue(user)
           this.userForm.patchValue({
@@ -75,13 +73,10 @@ export class UserFormComponent implements OnInit {
       if (this.userForm.value.id == Number(localStorage.getItem('idUsuario'))) {
         alert('El usuario fue correctamente actualizado')
         this.router.navigate(['login'])
-        console.log("Entra")
       }
     } else {
       if (this.isCreate == true) {
         this.createUser(this.idUser, this.userForm.value);
-      } else {
-        console.log("ERROR EN EL FORM")
       }
     }
   }
@@ -119,7 +114,6 @@ export class UserFormComponent implements OnInit {
       }
       this.usuarioActualizadoConExito = true
       this.userForm.reset();
-      console.log('Usuario actualizado');
     },)
   }
 
@@ -132,11 +126,7 @@ export class UserFormComponent implements OnInit {
         this.secreto = data.secreto;
       },
       error: (error) => {
-        console.error('Error al crear usuario:');
         alert('Error al crear usuario: ');
-      },
-      complete: () => {
-        console.log('La petición ha finalizado');
       }
     });
   }
