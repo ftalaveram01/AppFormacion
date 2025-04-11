@@ -12,6 +12,8 @@ public interface UsuarioServices {
 	
 	void update(Usuario usuario);
 	
+	void habilitar(Long id);
+	
 	List<Usuario> getAll();
 	
 	Usuario read(Long id);

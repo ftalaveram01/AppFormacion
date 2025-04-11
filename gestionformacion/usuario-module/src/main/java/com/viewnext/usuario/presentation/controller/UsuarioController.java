@@ -60,6 +60,13 @@ public class UsuarioController {
 		usuarioServices.update(usuario);
 		return ResponseEntity.noContent().build();
 	}
+    
+    @PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/habilitar/{id}")
+	public ResponseEntity<Void> habilitar(@PathVariable Long id){
+		usuarioServices.habilitar(id);
+		return ResponseEntity.noContent().build();
+	}
 	
     @PreAuthorize("hasRole('ADMIN')")
 	@GetMapping()
