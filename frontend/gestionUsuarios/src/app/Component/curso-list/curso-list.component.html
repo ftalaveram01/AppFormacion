@@ -20,7 +20,18 @@
     </a>
   </div>
 
-  <div class="card-curso" *ngFor="let c of cursos">
+  <div class="filter-container">
+    <div *ngIf="isAdmin()" class="filter-section">
+      <label for="filtro-estado">Filtrar Cursos:</label>
+      <select id="filtro-estado" [(ngModel)]="filtroEstado" (change)="filtrarCursos()">
+        <option value="habilitados">Habilitados</option>
+        <option value="deshabilitados">Deshabilitados</option>
+        <option value="todos">Todos</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card-curso" *ngFor="let c of cursosFiltrados">
     <div class="status-badge" [ngClass]="c.habilitado ? 'habilitado' : 'deshabilitado'">
       {{ c.habilitado ? 'Habilitado' : 'Deshabilitado' }}
     </div>
