@@ -5,13 +5,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-convocatoria-form',
-  imports: [CommonModule, ReactiveFormsModule, DatePickerModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, DatePickerModule, ButtonModule, ToastModule],
   templateUrl: './convocatoria-form.component.html',
-  styleUrls: ['./convocatoria-form.component.css']
+  styleUrls: ['./convocatoria-form.component.css'],
+  providers: [MessageService]
 })
 export class ConvocatoriaFormComponent implements OnInit {
 
@@ -27,7 +30,8 @@ export class ConvocatoriaFormComponent implements OnInit {
     private convocatoriaService: ConvocatoriaService,
     private fb: FormBuilder,
     private router: ActivatedRoute,
-    private routerNav: Router
+    private routerNav: Router,
+    private messageService: MessageService
   ) {
     this.convocatoriaForm = this.fb.group({
       fechaInicio: ['', [Validators.required, this.validadorFecha]],
@@ -46,6 +50,13 @@ export class ConvocatoriaFormComponent implements OnInit {
   btnConfirmarFechas(): any {
 
     this.loading = true;
+
+    this.messageService.add({
+      severity: 'info',
+      summary: 'En Proceso',
+      detail: this.isUpdate ? 'Actualizando convocatoria, puede tardar un poco...' : 'Creando convocatoria, puede tardar un poco...',
+      life: 8000
+    });    
   
     const fechaInicio = this.convocatoriaForm.get('fechaInicio')?.value;
     const fechaFin = this.convocatoriaForm.get('fechaFin')?.value;
