@@ -180,6 +180,19 @@ h2 {
   border-color: #0056b3;
 }
 
+.filter-section input[type="text"] {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+.filter-section input[type="text"]:hover {
+  border-color: #0056b3;
+}
+
+
 .no-users-message {
   text-align: center;
   font-size: 1.2em;

@@ -33,6 +33,10 @@
         <option value="todos">Todos</option>
       </select>
     </div>
+    <div class="filter-section">
+      <label for="search-email">Buscar por Email:</label>
+      <input type="text" id="search-email" [(ngModel)]="buscarEmail" (input)="filtrarUsuarios()" placeholder="Buscar email...">
+    </div>
   </div>
   
   <div class="table-container">
