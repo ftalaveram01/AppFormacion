@@ -187,3 +187,28 @@ button:disabled {
 .filter-section select:hover {
   border-color: #0056b3;
 }
+
+.filter-section input[type="text"],
+.filter-section input[type="number"] {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+.filter-section input[type="text"]:hover,
+.filter-section input[type="number"]:hover {
+  border-color: #0056b3;
+}
+
+.no-users-message {
+  text-align: center;
+  font-size: 1.2em;
+  color: #dc3545;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+  border-radius: 5px;
+}

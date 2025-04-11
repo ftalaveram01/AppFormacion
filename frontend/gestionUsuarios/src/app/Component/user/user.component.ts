@@ -20,6 +20,7 @@ export class UserComponent implements OnInit {
   usersFiltrados: any[] = [];
   filtroEstado: string = 'todos';
   filtroRol: string = 'todos';
+  buscarEmail: string = '';
   
 
   constructor(
@@ -52,6 +53,13 @@ export class UserComponent implements OnInit {
       (u) => u.rol.nombreRol === this.filtroRol
       );
     }
+    
+    if (this.buscarEmail) {
+      this.usersFiltrados = this.usersFiltrados.filter(
+        (u) => u.email.toLowerCase().includes(this.buscarEmail.toLowerCase())
+      );
+    }
+      
   }    
 
   deleteUser(id: number): void{

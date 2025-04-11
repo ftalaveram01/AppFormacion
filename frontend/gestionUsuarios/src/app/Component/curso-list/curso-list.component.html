@@ -29,79 +29,93 @@
         <option value="todos">Todos</option>
       </select>
     </div>
-  </div>
-
-  <div class="card-curso" *ngFor="let c of cursosFiltrados">
-    <div class="status-badge" [ngClass]="c.habilitado ? 'habilitado' : 'deshabilitado'">
-      {{ c.habilitado ? 'Habilitado' : 'Deshabilitado' }}
+    <div class="filter-section">
+      <label for="search-nombre">Buscar por Nombre:</label>
+      <input type="text" id="search-nombre" [(ngModel)]="buscarNombre" (input)="filtrarCursos()" placeholder="Buscar nombre...">
     </div>
-    <h3>{{c.nombre}}</h3>
-    <p><strong>Descripción:</strong> {{c.descripcion}}</p>
-    <p><strong>Número de horas:</strong> {{c.numeroHoras}}</p>
-
-    <div *ngIf="idAdmin == 0">
-      <p><strong>Usuarios Inscritos:</strong> {{c.usuarios.length}}</p>
-      <table class="tabla-usuarios">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let u of c.usuarios">
-            <td>{{u.email}}</td>
-            <td>
-              <button id="btn-eliminar-usuario" (click)="btnDeleteUserCourse(u.id, c.id)">Eliminar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div *ngIf="idAdmin == 0" class="botones-admin">
-      <button id="btn-eliminar" 
-        (click)="deleteCurso(c.id, c.nombre)" 
-        [disabled]="!c.habilitado"
-        [ngClass]="{'disabled': !c.habilitado}"
-        [title]="c.habilitado ? 'Deshabilitar el curso' : 'Este curso ya está deshabilitado'">
-        Eliminar
-      </button>
-      <button id="btn-habilitar" 
-        (click)="habilitarCurso(c)" 
-        [disabled]="c.habilitado"
-        [ngClass]="{'disabled': c.habilitado}"
-        [title]="!c.habilitado ? 'Habilitar el curso' : 'Este curso ya está habilitado'">
-        Habilitar
-      </button>
-      <button id="btn-update" 
-        (click)="btnUpdateCurso(true, c.id)"
-        [disabled]="!c.habilitado"
-        [title]="c.habilitado ? 'Actualizar el curso' : 'El curso no está habilitado'">
-        Actualizar
-      </button>
-      <button id="btn-crear" 
-        (click)="btnCreateConvocatoria(false, true, c)"
-        [disabled]="c.usuarios.length < 10"
-        [ngClass]="{'disabled': c.usuarios.length < 10 || !c.habilitado}"
-        [title]="!c.habilitado? 'Este curso está deshabilitado' : c.usuarios.length < 10 ? 'No hay suficientes alumnos' : 'Crear convocatoria'">
-        Crear Convocatoria
-      </button>
-    </div>
-
-    <div *ngIf="idAdmin == 1" class="botones-alumno">
-      <button id="btn-inscripcion" 
-        (click)="btnMatricularse(c.id, c.nombre)" 
-        [disabled]="isInscrito(c.id)"
-        [ngClass]="{'disabled': isInscrito(c.id)}">Matricularse</button>
-      <button id="btn-desincripcion" 
-        (click)="btnDesmatricularse(c.id, c.nombre)" 
-        [disabled]="!isInscrito(c.id)"
-        [ngClass]="{'disabled': !isInscrito(c.id)}">Desmatricularse</button>
+    <div class="filter-section">
+      <label for="filtro-horas">Filtrar por Número de Horas:</label>
+      <input type="number" id="filtro-horas" [(ngModel)]="filtroHoras" (input)="filtrarCursos()" placeholder="Número de horas...">
     </div>
   </div>
+
+  @if(cursosFiltrados.length > 0){
+    <div class="card-curso" *ngFor="let c of cursosFiltrados">
+      <div class="status-badge" [ngClass]="c.habilitado ? 'habilitado' : 'deshabilitado'">
+        {{ c.habilitado ? 'Habilitado' : 'Deshabilitado' }}
+      </div>
+      <h3>{{c.nombre}}</h3>
+      <p><strong>Descripción:</strong> {{c.descripcion}}</p>
+      <p><strong>Número de horas:</strong> {{c.numeroHoras}}</p>
+  
+      <div *ngIf="idAdmin == 0">
+        <p><strong>Usuarios Inscritos:</strong> {{c.usuarios.length}}</p>
+        <table class="tabla-usuarios">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of c.usuarios">
+              <td>{{u.email}}</td>
+              <td>
+                <button id="btn-eliminar-usuario" (click)="btnDeleteUserCourse(u.id, c.id)">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div *ngIf="idAdmin == 0" class="botones-admin">
+        <button id="btn-eliminar" 
+          (click)="deleteCurso(c.id, c.nombre)" 
+          [disabled]="!c.habilitado"
+          [ngClass]="{'disabled': !c.habilitado}"
+          [title]="c.habilitado ? 'Deshabilitar el curso' : 'Este curso ya está deshabilitado'">
+          Eliminar
+        </button>
+        <button id="btn-habilitar" 
+          (click)="habilitarCurso(c)" 
+          [disabled]="c.habilitado"
+          [ngClass]="{'disabled': c.habilitado}"
+          [title]="!c.habilitado ? 'Habilitar el curso' : 'Este curso ya está habilitado'">
+          Habilitar
+        </button>
+        <button id="btn-update" 
+          (click)="btnUpdateCurso(true, c.id)"
+          [disabled]="!c.habilitado"
+          [title]="c.habilitado ? 'Actualizar el curso' : 'El curso no está habilitado'">
+          Actualizar
+        </button>
+        <button id="btn-crear" 
+          (click)="btnCreateConvocatoria(false, true, c)"
+          [disabled]="c.usuarios.length < 10"
+          [ngClass]="{'disabled': c.usuarios.length < 10 || !c.habilitado}"
+          [title]="!c.habilitado? 'Este curso está deshabilitado' : c.usuarios.length < 10 ? 'No hay suficientes alumnos' : 'Crear convocatoria'">
+          Crear Convocatoria
+        </button>
+      </div>
+  
+      <div *ngIf="idAdmin == 1" class="botones-alumno">
+        <button id="btn-inscripcion" 
+          (click)="btnMatricularse(c.id, c.nombre)" 
+          [disabled]="isInscrito(c.id)"
+          [ngClass]="{'disabled': isInscrito(c.id)}">Matricularse</button>
+        <button id="btn-desincripcion" 
+          (click)="btnDesmatricularse(c.id, c.nombre)" 
+          [disabled]="!isInscrito(c.id)"
+          [ngClass]="{'disabled': !isInscrito(c.id)}">Desmatricularse</button>
+      </div>
+    </div>
+  }@else {
+    <div class="no-users-message">
+      No hay cursos que coincidan con los filtros seleccionados.
+    </div>
+  }
+
 </div>
-
 
 <p-toast position="top-left"></p-toast>
 <p-confirmdialog />
