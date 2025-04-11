@@ -54,6 +54,10 @@ export class RolComponent {
   }
 
   btnGenerarReporte(): void {
+    this.messageService.add({severity:'info', 
+      summary:'En Proceso', 
+      detail:`Generando el reporte, puede tardar unos segundos...`,
+      life: 5000 });
     this.rolService.obtenerReporte().subscribe((blob: Blob) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
