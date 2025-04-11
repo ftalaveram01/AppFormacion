@@ -11,20 +11,20 @@ import { RolFormComponent } from './Component/rol-form/rol-form.component';
 import { ConvocatoriaComponent } from './Component/convocatoria/convocatoria.component';
 import { ConvocatoriaFormComponent } from './Component/convocatoria-form/convocatoria-form.component';
 import { ConfirmacionComponent } from './Component/confirmacion/confirmacion.component';
-
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
-    { path: '', component: LoginComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'inicio', component: InicioComponent },
-    { path: 'cursos', component: CursoListComponent },
-    { path: 'cursos/form', component: CursoFormComponent },
-    { path: `users`, component: UserComponent },
-    { path: `user/form`, component: UserFormComponent },
-    { path: `rols`, component: RolComponent },
-    { path: `rols/form`, component: RolFormComponent },
-    { path: `convocatorias`, component: ConvocatoriaComponent },
-    { path: `convocatorias/form`, component: ConvocatoriaFormComponent },
-    { path: `confirmacion`, component: ConfirmacionComponent }
+  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'inicio', component: InicioComponent, canActivate: [AuthGuard] },
+  { path: 'cursos', component: CursoListComponent, canActivate: [AuthGuard] },
+  { path: 'cursos/form', component: CursoFormComponent, canActivate: [AuthGuard] },
+  { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
+  { path: 'user/form', component: UserFormComponent, canActivate: [AuthGuard] },
+  { path: 'rols', component: RolComponent, canActivate: [AuthGuard] },
+  { path: 'rols/form', component: RolFormComponent, canActivate: [AuthGuard] },
+  { path: 'convocatorias', component: ConvocatoriaComponent, canActivate: [AuthGuard] },
+  { path: 'convocatorias/form', component: ConvocatoriaFormComponent, canActivate: [AuthGuard] },
+  { path: 'confirmacion', component: ConfirmacionComponent, canActivate: [AuthGuard] }
 ];

@@ -53,28 +53,44 @@
         (click)="deleteCurso(c.id, c.nombre)" 
         [disabled]="!c.habilitado"
         [ngClass]="{'disabled': !c.habilitado}"
-        title="Este curso no está habilitado para eliminar">
+        [title]="c.habilitado ? 'Deshabilitar el curso' : 'Este curso ya está deshabilitado'">
         Eliminar
       </button>
-      <button id="btn-update" (click)="btnUpdateCurso(true, c.id)">Actualizar</button>
+      <button id="btn-habilitar" 
+        (click)="habilitarCurso(c)" 
+        [disabled]="c.habilitado"
+        [ngClass]="{'disabled': c.habilitado}"
+        [title]="!c.habilitado ? 'Habilitar el curso' : 'Este curso ya está habilitado'">
+        Habilitar
+      </button>
+      <button id="btn-update" 
+        (click)="btnUpdateCurso(true, c.id)"
+        [disabled]="!c.habilitado"
+        [title]="c.habilitado ? 'Actualizar el curso' : 'El curso no está habilitado'">
+        Actualizar
+      </button>
       <button id="btn-crear" 
         (click)="btnCreateConvocatoria(false, true, c)"
         [disabled]="c.usuarios.length < 10"
-        [ngClass]="{'disabled': c.usuarios.length < 10}"
-        [title]="c.usuarios.length < 10 ? 'No hay suficientes alumnos ({{c.usuarios.length}}/10)' : ''">
+        [ngClass]="{'disabled': c.usuarios.length < 10 || !c.habilitado}"
+        [title]="!c.habilitado? 'Este curso está deshabilitado' : c.usuarios.length < 10 ? 'No hay suficientes alumnos' : 'Crear convocatoria'">
         Crear Convocatoria
       </button>
     </div>
 
     <div *ngIf="idAdmin == 1" class="botones-alumno">
       <button id="btn-inscripcion" 
-        (click)="btnMatricularse(c.id)" 
+        (click)="btnMatricularse(c.id, c.nombre)" 
         [disabled]="isInscrito(c.id)"
         [ngClass]="{'disabled': isInscrito(c.id)}">Matricularse</button>
       <button id="btn-desincripcion" 
-        (click)="btnDesmatricularse(c.id)" 
+        (click)="btnDesmatricularse(c.id, c.nombre)" 
         [disabled]="!isInscrito(c.id)"
         [ngClass]="{'disabled': !isInscrito(c.id)}">Desmatricularse</button>
     </div>
   </div>
 </div>
+
+
+<p-toast position="top-left"></p-toast>
+<p-confirmdialog />

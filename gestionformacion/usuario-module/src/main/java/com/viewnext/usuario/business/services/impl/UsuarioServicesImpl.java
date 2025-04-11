@@ -102,6 +102,21 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	
 	@Transactional
 	@Override
+	public void habilitar(Long id) {
+
+		if(!usuarioRepository.existsById(id))
+			throw new IllegalStateException("No existe el usuario a actualizar.");
+		
+		Usuario usu = usuarioRepository.findById(id).get();
+		if(usu.getHabilitado())
+			throw new IllegalStateException("El usuario ya está habilitado");
+		usu.setHabilitado(true);
+		
+		usuarioRepository.save(usu);
+	}
+	
+	@Transactional
+	@Override
 	public void deshabilitarUsuario(String email) {
 		
 		if(!usuarioRepository.existsByEmail(email))

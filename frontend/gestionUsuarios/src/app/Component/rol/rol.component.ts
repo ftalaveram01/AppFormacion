@@ -3,12 +3,16 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RolService } from '../../Services/rol.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-rol',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ToastModule, ConfirmDialogModule],
   templateUrl: './rol.component.html',
-  styleUrl: './rol.component.css'
+  styleUrl: './rol.component.css',
+  providers: [MessageService, ConfirmationService]
 })
 export class RolComponent {
 
@@ -19,7 +23,11 @@ export class RolComponent {
   resultado: any[] = []
   filtrado: boolean = false
 
-  constructor(private rolService: RolService, private router: Router) {
+  constructor(
+    private rolService: RolService, 
+    private router: Router,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService) {
 
   }
 
@@ -54,9 +62,16 @@ export class RolComponent {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-  }, error => {
-      console.error('Error downloading the PDF', error);
-  });
+      this.messageService.add({severity:'success', 
+        summary:'Correcto', 
+        detail:`Reporte generado.`,
+        life: 5000 });
+    }, error => {
+    this.messageService.add({severity:'error', 
+      summary:'Error', 
+      detail:`No se ha podido generar el reporte, disculpe las molestias.`,
+      life: 5000 });
+    });
   }
 
   ngOnInit(): void{

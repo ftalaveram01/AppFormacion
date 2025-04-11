@@ -1,14 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CursoService } from '../../Services/curso.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { TextareaModule } from 'primeng/textarea';
+import Swal from 'sweetalert2';
 
 
 @Component({
   selector: 'app-curso-form',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, FloatLabelModule, InputTextModule, InputNumberModule, TextareaModule],
   templateUrl: './curso-form.component.html',
   styleUrl: './curso-form.component.css'
 })
@@ -24,20 +29,19 @@ export class CursoFormComponent implements OnInit {
   usuarios: any[] = [];
   seleccionadosForm: FormGroup;
 
-  // PAGINACION DE USUARIOS
-
   seleccionados: Set<number> = new Set();
   usuariosMostrados: any[] = []
   page: number = 1;
   limiteUsuarios: number = 5;
   totalPages: number = 0;
 
-  constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
+  constructor(private cursoService: CursoService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {  
     this.cursoForm = this.fb.group({
-      nombre: [''],
-      descripcion: [''],
-      numeroHoras: ['']
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      descripcion: ['', [Validators.required, Validators.minLength(15)]],
+      numeroHoras: ['', [Validators.required, Validators.min(1)]]
     });
+  
 
     this.searchForm = this.fb.group({
       userSearch: ['']
@@ -114,17 +118,32 @@ export class CursoFormComponent implements OnInit {
       }
     }
   }
-
+  
   private updateCurso(id: number, curso: any, usuariosSeleccionados: any[]): void {
-    this.cursoService.updateCurso(id, curso, usuariosSeleccionados).subscribe(response => {
-      console.log('Curso actualizado:');
-
-      this.succesUpdate = true
-
-      this.cursoForm.reset();
-      alert('El curso fue correctamente actualizado')
-      this.router.navigate(['/cursos'])
-    },)
+    this.cursoService.updateCurso(id, curso, usuariosSeleccionados).subscribe({
+      next: (data) => {
+        Swal.fire({
+          title: "Perfecto",
+          text: "Curso actualizado correctamente",
+          icon: "success",
+          timer: 2000,
+          willClose: () => {
+            this.router.navigate(['cursos']);
+          }
+        });
+      },
+      error : (error) => {
+        Swal.fire({
+          title: "Error",
+          text: "No se ha podido actualizar el curso",
+          icon: "error",
+          timer: 2000,
+          willClose: () => {
+            this.router.navigate(['cursos']);
+          }
+        });
+      } 
+    });
   }
 
   private createCurso(curso: any, usuariosSeleccionados: any[]): void {

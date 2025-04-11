@@ -114,23 +114,27 @@ public class ConvocatoriaScheduler {
     @Transactional
     public void tareaFechaInicio(Convocatoria convocatoria) {
         Convocatoria actualizada = convocatoriaRepository.findById(convocatoria.getId()).get();
-        if(actualizada.getUsuarios().size()>9) {
-        	actualizada.setEstado(ConvocatoriaEnum.EN_CURSO);
-        	convocatoria.setEstado(ConvocatoriaEnum.EN_CURSO);
-        }else {
-            actualizada.setEstado(ConvocatoriaEnum.DESIERTA);
-            convocatoria.setEstado(ConvocatoriaEnum.DESIERTA);
-            cancelarTareas(convocatoria);
+        if(!actualizada.getEstado().equals(ConvocatoriaEnum.DESIERTA)) {
+            if(actualizada.getUsuarios().size()>9) {
+            	actualizada.setEstado(ConvocatoriaEnum.EN_CURSO);
+            	convocatoria.setEstado(ConvocatoriaEnum.EN_CURSO);
+            }else {
+                actualizada.setEstado(ConvocatoriaEnum.DESIERTA);
+                convocatoria.setEstado(ConvocatoriaEnum.DESIERTA);
+                cancelarTareas(convocatoria);
+            }
+            convocatoriaRepository.save(actualizada);
         }
-        convocatoriaRepository.save(actualizada);
         
     }
     
     @Transactional
     public void tareaFechaFin(Convocatoria convocatoria) {
     	Convocatoria actualizada = convocatoriaRepository.findById(convocatoria.getId()).get();
-    	actualizada.setEstado(ConvocatoriaEnum.TERMINADA);
-    	convocatoriaRepository.save(actualizada);
+    	if(!actualizada.getEstado().equals(ConvocatoriaEnum.DESIERTA)) {
+        	actualizada.setEstado(ConvocatoriaEnum.TERMINADA);
+        	convocatoriaRepository.save(actualizada);
+    	}
     }
     
     public void reiniciarScheduler() {

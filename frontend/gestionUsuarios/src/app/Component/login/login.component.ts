@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../Services/auth.service';
 import { LocalStorageService } from '../../Services/localstorage.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../Services/user.service';
 import { InputOtpModule } from 'primeng/inputotp';
 import { InputTextModule } from 'primeng/inputtext';
@@ -14,7 +14,7 @@ import { PasswordModule } from 'primeng/password';
   standalone: true,
   imports: [CommonModule, FormsModule, InputOtpModule, InputTextModule, PasswordModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
 
@@ -25,7 +25,13 @@ export class LoginComponent {
   contadorClick: number = 0;
   mensajeError!: any;
 
-  constructor(private authService: AuthService, private userService: UserService, private localStorage: LocalStorageService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private localStorage: LocalStorageService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void { }
 
@@ -49,17 +55,16 @@ export class LoginComponent {
       this.authService.loginUser(this.email, this.password, this.verifyCode, (ok: boolean, token?: any) => {
         if (ok) {
           localStorage.setItem("token", JSON.stringify(token));
-          this.router.navigate(['/inicio']);
+
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/inicio';
+          this.router.navigateByUrl(returnUrl);
+
         } else {
-
-          this.mensajeError = token
-
-          this.contadorClick++
-
-          console.log(this.contadorClick)
-
+          this.mensajeError = token;
+          this.contadorClick++;
+          console.log(this.contadorClick);
         }
-      })
+      });
     }
   }
 }

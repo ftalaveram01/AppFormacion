@@ -105,6 +105,14 @@ h2 {
   background-color: #c82333;
 }
 
+.users-tabla td button#btn-Habilitar {
+  background-color: #28a745;
+}
+
+.users-tabla td button#btn-Habilitar:hover {
+  background-color: #28a745;
+}
+
 .users-tabla td button:disabled {
   background-color: #cccccc;
   color: #666666;

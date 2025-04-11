@@ -1,27 +1,33 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ConvocatoriaService } from '../../Services/convocatoria.service';
 import { UserService } from '../../Services/user.service';
 import { jwtDecode } from 'jwt-decode';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-convocatoria',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ToastModule, ConfirmDialogModule],
   templateUrl: './convocatoria.component.html',
-  styleUrl: './convocatoria.component.css'
+  styleUrl: './convocatoria.component.css',
+  providers: [MessageService, ConfirmationService]
 })
 export class ConvocatoriaComponent {
   convocatorias: any[] = [];
   convocatoriasFiltradas: any[] = [];
   idAdmin!: number;
-  filtroEstado: string = 'activas'; // Estado por defecto del filtro
+  filtroEstado: string = 'activas';
 
   constructor(
     private convocatoriaService: ConvocatoriaService,
     private router: Router,
-    private usuariosSerivices: UserService
+    private usuariosSerivices: UserService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -35,12 +41,12 @@ export class ConvocatoriaComponent {
     if (this.isAdmin()) {
       this.convocatoriaService.getConvocatorias().subscribe((data) => {
         this.convocatorias = data;
-        this.filtrarConvocatorias(); // Aplicar el filtro al inicializar
+        this.filtrarConvocatorias();
       });
     } else {
       this.convocatoriaService.getConvocatoriasActivas().subscribe((data) => {
         this.convocatorias = data;
-        this.convocatoriasFiltradas = data; // Los usuarios normales solo ven convocatorias activas
+        this.convocatoriasFiltradas = data;
       });
     }
   }
@@ -69,10 +75,53 @@ export class ConvocatoriaComponent {
   }
 
   btnDeleteConvocatoria(id: number): void {
-    this.convocatoriaService.deleteConvocatoria(id).subscribe(() => {
-      this.convocatorias = this.convocatorias.filter((c) => c.id !== id);
-      this.filtrarConvocatorias(); // Volver a aplicar el filtro tras eliminar
+
+    this.confirmationService.confirm({
+      message: 'Borrar una convocatoria es un acto irreversible, pasará a DESIERTA.',
+      header: '¿Estás seguro?',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+          label: 'Cancelar',
+          severity: 'secondary',
+          outlined: true,
+      },
+      acceptButtonProps: {
+          label: 'Borrar',
+          severity: 'danger',
+      },
+      accept: () => {
+        this.convocatoriaService.deleteConvocatoria(id).subscribe({
+          next: () => {
+            this.convocatorias = this.convocatorias.filter((c) => c.id !== id);
+            this.convocatoriaService.getConvocatorias().subscribe((data) => {
+              this.convocatorias = data;
+            });
+            this.filtrarConvocatorias();
+    
+            this.messageService.add({severity:'success', 
+              summary:'Correcto', 
+              detail:`La convocatoria se ha borrado correctamente.`,
+              life: 5000 });
+          },
+          error: () => {
+            this.messageService.add({severity:'error', 
+              summary:'Error', 
+              detail:`No se ha podido eliminar la convocatoria.`,
+              life: 5000 });
+          }
+        });
+      },
+      reject: () => {
+        this.messageService.add({severity:'info', 
+          summary:'Vuelta atrás', 
+          detail:`Has decidido no borrar la convocatoria.`,
+          life: 5000 });
+      },
     });
+
+
   }
 
   btnGenerarReporte(): void {
@@ -84,8 +133,15 @@ export class ConvocatoriaComponent {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      this.messageService.add({severity:'success', 
+        summary:'Correcto', 
+        detail:`Reporte generado.`,
+        life: 5000 });
   }, error => {
-      console.error('Error downloading the PDF', error);
+    this.messageService.add({severity:'error', 
+      summary:'Error', 
+      detail:`No se ha podido generar el reporte, disculpe las molestias.`,
+      life: 5000 });
   });
   }
 

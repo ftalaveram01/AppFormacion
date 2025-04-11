@@ -11,9 +11,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.viewnext.core.business.model.Convocatoria;
+import com.viewnext.core.business.model.ConvocatoriaEnum;
 import com.viewnext.core.business.model.Course;
 import com.viewnext.core.business.model.CourseReporte;
 import com.viewnext.core.business.model.Usuario;
+import com.viewnext.core.repositories.ConvocatoriaRepository;
 import com.viewnext.core.repositories.CursoRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
 import com.viewnext.course.business.services.CourseServices;
@@ -37,11 +40,14 @@ public class CourseServicesImpl implements CourseServices {
 	private final CursoRepository cursoRepository;
 	
 	private final UsuarioRepository usuarioRepository;
+	
+	private final ConvocatoriaRepository convocatoriaRepository;
 
-	public CourseServicesImpl(CursoRepository cursoRepository, UsuarioRepository usuarioRepository) {
+	public CourseServicesImpl(CursoRepository cursoRepository, UsuarioRepository usuarioRepository, ConvocatoriaRepository convocatoriaRepository) {
 		this.cursoRepository = cursoRepository;
 		this.usuarioRepository = usuarioRepository;
-	}
+		this.convocatoriaRepository = convocatoriaRepository;	
+		}
 
 	@Override
 	public Long create(Course course) {
@@ -95,6 +101,13 @@ public class CourseServicesImpl implements CourseServices {
 			curso.setHabilitado(false);
 			curso.setUsuarios(new ArrayList<>());
 			cursoRepository.save(curso);
+			
+			List<Convocatoria> convocatorias = curso.getConvocatorias();
+			convocatorias.stream().filter(c -> !( 
+					c.getEstado().equals(ConvocatoriaEnum.TERMINADA) || 
+					c.getEstado().equals(ConvocatoriaEnum.DESIERTA)) )
+					.forEach(c -> c.setEstado(ConvocatoriaEnum.DESIERTA));
+			convocatoriaRepository.saveAll(convocatorias);
 		}else
 			throw new IllegalStateException("El curso ya está deshabilitado");	
 	}

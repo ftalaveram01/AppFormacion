@@ -5,12 +5,17 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ConvocatoriaService } from '../../Services/convocatoria.service';
 import { jwtDecode } from 'jwt-decode';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-curso-list',
-  imports: [CommonModule],
+  imports: [CommonModule, ToastModule, ConfirmDialogModule, ButtonModule],
   templateUrl: './curso-list.component.html',
-  styleUrls: ['./curso-list.component.css']
+  styleUrls: ['./curso-list.component.css'],
+  providers: [MessageService, ConfirmationService]
 })
 export class CursoListComponent implements OnInit {
 
@@ -19,7 +24,12 @@ export class CursoListComponent implements OnInit {
   idUsuario!: number;
   cursoForm: FormGroup;
 
-  constructor(private cursoService: CursoService, private fb: FormBuilder, private router: Router, private convocatoriaServices: ConvocatoriaService) {
+  constructor(private cursoService: CursoService, 
+    private fb: FormBuilder, 
+    private router: Router, 
+    private convocatoriaServices: ConvocatoriaService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService) {
     this.cursoForm = this.fb.group({
       nombre: [''],
       descripcion: [''],
@@ -55,13 +65,90 @@ export class CursoListComponent implements OnInit {
     this.idUsuario = tokenDecoded.sub;
   }
 
+  habilitarCurso(curso:any): void {
+
+    this.confirmationService.confirm({
+      message: 'Será visible para todos los usuarios y podrán matricularse. Podrá deshabilitarlo cuando desee.',
+      header: '¿Estás seguro?',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+          label: 'Cancelar',
+          severity: 'secondary',
+          outlined: true,
+      },
+      acceptButtonProps: {
+          label: 'Habilitar',
+          severity: 'primary',
+      },
+      accept: () => {
+        this.cursoService.updateCurso(curso.id, curso, curso.usuarios).subscribe({
+          next: () => {
+            this.ngOnInit();
+            this.messageService.add({severity:'success', 
+              summary:'Correcto', 
+              detail:`El curso "${curso.nombre}" ha sido habilitado.`,
+              life: 5000 });
+          },
+          error: () => {
+            this.messageService.add({severity:'error', 
+              summary:'Error', 
+              detail:`No se ha podido habilitar el curso, inténtalo más tarde.`,
+              life: 5000 });
+          }
+        })
+      },
+      reject: () => {
+        this.messageService.add({severity:'info', 
+          summary:'Vuelta atrás', 
+          detail:`Has decidido no habilitar el curso.`,
+          life: 5000 });
+      },
+    });
+  }
+
   deleteCurso(id: number, nombreCurso: string): void {
-    const ok = confirm("¿Estas seguro que deseas eliminar el curso " + nombreCurso.toUpperCase() + " ?")
-    if (ok) {
-      this.cursoService.deleteCurso(id).subscribe(() => {
-        this.ngOnInit();
-      })
-    }
+
+    this.confirmationService.confirm({
+      message: 'Finalizaran todas sus convocatorias en curso y sus usuarios serán desmatriculados. Puede volverlo a habilitar pero esto será irreversible.',
+      header: '¿Estás seguro?',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+          label: 'Cancelar',
+          severity: 'secondary',
+          outlined: true,
+      },
+      acceptButtonProps: {
+          label: 'Borrar',
+          severity: 'danger',
+      },
+      accept: () => {
+        this.cursoService.deleteCurso(id).subscribe({
+          next: () => {
+            this.ngOnInit();
+            this.messageService.add({severity:'success', 
+              summary:'Correcto', 
+              detail:`El curso "${nombreCurso}" ha sido eliminado.`,
+              life: 5000 });
+          },
+          error: () => {
+            this.messageService.add({severity:'error', 
+              summary:'Error', 
+              detail:`No se ha podido eliminar el curso, inténtalo más tarde.`,
+              life: 5000 });
+          }
+        })
+      },
+      reject: () => {
+        this.messageService.add({severity:'info', 
+          summary:'Vuelta atrás', 
+          detail:`Has decidido no eliminar el curso.`,
+          life: 5000 });
+      },
+    });
   }
 
   btnUpdateCurso(isUpdate: boolean, id: number): void {
@@ -70,56 +157,124 @@ export class CursoListComponent implements OnInit {
     });
   }
 
-  btnMatricularse(idCurso: number): void {
-    this.cursoService.addUsuarioToCurso(idCurso, this.idUsuario).subscribe(() => {
-      this.cursoService.getCursos().subscribe(data => {
-        this.cursos = data.map((curso: any) => {
-          const fechaInicio = new Date(curso.fechaInicio);
-          const fechaFin = new Date(curso.fechaFin);
-          return {
-            ...curso,
-            fechaInicio: this.formatearFecha(fechaInicio),
-            fechaFin: this.formatearFecha(fechaFin)
-          };
+  btnMatricularse(idCurso: number, nombre: string): void {
+    this.cursoService.addUsuarioToCurso(idCurso, this.idUsuario).subscribe({
+      next: () => {
+        this.cursoService.getCursos().subscribe(data => {
+          this.cursos = data.map((curso: any) => {
+            const fechaInicio = new Date(curso.fechaInicio);
+            const fechaFin = new Date(curso.fechaFin);
+            return {
+              ...curso,
+              fechaInicio: this.formatearFecha(fechaInicio),
+              fechaFin: this.formatearFecha(fechaFin)
+            };
+          });
+          this.cursos = this.cursos.filter(curso => curso.habilitado === true)
         });
-        this.cursos = this.cursos.filter(curso => curso.habilitado === true)
-      });
+
+        this.messageService.add({severity:'success', 
+          summary:'Correcto', 
+          detail:`Te has matriculado en el curso ${nombre}.`,
+          life: 5000 });
+      },
+      error: () => {
+        this.messageService.add({severity:'error', 
+          summary:'Error', 
+          detail:`No te has podido matricular en el curso, inténtalo más tarde.`,
+          life: 5000 });
+      }
     })
   }
 
-  btnDesmatricularse(idCurso: number): void {
-    this.cursoService.deleteUsuarioFromCurso(this.idUsuario, idCurso).subscribe(() => {
-      this.cursoService.getCursos().subscribe(data => {
-        this.cursos = data.map((curso: any) => {
-          const fechaInicio = new Date(curso.fechaInicio);
-          const fechaFin = new Date(curso.fechaFin);
-          return {
-            ...curso,
-            fechaInicio: this.formatearFecha(fechaInicio),
-            fechaFin: this.formatearFecha(fechaFin)
-          };
+  btnDesmatricularse(idCurso: number, nombre :string): void {
+    this.cursoService.deleteUsuarioFromCurso(this.idUsuario, idCurso).subscribe({
+      next: () => {
+        this.cursoService.getCursos().subscribe(data => {
+          this.cursos = data.map((curso: any) => {
+            const fechaInicio = new Date(curso.fechaInicio);
+            const fechaFin = new Date(curso.fechaFin);
+            return {
+              ...curso,
+              fechaInicio: this.formatearFecha(fechaInicio),
+              fechaFin: this.formatearFecha(fechaFin)
+            };
+          });
+          this.cursos = this.cursos.filter(curso => curso.habilitado === true)
         });
-        this.cursos = this.cursos.filter(curso => curso.habilitado === true)
-      });
+
+        this.messageService.add({severity:'success', 
+          summary:'Correcto', 
+          detail:`Te has desmatriculado del curso ${nombre}.`,
+          life: 5000 });
+
+      },
+      error: () => {
+        this.messageService.add({severity:'error', 
+          summary:'Error', 
+          detail:`No te has podido desmatricular del curso, inténtalo más tarde.`,
+          life: 5000 });
+      }
     })
   }
-
 
   btnDeleteUserCourse(id: number, idCurso: number): void {
-    this.cursoService.deleteUsuarioFromCurso(id, idCurso).subscribe(() => {
-      this.cursos = this.cursos.filter(u => u.id !== id)
-      this.cursoService.getCursos().subscribe(data => {
-        this.cursos = data.map((curso: any) => {
-          const fechaInicio = new Date(curso.fechaInicio);
-          const fechaFin = new Date(curso.fechaFin);
-          return {
-            ...curso,
-            fechaInicio: this.formatearFecha(fechaInicio),
-            fechaFin: this.formatearFecha(fechaFin)
-          };
+
+    this.confirmationService.confirm({
+      message: 'Si está en una convocatoria en curso será eliminado de ella. Esto es completamente irreversible.',
+      header: '¿Estás seguro?',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+          label: 'Cancelar',
+          severity: 'secondary',
+          outlined: true,
+      },
+      acceptButtonProps: {
+          label: 'Borrar',
+          severity: 'danger',
+      },
+      accept: () => {
+        this.cursoService.deleteUsuarioFromCurso(id, idCurso).subscribe({
+          next: () => {
+            this.cursos = this.cursos.filter(u => u.id !== id)
+            this.cursoService.getCursos().subscribe(data => {
+              this.cursos = data.map((curso: any) => {
+                const fechaInicio = new Date(curso.fechaInicio);
+                const fechaFin = new Date(curso.fechaFin);
+                return {
+                  ...curso,
+                  fechaInicio: this.formatearFecha(fechaInicio),
+                  fechaFin: this.formatearFecha(fechaFin)
+                };
+              });
+            });
+    
+            this.messageService.add({severity:'success', 
+              summary:'Correcto', 
+              detail:`El usuario  "${id}" ha sido eliminado del curso "${idCurso}".`,
+              life: 5000 });
+    
+          },
+          error: () => {
+            this.messageService.add({severity:'error', 
+              summary:'Error', 
+              detail:`No se ha podido eliminar al usuario del curso.`,
+              life: 5000 });
+          }
         });
-      });
-    })
+      },
+      reject: () => {
+        this.messageService.add({severity:'info', 
+          summary:'Vuelta atrás', 
+          detail:`Has decidido no quitar al usuario del curso.`,
+          life: 5000 });
+      },
+    });
+
+
+    
   }
 
 
@@ -138,7 +293,7 @@ export class CursoListComponent implements OnInit {
   btnCreateConvocatoria(isUpdate: boolean, isCreate: boolean, curso: any): void {
 
     this.router.navigate(['convocatorias/form'], {
-      queryParams: { idCurso: curso.id, isUpdate: isUpdate, isCreate: isCreate }
+      queryParams: { idCurso: curso.id, isUpdate: isUpdate, isCreate: isCreate, isCurso: true }
     })
 
   }
@@ -152,8 +307,15 @@ export class CursoListComponent implements OnInit {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      this.messageService.add({severity:'success', 
+        summary:'Correcto', 
+        detail:`Reporte generado.`,
+        life: 5000 });
   }, error => {
-      console.error('Error descargando el PDF', error);
+    this.messageService.add({severity:'error', 
+      summary:'Error', 
+      detail:`No se ha podido generar el reporte, disculpe las molestias.`,
+      life: 5000 });
   });
   }
 

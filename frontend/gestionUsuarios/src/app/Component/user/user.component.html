@@ -21,7 +21,6 @@
         <tr>
           <th>ID</th>
           <th>Email</th>
-          <th>Contraseña</th>
           <th>Rol</th>
           <th>Estado</th>
           <th>Acciones</th>
@@ -31,7 +30,6 @@
         <tr *ngFor="let u of users">
           <td>{{u.id}}</td>
           <td>{{u.email}}</td>
-          <td>{{u.password}}</td>
           <td>{{u.rol.nombreRol}}</td>
           <td>
             <span [ngClass]="u.habilitado ? 'estado-habilitado' : 'estado-deshabilitado'">
@@ -47,9 +45,19 @@
             >
               Eliminar
             </button>
+            <button
+              id="btn-Habilitar"
+              (click)="habilitarUser(u.id)"
+              [disabled]="u.habilitado"
+            >
+              Habilitar
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
+
+<p-toast position="top-left"></p-toast>
+<p-confirmdialog />
