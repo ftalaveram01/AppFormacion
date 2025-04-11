@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../Services/user.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-user',
-  imports: [CommonModule, ToastModule, ConfirmDialogModule],
+  imports: [CommonModule, ToastModule, ConfirmDialogModule, FormsModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
   providers: [MessageService, ConfirmationService]
@@ -16,6 +17,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 export class UserComponent implements OnInit {
 
   users: any[] = [];
+  usersFiltrados: any[] = [];
+  filtroEstado: string = 'todos';
+  filtroRol: string = 'todos';
+  
 
   constructor(
     private userService: UserService, 
@@ -27,8 +32,27 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
    this.userService.getAllUsers().subscribe(data => {
     this.users = data;
+    this.filtrarUsuarios();
    });
   }
+
+  
+  filtrarUsuarios(): void {
+    this.usersFiltrados = this.users;
+    
+    if (this.filtroEstado !== 'todos') {
+      const estadoHabilitado = this.filtroEstado === 'habilitados';
+      this.usersFiltrados = this.usersFiltrados.filter(
+        (u) => u.habilitado === estadoHabilitado
+      );
+    }
+      
+    if (this.filtroRol !== 'todos') {
+      this.usersFiltrados = this.usersFiltrados.filter(
+      (u) => u.rol.nombreRol === this.filtroRol
+      );
+    }
+  }    
 
   deleteUser(id: number): void{
 

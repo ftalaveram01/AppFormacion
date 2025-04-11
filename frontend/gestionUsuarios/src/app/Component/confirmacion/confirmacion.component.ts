@@ -25,7 +25,6 @@ export class ConfirmacionComponent implements OnInit {
     this.idUsuario = Number(this.aRouter.snapshot.queryParamMap.get('idUsuario'));
     this.idConvocatoria = Number(this.aRouter.snapshot.queryParamMap.get('idConvocatoria'));
 
-    // Retrieve and decode the JWT
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       const token = JSON.parse(storedToken).token;

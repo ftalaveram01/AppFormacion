@@ -15,8 +15,28 @@
 </div>
 
 <div class="container">
+
+  <div class="filter-container">
+    <div class="filter-section">
+      <label for="filtro-estado">Filtrar Estado:</label>
+      <select id="filtro-estado" [(ngModel)]="filtroEstado" (change)="filtrarUsuarios()">
+        <option value="habilitados">Habilitados</option>
+        <option value="deshabilitados">Deshabilitados</option>
+        <option value="todos">Todos</option>
+      </select>
+    </div>
+    <div class="filter-section">
+      <label for="filtro-rol">Filtrar Rol:</label>
+      <select id="filtro-rol" [(ngModel)]="filtroRol" (change)="filtrarUsuarios()">
+        <option value="ADMIN">ADMIN</option>
+        <option value="ALUMNO">ALUMNO</option>
+        <option value="todos">Todos</option>
+      </select>
+    </div>
+  </div>
+  
   <div class="table-container">
-    <table class="users-tabla">
+    <table class="users-tabla" *ngIf="usersFiltrados.length > 0">
       <thead>
         <tr>
           <th>ID</th>
@@ -27,7 +47,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let u of users">
+        <tr *ngFor="let u of usersFiltrados">
           <td>{{u.id}}</td>
           <td>{{u.email}}</td>
           <td>{{u.rol.nombreRol}}</td>
@@ -56,6 +76,9 @@
         </tr>
       </tbody>
     </table>
+    <div *ngIf="usersFiltrados.length === 0" class="no-users-message">
+      No hay usuarios que coincidan con los filtros seleccionados.
+    </div>
   </div>
 </div>
 
