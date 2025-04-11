@@ -146,3 +146,49 @@ h2 {
   font-size: 12px;
   text-align: center;
 }
+
+.filter-container {
+  margin: 10px auto;
+  text-align: center;
+}
+
+.filter-section {
+  display: inline-block;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #0056b3;
+  margin-right: 10px;
+}
+
+.filter-section select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+.filter-section select:hover {
+  border-color: #0056b3;
+}
+
+.no-users-message {
+  text-align: center;
+  font-size: 1.2em;
+  color: #dc3545;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+  border-radius: 5px;
+}
+
+

@@ -63,8 +63,6 @@ export class UserService {
   updateUser(id: number, user: any): Observable<any> {
     this.getToken();
 
-    console.log("SE HA METIDO EN UPDATE")
-
     const idAdmin = localStorage.getItem("idUsuario")
 
     user.id = id
@@ -74,8 +72,6 @@ export class UserService {
     }
     user.rol = objetoRol
     user.habilitado = 1
-
-    console.log(idAdmin)
 
     const params = new HttpParams()
       .set('idAdmin', Number(idAdmin));

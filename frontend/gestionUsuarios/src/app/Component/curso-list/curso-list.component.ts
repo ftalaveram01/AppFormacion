@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CursoService } from '../../Services/curso.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { ConvocatoriaService } from '../../Services/convocatoria.service';
 import { jwtDecode } from 'jwt-decode';
 import { ToastModule } from 'primeng/toast';
@@ -12,7 +12,7 @@ import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-curso-list',
-  imports: [CommonModule, ToastModule, ConfirmDialogModule, ButtonModule],
+  imports: [CommonModule, ToastModule, ConfirmDialogModule, ButtonModule, FormsModule],
   templateUrl: './curso-list.component.html',
   styleUrls: ['./curso-list.component.css'],
   providers: [MessageService, ConfirmationService]
@@ -20,9 +20,11 @@ import { ButtonModule } from 'primeng/button';
 export class CursoListComponent implements OnInit {
 
   cursos: any[] = [];
+  cursosFiltrados: any[] = [];
   idAdmin!: number;
   idUsuario!: number;
   cursoForm: FormGroup;
+  filtroEstado: string = 'habilitados';
 
   constructor(private cursoService: CursoService, 
     private fb: FormBuilder, 
@@ -46,13 +48,8 @@ export class CursoListComponent implements OnInit {
           ...curso,
         };
       });
-      if (this.isAdmin()) {
-
-      } else {
-        this.cursos = this.cursos.filter((curso) => {
-          return curso.habilitado === true
-        })
-      }
+      
+      this.filtrarCursos();
 
     });
 
@@ -63,6 +60,20 @@ export class CursoListComponent implements OnInit {
 
     this.idAdmin = tokenDecoded.rol[0].rol.id;
     this.idUsuario = tokenDecoded.sub;
+  }
+
+  filtrarCursos(): void {
+    if (this.filtroEstado === 'habilitados') {
+      this.cursosFiltrados = this.cursos.filter(
+        (c) => c.habilitado == true
+      );
+    } else if (this.filtroEstado === 'deshabilitados') {
+      this.cursosFiltrados = this.cursos.filter(
+        (c) => c.habilitado == false
+      );
+    } else {
+      this.cursosFiltrados = [...this.cursos];
+    }
   }
 
   habilitarCurso(curso:any): void {
@@ -299,6 +310,10 @@ export class CursoListComponent implements OnInit {
   }
 
   btnGenerarReporte(): void {
+    this.messageService.add({severity:'info', 
+      summary:'En Proceso', 
+      detail:`Generando el reporte, puede tardar unos segundos...`,
+      life: 5000 });
     this.cursoService.obtenerReporte().subscribe((blob: Blob) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
