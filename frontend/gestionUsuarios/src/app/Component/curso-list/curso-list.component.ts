@@ -25,6 +25,9 @@ export class CursoListComponent implements OnInit {
   idUsuario!: number;
   cursoForm: FormGroup;
   filtroEstado: string = 'habilitados';
+  buscarNombre: string = '';
+  filtroHoras: number = 0;
+  
 
   constructor(private cursoService: CursoService, 
     private fb: FormBuilder, 
@@ -73,6 +76,18 @@ export class CursoListComponent implements OnInit {
       );
     } else {
       this.cursosFiltrados = [...this.cursos];
+    }
+    
+    if (this.buscarNombre) {
+      this.cursosFiltrados = this.cursosFiltrados.filter(
+        (c) => c.nombre.toLowerCase().includes(this.buscarNombre.toLowerCase())
+      );
+    }
+  
+    if (this.filtroHoras !== null) {
+      this.cursosFiltrados = this.cursosFiltrados.filter(
+        (c) => c.numeroHoras >= this.filtroHoras
+      );
     }
   }
 
