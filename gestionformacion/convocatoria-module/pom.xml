@@ -6,12 +6,20 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>convocatoria-module</artifactId>
+  
   <dependencies>
  
   	<dependency>
   		<groupId>com.viewnext.gestionformacion</groupId>
   		<artifactId>core-module</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	
+  	 <dependency>
+  		<groupId>com.viewnext.gestionformacion</groupId>
+  		<artifactId>procesador</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  		<scope>provided</scope>
   	</dependency>
 
     <dependency>
@@ -31,19 +39,38 @@
 	    <version>1.6.2</version>
 	</dependency>
 	
-	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-		<version>8.0.33</version>
-	</dependency>
   </dependencies>
   
-  <build>
-  	<plugins>
-  		<plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-        </plugin>
-  	</plugins>
-  </build>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+				    	<path>
+				              <groupId>com.viewnext.gestionformacion</groupId>
+				              <artifactId>procesador</artifactId>
+				              <version>0.0.1-SNAPSHOT</version>
+				    	</path>
+					</annotationProcessorPaths>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

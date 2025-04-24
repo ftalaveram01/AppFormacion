@@ -20,6 +20,7 @@
   	<module>convocatoria-module</module>
   	<module>main-module</module>
   	<module>eureka-server</module>
+  	<module>procesador</module>
   </modules>
   <properties>
 		<java.version>17</java.version>

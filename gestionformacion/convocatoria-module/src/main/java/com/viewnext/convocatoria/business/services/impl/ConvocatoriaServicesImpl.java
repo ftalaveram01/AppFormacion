@@ -27,6 +27,7 @@ import com.viewnext.core.business.model.Usuario;
 import com.viewnext.core.repositories.ConvocatoriaRepository;
 import com.viewnext.core.repositories.CursoRepository;
 import com.viewnext.core.repositories.UsuarioRepository;
+import com.viewnext.procesador.HolaMundo;
 
 import jakarta.transaction.Transactional;
 import net.sf.jasperreports.engine.JRException;
@@ -59,6 +60,7 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		this.emailService = emailService;
 	}
 
+	@HolaMundo
     @Transactional
 	@Override
 	public Convocatoria create(ConvocatoriaRequest request) {
@@ -90,7 +92,6 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 		Convocatoria guardada = convocatoriaRepository.save(conv);
 		convocatoriaScheduler.programarTarea(guardada, true, false);
 		
-		
 		enviarCorreo(guardada);	
 		
 		return guardada;
@@ -111,9 +112,10 @@ public class ConvocatoriaServicesImpl implements ConvocatoriaServices {
 	            ConvocatoriaEnum.EN_PREPARACION
 	        );
 		
-		return convocatoriaRepository.findAll().stream()
-											   .filter(c ->estadosActivos.contains(c.getEstado()))
-											   .toList();
+		return convocatoriaRepository
+				.findAll().stream()
+						  .filter(c ->estadosActivos.contains(c.getEstado()))
+						  .toList();
 	}
 
     @Transactional
